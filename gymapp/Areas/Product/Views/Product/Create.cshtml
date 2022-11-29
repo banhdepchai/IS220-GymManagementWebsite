@@ -1,6 +1,7 @@
 ﻿@model App.Models.Products.Product
 
 @{
+    Layout = "_Layout";
     ViewData["Title"] = "Thêm sản phẩm mới";
     var list = ViewData["categories"] as SelectList;
 }
@@ -11,7 +12,6 @@
     <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="All" class="text-danger"></div>
-
              <div class="form-group">
                 <label asp-for="CategoryID" class="control-label"></label>
                 <select asp-for="CategoryID" asp-items="list" class="w-40"></select>
@@ -40,6 +40,11 @@
             </div>
 
             <div class="form-group">
+                <label asp-for="Slug" class="control-label"></label>
+                <textarea asp-for="Slug" class="form-control"></textarea>
+                <span asp-validation-for="Slug" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Tạo sản phẩm" class="btn btn-primary" />
             </div>
         </form>
@@ -54,3 +59,4 @@
     var summernote  = new App.Models.Summernote("#Content");
 }
 <partial name="_Summernote" model="summernote" />
+

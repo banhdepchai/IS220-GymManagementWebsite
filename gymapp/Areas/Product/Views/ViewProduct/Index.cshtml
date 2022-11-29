@@ -1,0 +1,189 @@
+﻿@model List<Product>;
+@{
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    //List<Product> products = ViewBag.products as List<Product>;
+    List<Category> categories = ViewBag.categories as List<Category>;
+}
+<!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb/classes-breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <h2>Sản phẩm</h2>
+                        <div class="breadcrumb-option">
+                            <a href="./index.html"><i class="fa fa-home"></i> Trang chủ</a>
+                            <span>Sản phẩm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Product List Section Begin -->
+    <section class="product-list">
+        <div class="container">
+            <div class="bg-white rounded d-flex align-items-center justify-content-between" id="header-product">
+                <button class="btn btn-hide text-uppercase" type="button" data-toggle="collapse"
+                    data-target="#filterbar" aria-expanded="false" aria-controls="filterbar" id="filter-btn"
+                    onclick="changeBtnTxt()">
+                    <span class="fas fa-angle-left" id="filter-angle"></span> <span id="btn-txt">Bộ lọc</span>
+                </button>
+                <nav class="navbar navbar-expand-lg navbar-light pl-lg-0 pl-auto">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mynav"
+                        aria-controls="mynav" aria-expanded="false" aria-label="Toggle navigation"
+                        onclick="chnageIcon()" id="icon">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse pl-4" id="mynav">
+                        <ul class="navbar-nav d-lg-flex align-items-lg-center px-3">
+                            <li class="nav-item active"> <select name="sort" id="sort">
+                                    <option value="" hidden selected> <span style="font-size: 16px;">Sắp xếp theo</span>
+                                    </option>
+                                    <option value="price">Giá</option>
+                                    <option value="popularity">Phổ biến</option>
+                                    <option value="rating">Đánh giá cao</option>
+                                </select>
+                            </li>
+                            <li class="nav-item d-lg-none d-inline-flex"> </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="ml-auto mt-3 mr-2 pb-3">
+                    <nav aria-label="Page navigation example">
+                        <partial name="_PagingProduct" model="@ViewBag.pagingModel" />
+                    </nav>
+                </div>
+            </div>
+            <div id="content" class="my-5">
+                <div id="filterbar" class="collapse">
+                    <div class="box border-bottom">
+                        <div class="form-group text-center">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-success form-check-label text-uppercase">
+                                    <input class="form-check-input" type="radio"> Đặt lại
+                                </label>
+                                <label class="btn btn-success form-check-label text-uppercase active"> <input
+                                        class="form-check-input" type="radio" checked> Áp dụng
+                                </label>
+                            </div>
+                        </div>
+                        <div class="box-label text-uppercase d-flex align-items-center">Loại hàng
+                            <button class="btn ml-auto" type="button" data-toggle="collapse" data-target="#inner-box"
+                                aria-expanded="false" aria-controls="inner-box" id="out" onclick="outerFilter()">
+                                <span class="fas fa-plus"></span>
+                            </button>
+                        </div>
+                        <div class="my-1">
+                            <label class="tick">Hàng mới <input type="checkbox" checked="checked"> <span
+                                    class="check"></span>
+                            </label>
+                        </div>
+                        <div class="my-1">
+                            <label class="tick">Hàng giảm giá <input type="checkbox"> <span
+                                    class="check"></span></label>
+                        </div>
+                    </div>
+                    <div class="box border-bottom">
+                        <div class="box-label text-uppercase d-flex align-items-center">Phân loại
+                            <button class="btn ml-auto" type="button" data-toggle="collapse" data-target="#inner-box"
+                                aria-expanded="false" aria-controls="inner-box" id="out" onclick="outerFilter()"> <span
+                                    class="fas fa-plus"></span>
+                            </button>
+                        </div>
+                        <div id="inner-box" class="collapse mt-2 mr-1">
+                            
+                        @foreach (var category in categories)
+                            {
+                                <div class="my-1">
+                                    <label class="tick">@category.Title <input type="checkbox" checked="checked">
+                                        <span class="check"></span>
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <!-- <div class="box border-bottom">
+                    <div class="box-label text-uppercase d-flex align-items-center">season <button class="btn ml-auto"
+                            type="button" data-toggle="collapse" data-target="#inner-box2" aria-expanded="false"
+                            aria-controls="inner-box2"><span class="fas fa-plus"></span></button> </div>
+                    <div id="inner-box2" class="collapse mt-2 mr-1">
+                        <div class="my-1"> <label class="tick">Spring <input type="checkbox" checked="checked"> <span
+                                    class="check"></span> </label> </div>
+                        <div class="my-1"> <label class="tick">Summer <input type="checkbox"> <span
+                                    class="check"></span> </label> </div>
+                        <div class="my-1"> <label class="tick">Autumn <input type="checkbox" checked> <span
+                                    class="check"></span> </label> </div>
+                        <div class="my-1"> <label class="tick">Winter <input type="checkbox"> <span
+                                    class="check"></span> </label> </div>
+                        <div class="my-1"> <label class="tick">Rainy <input type="checkbox"> <span class="check"></span>
+                            </label> </div>
+                    </div>
+                </div> -->
+                    <div class="box border-bottom">
+                        <div class="box-label text-uppercase d-flex align-items-center">Giá <button class="btn ml-auto"
+                                type="button" data-toggle="collapse" data-target="#price" aria-expanded="false"
+                                aria-controls="price"><span class="fas fa-plus"></span></button> </div>
+                        <div class="collapse" id="price">
+                            <div class="middle">
+                                <div class="multi-range-slider"> <input type="range" id="input-left" min="0" max="100"
+                                        value="10"> <input type="range" id="input-right" min="0" max="100" value="50">
+                                    <div class="slider">
+                                        <div class="track"></div>
+                                        <div class="range"></div>
+                                        <div class="thumb left"></div>
+                                        <div class="thumb right"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mt-2">
+                                <div> <span id="amount-left" class="font-weight-bold"></span> VND </div>
+                                <div> <span id="amount-right" class="font-weight-bold"></span> VND </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="products">
+                    <div class="row mx-0">
+
+                    @foreach (var product in Model)
+                    {
+                        <div id="@product.Slug" class="detail col-lg-4 col-md-6 pt-md-0 pt-3">
+                            @*<div  class="col-lg-4 col-md-6 pt-md-0 pt-3" id="@product.Slug">*@
+                            <div class="card-productdetail d-flex flex-column align-items-center">
+                                <div class="product-name">@product.ProductName</div>
+                                <div class="card-img"> 
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt="" height="100" id="shirt">
+                                </div>
+                                <div class="card-body pt-5">
+                                    <div class="d-flex align-items-center price">
+                                        <div class="del mr-2"><span class="old-price">550000 VND</span></div>
+                                        <div class="font-weight-bold">@product.Price VND</div>
+                                    </div>
+                                </div>
+                            @*</div>*@
+                            </div>
+                        </div>
+                    }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- Product List Section End -->
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $(".detail").click(function () {
+                $link = $(this).attr("id");
+                window.location.href = "/" + $link + ".html";
+                
+            });
+        });
+    </script>
+}
+    

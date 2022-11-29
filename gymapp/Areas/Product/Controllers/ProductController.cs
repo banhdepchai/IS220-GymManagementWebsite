@@ -11,6 +11,8 @@ using System.Data;
 using System.Xml.Linq;
 using System;
 using ProductModel = App.Models.Products.Product;
+using Microsoft.Extensions.Hosting;
+using App.Models.Products;
 
 namespace App.Areas.Product.Controllers
 {
@@ -97,10 +99,15 @@ namespace App.Areas.Product.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductName,Description,Content,Price,CategoryID")] ProductModel product)
+        public async Task<IActionResult> Create([Bind("ProductName,Description,Content,Price,Slug,CategoryID")] ProductModel product)
         {
             var categories = await _context.Categories.ToListAsync();
             ViewData["categories"] = new SelectList(categories, "Id", "Title");
+
+            if (product.Slug == null)
+            {
+                product.Slug = AppUtilities.GenerateSlug(product.ProductName);
+            }
 
             if (ModelState.IsValid)
             {
@@ -137,6 +144,8 @@ namespace App.Areas.Product.Controllers
                 ProductName = product.ProductName,
                 Content = product.Content,
                 Description = product.Description,
+                Price = product.Price,
+                Slug = product.Slug,
                 CategoryID = product.ProductID
             };
 
@@ -147,11 +156,16 @@ namespace App.Areas.Product.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductID,ProductName,Description,Content,CategoryID")] ProductModel product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductID,ProductName,Description,Content,Price,Slug,CategoryID")] ProductModel product)
         {
             if (id != product.ProductID)
             {
                 return NotFound();
+            }
+
+            if (product.Slug == null)
+            {
+                product.Slug = AppUtilities.GenerateSlug(product.ProductName);
             }
 
             ViewData["categories"] = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
@@ -160,25 +174,27 @@ namespace App.Areas.Product.Controllers
             {
                 try
                 {
-                    var postUpdate = await _context.Products.FindAsync(id);
-                    if (postUpdate == null)
+                    var productUpdate = await _context.Products.FindAsync(id);
+                    if (productUpdate == null)
                     {
                         return NotFound();
                     }
 
-                    postUpdate.ProductName = product.ProductName;
-                    postUpdate.Description = product.Description;
-                    postUpdate.Content = product.Content;
-                    postUpdate.DateUpdated = DateTime.Now;
-                    postUpdate.CategoryID = product.CategoryID;
+                    productUpdate.ProductName = product.ProductName;
+                    productUpdate.Description = product.Description;
+                    productUpdate.Content = product.Content;
+                    productUpdate.DateUpdated = DateTime.Now;
+                    productUpdate.Price = product.Price;
+                    productUpdate.Slug = product.Slug;
+                    productUpdate.CategoryID = product.CategoryID;
 
-                    _context.Update(postUpdate);
+                    _context.Update(productUpdate);
 
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(product.ProductID))
+                    if (!ProductExists(product.ProductID))
                     {
                         return NotFound();
                     }
@@ -233,9 +249,154 @@ namespace App.Areas.Product.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PostExists(int id)
+        private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.ProductID == id);
+        }
+
+        public class UploadOneFile
+        {
+            [Required(ErrorMessage = "Phải chọn file upload")]
+            [DataType(DataType.Upload)]
+            [FileExtensions(Extensions = "png,jpg,jpeg,gif")]
+            [Display(Name = "Chọn file upload")]
+            public IFormFile FileUpload { get; set; }
+        }
+
+        // Product Photo
+        [HttpGet]
+        public IActionResult UploadPhoto(int id)
+        {
+            var product = _context.Products.Where(e => e.ProductID == id)
+                            .Include(p => p.ProductPhotos)
+                            .FirstOrDefault();
+            if (product == null)
+            {
+                return NotFound("Không có sản phẩm");
+            }
+            ViewData["product"] = product;
+            return View(new UploadOneFile());
+        }
+
+        [HttpPost, ActionName("UploadPhoto")]
+        public async Task<IActionResult> UploadPhotoAsync(int id, [Bind("FileUpload")] UploadOneFile f)
+        {
+            var product = _context.Products.Where(e => e.ProductID == id)
+                .Include(p => p.ProductPhotos)
+                .FirstOrDefault();
+
+            if (product == null)
+            {
+                return NotFound("Không có sản phẩm");
+            }
+            ViewData["product"] = product;
+
+            if (f != null)
+            {
+                var file1 = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+                            + Path.GetExtension(f.FileUpload.FileName);
+
+                var file = Path.Combine("Uploads", "Products", file1);
+
+                using (var filestream = new FileStream(file, FileMode.Create))
+                {
+                    await f.FileUpload.CopyToAsync(filestream);
+                }
+
+                _context.Add(new ProductPhoto()
+                {
+                    ProductID = product.ProductID,
+                    FileName = file1
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
+            return View(f);
+        }
+
+        [HttpPost]
+        public IActionResult ListPhotos(int id)
+        {
+            var product = _context.Products.Where(e => e.ProductID == id)
+                .Include(p => p.ProductPhotos)
+                .FirstOrDefault();
+
+            if (product == null)
+            {
+                return Json(
+                    new
+                    {
+                        success = 0,
+                        message = "Product not found",
+                    }
+                );
+            }
+
+            var listphotos = product.ProductPhotos.Select(photo => new
+            {
+                id = photo.Id,
+                path = "/contents/Products/" + photo.FileName
+            });
+
+            return Json(
+                new
+                {
+                    success = 1,
+                    photos = listphotos
+                }
+            );
+        }
+
+        [HttpPost]
+        public IActionResult DeletePhoto(int id)
+        {
+            var photo = _context.ProductPhotos.Where(p => p.Id == id).FirstOrDefault();
+            if (photo != null)
+            {
+                _context.Remove(photo);
+                _context.SaveChanges();
+
+                var filename = "Uploads/Products/" + photo.FileName;
+                System.IO.File.Delete(filename);
+            }
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadPhotoApi(int id, [Bind("FileUpload")] UploadOneFile f)
+        {
+            var product = _context.Products.Where(e => e.ProductID == id)
+                .Include(p => p.ProductPhotos)
+                .FirstOrDefault();
+
+            if (product == null)
+            {
+                return NotFound("Không có sản phẩm");
+            }
+
+            if (f != null)
+            {
+                var file1 = Path.GetFileNameWithoutExtension(Path.GetRandomFileName())
+                            + Path.GetExtension(f.FileUpload.FileName);
+
+                var file = Path.Combine("Uploads", "Products", file1);
+
+                using (var filestream = new FileStream(file, FileMode.Create))
+                {
+                    await f.FileUpload.CopyToAsync(filestream);
+                }
+
+                _context.Add(new ProductPhoto()
+                {
+                    ProductID = product.ProductID,
+                    FileName = file1
+                });
+
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok();
         }
     }
 }

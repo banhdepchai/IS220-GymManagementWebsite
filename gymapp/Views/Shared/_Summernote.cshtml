@@ -1,4 +1,3 @@
-@*
 @model App.Models.Summernote
 
 @if (Model.LoadLibrary)
@@ -85,26 +84,6 @@
 
 
 
-    $(document).ready(function(){
-        $('@Model.IDEditor').summernote({
-            height: @Model.height,
-            toolbar: @Html.Raw(Model.toolbar)
-        });
-    });  
-</script>*@
-
-                            
-
-@model App.Models.Summernote
-
-@if (Model.LoadLibrary)
-{
-        <script src="~/lib/summernote/summernote-bs4.min.js"></script>
-        <link rel="stylesheet" href="~/lib/summernote/summernote-bs4.min.css" />
-}
-
-
-<script>
     $(document).ready(function(){
         $('@Model.IDEditor').summernote({
             height: @Model.height,

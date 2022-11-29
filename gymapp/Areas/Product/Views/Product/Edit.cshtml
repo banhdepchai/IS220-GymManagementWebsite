@@ -1,6 +1,7 @@
 ﻿@model App.Models.Products.Product
 
 @{
+    Layout = "_Layout";
     ViewData["Title"] = "Cập nhật sản phẩm";
     var list = ViewData["categories"] as SelectList;
 }
@@ -33,6 +34,26 @@
                 <textarea asp-for="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
+             <div class="form-group">
+                 <label asp-for="Price" class="control-label"></label>
+                 <textarea asp-for="Price" class="form-control"></textarea>
+                 <span asp-validation-for="Price" class="text-danger"></span>
+             </div>
+            <input
+                class="collapse"
+                type="file"
+                id="selectfileupload"
+                onchange="AutoUploadPhoto()"
+            />
+
+            <span class="btn btn-primary" onclick="ClickButtoUpload()">Upload hình ảnh sản phẩm</span>
+
+            <div id="box-photo-upload" class="d-flex flex-wrap photo-upload" data-id="@Model.ProductID"></div>
+             <div class="form-group">
+                 <label asp-for="Slug" class="control-label"></label>
+                 <textarea asp-for="Slug" class="form-control"></textarea>
+                 <span asp-validation-for="Slug" class="text-danger"></span>
+             </div>
 
             <div class="form-group">
                 <input type="submit" value="Cập nhật" class="btn btn-primary" />
@@ -44,3 +65,104 @@
 <div>
     <a asp-action="Index">Danh sách sản phẩm</a>
 </div>
+
+@{
+    var summernote  = new App.Models.Summernote("#Content");
+}
+<partial name="_Summernote" model="summernote" />
+
+@section Scripts {
+            <script>
+                function AutoUploadPhoto()
+                {
+                     var formData = new FormData();
+                     var id = $("#box-photo-upload").data("id");
+                     formData.append("id", id);
+                     var sofile = document.getElementById("selectfileupload").files.length;
+                     if (sofile == 0) return;
+                     var fileData = document.getElementById("selectfileupload").files[0];
+                     formData.append("FileUpload", fileData)
+                     var urlUpload = "@Url.Action("UploadPhotoApi")";
+                    $.ajax({
+                        data: formData,
+                        cache: false,
+                        url: urlUpload,
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        success: function(data) 
+                        {
+                            // ... xu ly du lieu lay duoc
+                            LoadPhotos();
+                        }
+                    });
+
+                } 
+                function ClickButtoUpload()
+                {
+                    $("#selectfileupload").click();
+                }
+                function setClickDeletePhoto()
+                {
+                    $("#box-photo-upload .photodetail span").click(function () {
+                         if (confirm("Có chắc chắn xóa ảnh?") != true) return;
+                         var spanButton = $(this);
+                         var id = spanButton.data("id");
+                         var formData = new FormData();
+                         formData.append("id", id);
+                         var urlDeletePhoto = "@Url.Action("DeletePhoto")";
+                    $.ajax({
+                        data: formData,
+                        cache: false,
+                        url: urlDeletePhoto,
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        success: function(data) 
+                        {
+                            // ... xu ly du lieu lay duoc
+                            LoadPhotos();
+
+                        }
+                    });
+
+                    });
+                }
+                function LoadPhotos()
+                {
+                    var box = $("#box-photo-upload");
+                    var ProductID = box.data("id");
+                    box.empty();
+                    var formData = new FormData();
+                    formData.append("id", ProductID);
+                    var urlListPhoto = "@Url.Action("ListPhotos")";
+                    $.ajax({
+                        data: formData,
+                        cache: false,
+                        url: urlListPhoto,
+                        type: "POST",
+                        contentType: false,
+                        processData: false,
+                        success: function(data) 
+                        {
+                            // ... xu ly du lieu lay duoc
+                            data.photos.forEach(function(item) {
+                                // console.log(item.id);
+                                // console.log(item.path);
+                                var e = $(
+                                    '<div class="photodetail w-25 p-1">'
+                                       + '<img class="w-100" src="'+ item.path +'" />'
+                                       + '<span class="btn btn-danger" data-id="'+ item.id +'">Delete</span></div>');
+                                 box.append(e);      
+                            });
+                            setClickDeletePhoto();
+                        }
+                    });
+
+                    // console.log(ProductID);
+                }
+                $(document).ready(function() {
+                    LoadPhotos();
+                });
+            </script>
+}

@@ -35,6 +35,11 @@ namespace App.Models
             {
                 entity.HasIndex(c => c.Slug).IsUnique();
             });
+
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.HasIndex(p => p.Slug).IsUnique();
+            });
         }
 
         public DbSet<Contact> Contacts { get; set; }
@@ -42,5 +47,7 @@ namespace App.Models
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductPhoto> ProductPhotos { get; set; }
     }
 }

@@ -37,9 +37,16 @@ namespace App.Models.Products
         [Range(0, int.MaxValue, ErrorMessage = "Nhập giá trị từ {1}")]
         public decimal Price { set; get; }
 
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "{0} dài {1} đến {2}")]
+        [RegularExpression(@"^[a-z0-9-]*$", ErrorMessage = "Chỉ dùng các ký tự [a-z0-9-]")]
+        [Display(Name = "Url hiển thị")]
+        public string? Slug { set; get; }
+
         [Display(Name = "Danh mục sản phẩm")]
         public int CategoryID { set; get; }
 
         public Category? Category { set; get; }
+
+        public List<ProductPhoto>? ProductPhotos { set; get; }
     }
 }
