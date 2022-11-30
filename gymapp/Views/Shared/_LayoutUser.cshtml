@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -54,7 +56,7 @@
                     </ul>
                 </nav>
                 <a href="#" class="primary-btn signup-btn">Đăng nhập</a>
-                <a href="./cart.html" class="primary-btn signup-btn">Giỏ hàng</a>
+                <a asp-route="cart" class="primary-btn signup-btn">Giỏ hàng</a>
             </div>
             <div id="mobile-menu-wrap"></div>
         </div>

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using App.Models.Payments;
 using Microsoft.AspNetCore.Identity;
 
 namespace App.Models
@@ -14,5 +15,7 @@ namespace App.Models
         // [Required]
         [DataType(DataType.Date)]
         public DateTime? BirthDate { get; set; }
+
+        public List<Payment>? Payments { get; set; }
     }
 }

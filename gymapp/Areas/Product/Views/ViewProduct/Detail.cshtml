@@ -98,8 +98,7 @@
                             <div class="action">
                                 <a href="#" target="_blank"> <button class="buy-now" type="button">Mua ngay</button>
                                 </a>
-                                <a href="#" target="_blank"> <button class="add-to-cart" type="button">Thêm vào giỏ hàng
-                                        <span class="fa fa-shopping-cart"></span></button> </a>
+                                <a asp-action="AddToCart" asp-route-productid="@Model.ProductID"> <button class="add-to-cart" type="button">Thêm vào giỏ hàng <span class="fa fa-shopping-cart"></span></button> </a>
                             </div>
                         </div>
                     </div>

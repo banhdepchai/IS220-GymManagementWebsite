@@ -1,5 +1,9 @@
-﻿using App.Models;
+﻿using App.Areas.Product.Models;
+using App.Areas.Product.Service;
+using App.Models;
+using App.Models.Payments;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,16 +14,20 @@ namespace gymapp.Areas.Product.Controllers
     public class ViewProductController : Controller
     {
         private readonly GymAppDbContext _context;
+        private readonly CartService _cartService;
+        private readonly UserManager<AppUser> _userManager;
 
-        public ViewProductController(GymAppDbContext context)
+        public ViewProductController(GymAppDbContext context, CartService cartService, UserManager<AppUser> userManager)
         {
             _context = context;
+            _cartService = cartService;
+            _userManager = userManager;
         }
 
         [Route("/san-pham/")]
         public IActionResult Index([FromQuery(Name = "p")] int currentPage, int pagesize)
         {
-            var products = _context.Products.Include(p => p.Category);
+            var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos).AsNoTracking();
             var categories = _context.Categories.ToList();
 
             int totalProducts = products.Count();
@@ -59,11 +67,111 @@ namespace gymapp.Areas.Product.Controllers
             return View(product);
         }
 
-        public async Task<IActionResult> GetCategories()
+        /// Thêm sản phẩm vào cart
+        [Route("addcart/{productid:int}", Name = "addcart")]
+        public IActionResult AddToCart([FromRoute] int productid)
         {
-            var categories = await _context.Categories.ToListAsync();
-            ViewBag["categories"] = categories;
-            return View();
+            var product = _context.Products
+                .Where(p => p.ProductID == productid)
+                .Include(p => p.ProductPhotos)
+                .Include(p => p.Category)
+                .FirstOrDefault();
+            if (product == null)
+                return NotFound("Không có sản phẩm");
+
+            // Xử lý đưa vào Cart ...
+            var cart = _cartService.GetCartItems();
+            var cartitem = cart.Find(p => p.product.ProductID == productid);
+            if (cartitem != null)
+            {
+                // Đã tồn tại, tăng thêm 1
+                cartitem.quantity++;
+            }
+            else
+            {
+                //  Thêm mới
+                cart.Add(new CartItem() { quantity = 1, product = product });
+            }
+
+            // Lưu cart vào Session
+            _cartService.SaveCartSession(cart);
+            // Chuyển đến trang hiện thị Cart
+            return RedirectToAction(nameof(Cart));
+        }
+
+        [Route("/updatecart", Name = "updatecart")]
+        [HttpPost]
+        public IActionResult UpdateCart([FromForm] int productid, [FromForm] int quantity)
+        {
+            // Cập nhật Cart thay đổi số lượng quantity ...
+            var cart = _cartService.GetCartItems();
+            var cartitem = cart.Find(p => p.product.ProductID == productid);
+            if (cartitem != null)
+            {
+                // Đã tồn tại, tăng thêm 1
+                cartitem.quantity = quantity;
+            }
+            _cartService.SaveCartSession(cart);
+            // Trả về mã thành công (không có nội dung gì - chỉ để Ajax gọi)
+            return Ok();
+        }
+
+        /// xóa item trong cart
+        [Route("/removecart/{productid:int}", Name = "removecart")]
+        public IActionResult RemoveCart([FromRoute] int productid)
+        {
+            var cart = _cartService.GetCartItems();
+            var cartitem = cart.Find(p => p.product.ProductID == productid);
+            if (cartitem != null)
+            {
+                // Đã tồn tại, tăng thêm 1
+                cart.Remove(cartitem);
+            }
+
+            _cartService.SaveCartSession(cart);
+            return RedirectToAction(nameof(Cart));
+        }
+
+        [Route("/cart", Name = "cart")]
+        public IActionResult Cart()
+        {
+            return View(_cartService.GetCartItems());
+        }
+
+        [Route("/checkout", Name = "checkout")]
+        public async Task<IActionResult> Checkout()
+        {
+            var cart = _cartService.GetCartItems();
+
+            if (cart.Count == 0)
+                return RedirectToAction(nameof(Cart));
+
+            var user = await _userManager.GetUserAsync(this.User);
+            var payment = new Payment()
+            {
+                DateCreated = DateTime.Now,
+                UserID = user.Id,
+                TotalPrice = cart.Sum(p => p.product.Price * p.quantity)
+            };
+
+            _context.Payments.Add(payment);
+            _context.SaveChanges();
+
+            foreach (var item in cart)
+            {
+                var paymentDetail = new PaymentDetail()
+                {
+                    PaymentID = payment.PaymentID,
+                    ProductID = item.product.ProductID,
+                    Quantity = item.quantity
+                };
+                _context.PaymentDetails.Add(paymentDetail);
+            }
+            _context.SaveChanges();
+
+            _cartService.ClearCart();
+
+            return Content("Xác nhận đơn hàng thành công");
         }
     }
 }

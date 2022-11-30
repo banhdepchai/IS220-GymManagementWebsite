@@ -1,0 +1,206 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<App.Areas.Product.Models.CartItem>
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    decimal total = 0;
+    int stt = 1;
+}
+<!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb/classes-breadcrumb.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <h2>VỀ CHÚNG TÔI</h2>
+                        <div class="breadcrumb-option">
+                            <a href="./index.html"><i class="fa fa-home"></i> Trang chủ</a>
+                            <span>Giỏ hàng</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+<section class="ftco-section ftco-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ftco-animate">
+                <div class="cart-list">
+                    <table class="table" d="cart-gym">
+                        <thead class="thead-primary">
+                        <tr class="text-center">
+                            <th>&nbsp;</th>
+                            <th>&nbsp;</th>
+                            <th>Tên</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Tổng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @*<tr class="text-center">
+                                    <td class="product-remove"><a href=""><i class="trash-icon fa-solid fa-x"></i></a>
+                                    </td>
+
+                                    <td class="image-prod set-bg" data-setbg="/img/blog/product_1.jpg">
+                                    </td>
+
+                                    <td class="product-name">
+                                        <h3>Loại sản phẩm</h3>
+                                        <p>Tên sản phẩm</p>
+                                    </td>
+
+                                    <td class="price">10000</td>
+
+                                    <td class="quantity">
+                                        <div class="input-group mb-3">
+                                            <input type="number" name="quantity"
+                                                class="quantity form-control input-number" value="1" min="1" max="100">
+                                        </div>
+                                    </td>
+
+                                    <td class="total">100000</td>
+                                </tr><!-- END TR-->
+
+                                <tr class="text-center">
+                                    <td class="product-remove"><a href=""><i class="fa-solid fa-x"></i></a></td>
+
+                                    <td class="image-prod set-bg" data-setbg="/img/blog/product_1.jpg">
+                                    </td>
+
+                                    <td class="product-name">
+                                        <h3>Loại sản phẩm</h3>
+                                        <p>Tên sản phẩm</p>
+                                    </td>
+
+                                    <td class="price">20000</td>
+
+                                    <td class="quantity">
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="quantity"
+                                                class="quantity form-control input-number" value="1" min="1" max="100">
+                                        </div>
+                                    </td>
+
+                                    <td class="total">100000</td>
+                                </tr><!-- END TR-->*@
+                        @if (Model.Count > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                decimal subTotal = item.quantity * item.product.Price;
+                                total += subTotal;
+                                <tr class="text-center">
+                                            <td class="product-remove"><a asp-route="removecart" asp-route-productid="@item.product.ProductID"><i class="trash-icon fa-solid fa-x"></i></a></td>
+
+                                    <td class="image-prod set-bg" data-setbg="/img/blog/product_1.jpg"></td>
+                                    <td class="product-name">
+                                        <h3>@item.product.Category.Title</h3>
+                                        <p>@item.product.ProductName</p>
+                                    </td>
+
+                                    <td class="price">@item.product.Price</td>
+
+                                    <td class="quantity">
+                                        <div class="input-group mb-3">
+                                            <input asp-for="@item.quantity" name="quantity" class="quantity form-control input-number" data-productid="@item.product.ProductID" id="@($"quantity-{item.product.ProductID}")">
+                                        </div>
+                                    </td>
+                                    <td class="total">@subTotal</td>
+                                </tr> 
+                            }
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-end">
+            <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+                <div class="cart-total mb-3">
+                    <h3>Mã giảm giá</h3>
+                    <p>Nếu bạn có mã giảm giá, hãy nhâp để sử dụng</p>
+                    <form action="#" class="info">
+                        <div class="form-group">
+                            <label for="">Mã giảm giá</label>
+                            <input type="text" class="form-control text-left px-3" placeholder="">
+                        </div>
+                    </form>
+                </div>
+                <p><a href="checkout.html" class="btn btn-primary btn-cart py-3 px-4">Áp dụng</a></p>
+            </div>
+                
+            <div class="col-lg-4 mt-5 cart-wrap ftco-animate">
+                <div class="cart-total mb-3">
+                    <h3>Tổng chi phí</h3>
+                    <p class="d-flex total__product-price">
+                        <span>Phí hàng</span>
+                        <span>@total</span>
+                    </p>
+                    <p class="d-flex">
+                        <span>Phí vận chuyển</span>
+                        <span>0đ</span>
+                    </p>
+                    <p class="d-flex">
+                        <span>Giảm giá</span>
+                        <span>50.000đ</span>
+                    </p>
+                    <hr>
+                    <p class="d-flex total-price">
+                        <span>Tổng</span>
+                        <span>@total</span>
+                    </p>
+                </div>
+                <p><a asp-controller="ViewProduct" asp-action="Checkout" asp-area="Product" class="btn btn-primary btn-cart py-3 px-4">Xác nhận</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+<script>
+$(document).ready(function () {
+      //$(".updatecartitem").(function (event) {
+      //    event.preventDefault();
+      //    var productid = $(this).attr("data-productid");
+      //    var quantity = $("#quantity-" + productid).val();
+      //    $.ajax({
+      //        type: "POST",
+      //        url:"",
+      //        data: {
+      //            productid: productid,
+      //            quantity:quantity
+      //        },
+      //        success: function (result) {
+      //            window.location.href = "";
+      //        }
+      //    });
+      //});
+      
+    $(".input-number").bind('keyup change click', function (e) {
+        if (! $(this).data("previousValue") || $(this).data("previousValue") != $(this).val())
+        {
+            $(this).data("previousValue", $(this).val());
+            var value = $(this).val();
+            var productid = $(this).attr("data-productid");
+            var quantity = $("#quantity-" + productid).val();
+            $.ajax({
+                type: "POST",
+                url:"@Url.RouteUrl("updatecart")",
+                data: {
+                    productid: productid,
+                    quantity:quantity
+                },
+                success: function (result) {
+                    window.location.href = "@Url.RouteUrl("cart")";
+                }
+            });
+        }
+
+    });
+});
+</script>
+}

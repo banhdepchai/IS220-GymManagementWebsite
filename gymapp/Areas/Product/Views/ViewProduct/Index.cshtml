@@ -150,12 +150,17 @@
 
                     @foreach (var product in Model)
                     {
+                        var imgSrc = "/contents/nophoto.png";
+                        if (product.ProductPhotos.Any())
+                        {
+                            imgSrc = $"/contents/products/{product.ProductPhotos.FirstOrDefault().FileName}";
+                        }
                         <div id="@product.Slug" class="detail col-lg-4 col-md-6 pt-md-0 pt-3">
                             @*<div  class="col-lg-4 col-md-6 pt-md-0 pt-3" id="@product.Slug">*@
                             <div class="card-productdetail d-flex flex-column align-items-center">
                                 <div class="product-name">@product.ProductName</div>
                                 <div class="card-img"> 
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt="" height="100" id="shirt">
+                                    <img src="@imgSrc" alt="" height="100" id="shirt">
                                 </div>
                                 <div class="card-body pt-5">
                                     <div class="d-flex align-items-center price">

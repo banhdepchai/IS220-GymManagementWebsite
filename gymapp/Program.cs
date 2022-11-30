@@ -1,6 +1,7 @@
 using App.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using App.Areas.Product.Service;
 using App.Data;
 using Microsoft.AspNetCore.Identity;
 using App.Services;
@@ -9,6 +10,12 @@ using Microsoft.Extensions.FileProviders;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDistributedMemoryCache();           // Đăng ký dịch vụ lưu cache trong bộ nhớ (Session sẽ sử dụng nó)
+builder.Services.AddSession(cfg =>
+{                    // Đăng ký dịch vụ Session
+    cfg.Cookie.Name = "gymapp";                 // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
+    cfg.IdleTimeout = new TimeSpan(0, 30, 0);    // Thời gian tồn tại của Session
+});
 
 builder.Services.AddOptions();
 var mailsetting = builder.Configuration.GetSection("MailSettings");
@@ -82,6 +89,8 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddTransient<CartService>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -104,6 +113,8 @@ app.UseStaticFiles(new StaticFileOptions()
     ),
     RequestPath = "/contents"
 });
+
+app.UseSession();
 
 app.UseRouting();
 
