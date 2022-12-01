@@ -1,7 +1,9 @@
 ﻿@model App.Models.Products.Product
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
 
 @{
-    Layout = "_Layout";
+    Layout = "_LayoutAdmin";
     ViewData["Title"] = "Xóa sản phẩm";
 }
 
@@ -15,3 +17,11 @@
         <a asp-action="Index">Danh sách sản phẩm</a>
     </form>
 </div>
+
+@{
+    _AdminSidebarService.SetActive("Product", "Delete", "Product");
+}
+@section Sidebar
+    {
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

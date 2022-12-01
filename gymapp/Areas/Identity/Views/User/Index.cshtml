@@ -1,4 +1,6 @@
 @model UserListModel
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
 @{
     ViewData["Title"] = "Danh sách các thành viên";
 }
@@ -42,3 +44,10 @@
 }
 
 <partial name="_PagingXTL" model="@pagingmodel" />
+
+@{
+    _AdminSidebarService.SetActive("User", "Index", "Identity");
+}
+@section Sidebar {
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

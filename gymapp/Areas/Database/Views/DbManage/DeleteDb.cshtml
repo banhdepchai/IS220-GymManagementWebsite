@@ -1,4 +1,6 @@
-﻿@{
+﻿@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+@{
     ViewData["Title"] = "Xóa Db";
 }
 
@@ -17,3 +19,11 @@
 
 
 </form>
+
+@{
+    _AdminSidebarService.SetActive("DbManage", "DeleteDb", "DbManage");
+}
+@section Sidebar
+    {
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

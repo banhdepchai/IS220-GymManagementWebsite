@@ -6,6 +6,8 @@ using App.Data;
 using Microsoft.AspNetCore.Identity;
 using App.Services;
 using Microsoft.Extensions.FileProviders;
+using App.Menu;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,6 +93,9 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddTransient<CartService>();
 
+builder.Services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
+builder.Services.AddTransient<AdminSidebarService>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -124,5 +129,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "admin",
+    pattern: "{controller=Admin}/{action=Index}/{id?}");
 
 app.Run();

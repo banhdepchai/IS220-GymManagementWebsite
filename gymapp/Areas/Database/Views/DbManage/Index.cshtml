@@ -1,6 +1,8 @@
 ﻿@using App.Models
 @using Microsoft.EntityFrameworkCore
 @inject GymAppDbContext dbContext
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
 
 @{
     ViewData["Title"] = "Thông tin Db";
@@ -54,4 +56,13 @@
     <a class = "btn btn-danger" asp-action="DeleteDb">Xóa Db:  @dbname</a>
         <a class = "btn btn-danger" asp-action="SeedData">Seed Data:  @dbname</a>
 
+}
+
+@{
+    _AdminSidebarService.SetActive("DbManage", "Index", "Database");
+}
+
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
 }

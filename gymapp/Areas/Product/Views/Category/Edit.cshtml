@@ -1,8 +1,9 @@
 @model App.Models.Products.Category
-
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
 @{
-    Layout = "_Layout";
-    ViewData["Title"] = "Sửa đổi chuyên mục";
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Sửa đổi danh mục sản phẩm";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -38,5 +39,13 @@
 </div>
 
 <div>
-    <a asp-action="Index">Danh sách chuyên mục</a>
+    <a asp-action="Index">Danh sách chuyên mục sản phẩm</a>
 </div>
+
+@{
+    _AdminSidebarService.SetActive("Category", "Edit", "Product");
+}
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

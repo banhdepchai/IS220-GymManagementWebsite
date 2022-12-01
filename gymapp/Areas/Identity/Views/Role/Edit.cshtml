@@ -1,5 +1,6 @@
 @model EditRoleModel
- 
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
 @{
     ViewData["Title"] = "Cập nhật role";
 }
@@ -48,4 +49,11 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@{
+    _AdminSidebarService.SetActive("Role", "Edit", "Identity");
+}
+@section Sidebar {
+    @Html.Raw(_AdminSidebarService.renderHtml())
 }

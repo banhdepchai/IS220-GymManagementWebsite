@@ -1,4 +1,6 @@
 @model AddUserClaimModel
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
 @{
     ViewData["Title"] = "Claim của user";
 }
@@ -45,4 +47,11 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@{
+    _AdminSidebarService.SetActive("User", "AddClaim", "Identity");
+}
+@section Sidebar {
+    @Html.Raw(_AdminSidebarService.renderHtml())
 }

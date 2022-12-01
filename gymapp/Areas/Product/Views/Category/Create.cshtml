@@ -1,12 +1,10 @@
 @model App.Models.Products.Category
-
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
 @{
-    Layout = "_Layout";
+    Layout = "_LayoutAdmin";
     ViewData["Title"] = "Tạo danh mục sản phẩm";             
 }
-
-
-
 
 <h1>@ViewData["Title"]</h1>
 
@@ -43,3 +41,11 @@
 <div>
     <a asp-action="Index">Danh sách chuyên mục</a>
 </div>
+
+@{
+    _AdminSidebarService.SetActive("Category", "Create", "Product");
+}
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

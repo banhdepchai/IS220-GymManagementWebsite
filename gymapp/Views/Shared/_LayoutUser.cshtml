@@ -48,11 +48,11 @@
                 <nav class="mainmenu mobile-menu">
                     <ul>
                         <li class="active"><a href="./index.html">Trang chủ</a></li>
-                        <li><a href="./service.html">Dịch vụ</a></li>
-                        <li><a href="./class.html">Lớp</a></li>
+                        <li><a href="/service.html">Dịch vụ</a></li>
+                        <li><a href="/class.html">Lớp</a></li>
                         <li><a asp-action="Index" asp-controller="ViewProduct" asp-area="Product">Sản phẩm</a></li>
-                        <li><a href="./contact.html">Liên hệ</a></li>
-                        <li><a href="./about-us.html">Về chúng tôi</a></li>
+                        <li><a asp-action="SendContact" asp-controller="Contact" asp-area="Contact">Liên hệ</a></li>
+                        <li><a href="/about-us.html">Về chúng tôi</a></li>
                     </ul>
                 </nav>
                 <a href="#" class="primary-btn signup-btn">Đăng nhập</a>
@@ -78,8 +78,8 @@
                             <li><a href="./service.html">Dịch vụ</a></li>
                             <li><a asp-action="Index" asp-controller="ViewProduct" asp-area="Product">Sản phẩm</a></li>
                             <li><a href="">Hướng dẫn</a></li>
-                            <li><a href="./contact.html">Liên hệ</a></li>
-                            <li><a href="./about-us.html">Về chúng tôi</a></li>
+                            <li><a asp-action="SendContact" asp-controller="Contact" asp-area="Contact">Liên hệ</a></li>
+                            <li><a href="/about-us.html">Về chúng tôi</a></li>
                         </ul>
                     </div>
                 </div>
@@ -97,8 +97,8 @@
                         <ul>
                             <li> <span>Tham gia</span></li>
                             <li><a href="">hướng dẫn đăng ký</a></li>
-                            <li><a href="">Đăng ký</a></li>
-                            <li><a href="">Đăng nhập</a></li>
+                            <li><a asp-controller="Account" asp-action="Register" asp-area="Identity">Đăng ký</a></li>
+                            <li><a asp-controller="Account" asp-action="Login" asp-area="Identity">Đăng nhập</a></li>
                         </ul>
                     </div>
                 </div>

@@ -1,7 +1,8 @@
 ﻿@model App.Models.Products.Product
-
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
 @{
-    Layout = "_Layout";
+    Layout = "_LayoutAdmin";
     ViewData["Title"] = "Thêm sản phẩm mới";
     var list = ViewData["categories"] as SelectList;
 }
@@ -59,4 +60,12 @@
     var summernote  = new App.Models.Summernote("#Content");
 }
 <partial name="_Summernote" model="summernote" />
+
+@{
+    _AdminSidebarService.SetActive("Product", "Create", "Product");
+}
+@section Sidebar
+    {
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}
 
