@@ -12,6 +12,10 @@ namespace App.Models
     {
         [Column(TypeName = "nvarchar")]
         [StringLength(400)]
+        public string? FullName { get; set; }
+
+        [Column(TypeName = "nvarchar")]
+        [StringLength(400)]
         public string? HomeAdress { get; set; }
 
         // [Required]

@@ -1,18 +1,18 @@
-﻿@model App.Models.Classes.Instructor
-@using App.Menu
+﻿@using App.Menu
 @inject AdminSidebarService _AdminSidebarService
+@model App.Models.Classes.Instructor
+
 @{
     Layout = "_LayoutAdmin";
     ViewData["Title"] = "Cập nhật huấn luyện viên";
 }
 
-<h1>@ViewData["Title"]</h1>
 <hr />
 <div class="row">
     <div class="col-md-12">
         <form asp-action="Edit" method="post">
             <div asp-validation-summary="All" class="text-danger"></div>
-             @*<input type="hidden" asp-for="Id" />*@
+             <input type="hidden" asp-for="Id" />
              <div class="form-group">
                  <label asp-for="Name" class="control-label"></label>
                  <input asp-for="Name" class="form-control" />

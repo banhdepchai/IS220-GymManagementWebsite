@@ -97,7 +97,7 @@ namespace App.Areas.Class.Controllers
                 _context.Add(classModel);
 
                 await _context.SaveChangesAsync();
-                StatusMessage = "Vừa tạo khóa tập mới";
+                StatusMessage = "Vừa tạo khóa tập mới: " + classModel.ClassTitle;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -120,6 +120,7 @@ namespace App.Areas.Class.Controllers
 
             var classEdit = new ClassModel()
             {
+                ClassId = classModel.ClassId,
                 ClassTitle = classModel.ClassTitle,
                 ClassDate = classModel.ClassDate,
                 ClassPeriod = classModel.ClassPeriod,
@@ -135,18 +136,13 @@ namespace App.Areas.Class.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClassTitle,ClassDate,ClassPeriod,ClassCost,RoomId,InstructorId")] ClassModel classModel)
+        public async Task<IActionResult> Edit([Bind("ClassId,ClassTitle,ClassDate,ClassPeriod,ClassCost,RoomId,InstructorId")] ClassModel classModel)
         {
-            if (id != classModel.ClassId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var classUpdate = await _context.Classes.FindAsync(id);
+                    var classUpdate = await _context.Classes.FindAsync(classModel.ClassId);
                     if (classUpdate == null)
                     {
                         return NotFound();
@@ -175,7 +171,7 @@ namespace App.Areas.Class.Controllers
                     }
                 }
 
-                StatusMessage = "Vừa cập nhật sản phẩm";
+                StatusMessage = "Đã cập nhật khóa tập: " + classModel.ClassTitle;
                 return RedirectToAction(nameof(Index));
             }
             return View(classModel);

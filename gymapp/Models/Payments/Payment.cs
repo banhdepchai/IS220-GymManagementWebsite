@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using App.Models.Memberships;
+using App.Models.Products;
 
 namespace App.Models.Payments
 {
@@ -20,6 +21,9 @@ namespace App.Models.Payments
 
         [Display(Name = "Mã giảm giá")]
         public int? DiscountCode { set; get; }
+
+        [Display(Name = "Mã giảm giá")]
+        public Discount? Discount { set; get; }
 
         [Display(Name = "Tổng tiền")]
         public decimal TotalPrice { set; get; }

@@ -84,5 +84,7 @@ namespace App.Models
         public DbSet<Membership> Memberships { get; set; }
 
         public DbSet<SignupMembership> SignupMemberships { get; set; }
+
+        public DbSet<Discount> Discounts { get; set; }
     }
 }

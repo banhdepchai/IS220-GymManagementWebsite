@@ -69,16 +69,16 @@ namespace App.Areas.Class.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int? id, [Bind("RoomName,Capacity")] Room room)
+        public async Task<IActionResult> Edit([Bind("RoomId,RoomName,Capacity")] Room room)
         {
-            if (id != room.RoomId)
+            if (room.RoomId != room.RoomId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                var roomEdit = await _context.Rooms.FindAsync(id);
+                var roomEdit = await _context.Rooms.FindAsync(room.RoomId);
                 if (roomEdit == null)
                 {
                     return NotFound();

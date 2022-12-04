@@ -4,6 +4,7 @@ using App.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace gymapp.Migrations
 {
     [DbContext(typeof(GymAppDbContext))]
-    partial class GymAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221204131938_addFullnameForUser")]
+    partial class addFullnameForUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,9 +300,6 @@ namespace gymapp.Migrations
                     b.Property<int?>("DiscountCode")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DiscountId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
@@ -308,8 +307,6 @@ namespace gymapp.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PaymentID");
-
-                    b.HasIndex("DiscountId");
 
                     b.HasIndex("UserID");
 
@@ -362,26 +359,6 @@ namespace gymapp.Migrations
                         .IsUnique();
 
                     b.ToTable("Category");
-                });
-
-            modelBuilder.Entity("App.Models.Products.Discount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Percent")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Discounts");
                 });
 
             modelBuilder.Entity("App.Models.Products.Product", b =>
@@ -654,15 +631,9 @@ namespace gymapp.Migrations
 
             modelBuilder.Entity("App.Models.Payments.Payment", b =>
                 {
-                    b.HasOne("App.Models.Products.Discount", "Discount")
-                        .WithMany()
-                        .HasForeignKey("DiscountId");
-
                     b.HasOne("App.Models.AppUser", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserID");
-
-                    b.Navigation("Discount");
 
                     b.Navigation("User");
                 });

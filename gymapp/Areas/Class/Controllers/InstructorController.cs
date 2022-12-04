@@ -67,6 +67,7 @@ namespace App.Areas.Class.Controllers
 
             var instructorEdit = new Instructor()
             {
+                Id = (int)id,
                 Name = instructor.Name,
                 DateOfBirth = instructor.DateOfBirth,
                 Gender = instructor.Gender,
@@ -80,18 +81,18 @@ namespace App.Areas.Class.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int? id, [Bind("Name,DateOfBirth,Gender,Email,Phone,Expertise,Salary")] Instructor instructor)
+        public async Task<IActionResult> Edit([Bind("Id,Name,DateOfBirth,Gender,Email,Phone,Expertise,Salary")] Instructor instructor)
         {
-            if (id != instructor.Id)
-            {
-                return NotFound();
-            }
+            //if (id != instructor.Id)
+            //{
+            //    return NotFound();
+            //}
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var instructorEdit = await _context.Instructors.FindAsync(id);
+                    var instructorEdit = await _context.Instructors.FindAsync(instructor.Id);
                     if (instructorEdit == null)
                     {
                         return NotFound();

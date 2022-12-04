@@ -1,0 +1,134 @@
+﻿@model App.Models.Payments.Payment
+@{
+    Layout = "_LayoutUser";
+    ViewData["Title"] = "Chi tiết đơn hàng";
+    var user = (AppUser)ViewBag.user;
+}
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb/classes-breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h2>VỀ CHÚNG TÔI</h2>
+                    <div class="breadcrumb-option">
+                        <a asp-action="Index" asp-controller="Home"><i class="fa fa-home"></i> Trang chủ</a>
+                        <a>Giỏ hàng</a><span> Xác nhận đơn hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<section class="ftco-section spad">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-7 ftco-animate">
+                <form action="#" class="billing-form">
+                    <h3 class="mb-4 billing-heading">Chi tiết đơn hàng</h3>
+                    <div class="row align-items-end">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="firstname">Họ và tên</label>
+                                <input type="text" class="form-control" value="@user.FullName">
+                            </div>
+                        </div>
+                       @* <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="lastname">Tên</label>
+                                <input type="text" class="form-control" placeholder="">
+                            </div>
+                        </div>*@
+                        <div class="w-100"></div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="country">Địa chỉ</label>
+                                <div class="select-wrap">
+                                    <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                                    <select name="" id="" class="form-control">
+                                        <option value="">Hồ chí minh</option>
+                                        <option value="">Gia lai</option>
+                                        <option value="">Dắk lắk</option>
+                                        <option value="">Hà nội</option>
+                                        <option value="">Lâm đồng</option>
+                                        <option value="">Đà lạt</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone">@user.PhoneNumber</label>
+                                <input type="text" class="form-control" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="data-setbg" asp-for="DateCreated">Ngày đặt hàng</label>
+                                <input class="form-control" >
+                            </div>
+                        </div>
+                    </div>
+                </form><!-- END -->
+            </div>
+            <div class="col-xl-5">
+                <div class="row mt-5 pt-3">
+                    <div class="col-md-12 d-flex mb-5">
+                        <div class="cart-detail cart-total p-3 p-md-4">
+                            <h3 class="billing-heading mb-4">Tổng đơn hàng</h3>
+                            <p class="d-flex">
+                                <span>Chi phí</span>
+                                <span>@ViewBag.total</span>
+                            </p>
+                            <p class="d-flex">
+                                <span>Phí vận chuyển</span>
+                                <span>0đ</span>
+                            </p>
+                            <p class="d-flex">
+                                <span>Giảm giá</span>
+                                <span>50.00đ</span>
+                            </p>
+                            <hr>
+                            <p class="d-flex total-price">
+                                <span>Tổng</span>
+                                <span>150.00đ</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="cart-detail p-3 p-md-4">
+                            <h3 class="billing-heading mb-4">Phương thức thanh toán</h3>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio" class="mr-2"> Trực tiếp qua Momo</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="radio">
+                                        <label><input type="radio" name="optradio" class="mr-2"> Trả sau</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" value="" class="mr-2"> Tôi chấp nhận với mọi điều khoản</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <p><a href="#" class="btn btn-primary btn-cart py-3 px-4">Đặt hàng</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <!-- .col-md-8 -->
+        </div>
+    </div>
+</section> 
+<!-- .section -->

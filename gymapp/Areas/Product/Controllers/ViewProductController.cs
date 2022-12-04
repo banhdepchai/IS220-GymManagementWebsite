@@ -2,6 +2,7 @@
 using App.Areas.Product.Service;
 using App.Models;
 using App.Models.Payments;
+using App.Models.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -73,9 +74,9 @@ namespace gymapp.Areas.Product.Controllers
         {
             var product = _context.Products
                 .Where(p => p.ProductID == productid)
-                .Include(p => p.ProductPhotos)
                 .Include(p => p.Category)
                 .FirstOrDefault();
+
             if (product == null)
                 return NotFound("Không có sản phẩm");
 
@@ -135,10 +136,30 @@ namespace gymapp.Areas.Product.Controllers
         [Route("/cart", Name = "cart")]
         public IActionResult Cart()
         {
+            List<Discount> discounts = _context.Discounts.ToList();
+            ViewBag.discounts = discounts;
             return View(_cartService.GetCartItems());
         }
 
-        [Route("/checkout", Name = "checkout")]
+        [Route("/chi-tiet-don-hang", Name = "payment")]
+        public IActionResult Payment()
+        {
+            decimal total = 0;
+            var cart = _cartService.GetCartItems();
+            foreach (var item in cart)
+            {
+                total += item.product.Price * item.quantity;
+            }
+
+            var user = _userManager.GetUserAsync(User).Result;
+
+            ViewBag.total = total;
+            ViewBag.user = user;
+
+            return View();
+        }
+
+        [Route("/xac-nhan-don-hang", Name = "checkout")]
         public async Task<IActionResult> Checkout()
         {
             var cart = _cartService.GetCartItems();
