@@ -1,0 +1,77 @@
+﻿@model IEnumerable<App.Models.Memberships.Membership>
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Danh sách gói tập";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<partial name="_AlertMessage" />
+
+<p>
+    <a asp-action="Create">Tạo gói tập mới </a>
+</p>
+<p>Tổng số gói tập: @ViewBag.totalMemberships</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>
+            @Html.DisplayNameFor(model => model.Level)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Level)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fee)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fee))
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bonus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bonus)))
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @(++ViewBag.membershipIndex)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MembershipId">
+                        @Html.DisplayFor(modelItem => item.Level)
+                </a> 
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fee)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bonus)
+            <td>
+                <a asp-action="Details" asp-route-id="@item.MembershipId">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.MembershipId">Xóa</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<partial name="_PagingXTL" model="@ViewBag.pagingModel" />
+
+
+@{
+    _AdminSidebarService.SetActive("Membership", "Index", "Membership");
+}
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

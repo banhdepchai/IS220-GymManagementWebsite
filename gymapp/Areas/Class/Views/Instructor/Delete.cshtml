@@ -1,4 +1,4 @@
-﻿@model App.Models.Products.Product
+﻿@model App.Models.Classes.Instructor
 @using App.Menu
 @inject AdminSidebarService _AdminSidebarService
 
@@ -8,20 +8,20 @@
 }
 
 <h1>@ViewData["Title"]</h1>
-<p>Bạn có chắc chắn muốn xóa sản phẩm?</p>
-<h4>@Model.ProductName</h4>
+<p>Bạn có chắc chắn muốn xóa huấn luyện viên?</p>
+<h4>@Model.Name</h4>
 <div>
     <form asp-action="Delete">
-        <input type="hidden" asp-for="ProductName" />
+        <input type="hidden" asp-for="Name" />
         <input type="submit" value="Xóa" class="btn btn-danger" /> |
-        <a asp-action="Index">Danh sách sản phẩm</a>
+        <a asp-action="Index">Danh sách huấn luyện viên</a>
     </form>
 </div>
 
 @{
-    _AdminSidebarService.SetActive("Product", "Delete", "Product");
+    _AdminSidebarService.SetActive("Instructor", "Delete", "Class");
 }
 @section Sidebar
-{
+    {
     @Html.Raw(_AdminSidebarService.renderHtml())
 }

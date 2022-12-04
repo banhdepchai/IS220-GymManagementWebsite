@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using App.Models.Classes;
+using App.Models.SignupClasses;
 using App.Models.Contacts;
+using App.Models.Memberships;
 using App.Models.Payments;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using App.Models.Products;
@@ -46,6 +49,16 @@ namespace App.Models
             {
                 entity.HasKey(pd => new { pd.PaymentID, pd.ProductID });
             });
+
+            modelBuilder.Entity<SignupClass>(entity =>
+            {
+                entity.HasKey(sc => new { sc.ClassId, sc.UserId });
+            });
+
+            modelBuilder.Entity<SignupMembership>(entity =>
+            {
+                entity.HasKey(sm => new { sm.MembershipId, sm.UserId, sm.PaymentId });
+            });
         }
 
         public DbSet<Contact> Contacts { get; set; }
@@ -59,5 +72,17 @@ namespace App.Models
         public DbSet<Payment> Payments { get; set; }
 
         public DbSet<PaymentDetail> PaymentDetails { get; set; }
+
+        public DbSet<Instructor> Instructors { get; set; }
+
+        public DbSet<Room> Rooms { get; set; }
+
+        public DbSet<Class> Classes { get; set; }
+
+        public DbSet<SignupClass> SignupClasses { get; set; }
+
+        public DbSet<Membership> Memberships { get; set; }
+
+        public DbSet<SignupMembership> SignupMemberships { get; set; }
     }
 }

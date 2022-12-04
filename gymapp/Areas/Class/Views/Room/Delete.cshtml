@@ -1,0 +1,27 @@
+﻿@model App.Models.Classes.Room
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Xóa phòng tập";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>Bạn có chắc chắn muốn xóa phòng tập?</p>
+<h4>@Model.RoomName</h4>
+<div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="RoomName" />
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="Index">Danh sách phòng tập</a>
+    </form>
+</div>
+
+@{
+    _AdminSidebarService.SetActive("Room", "Delete", "Class");
+}
+@section Sidebar
+    {
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

@@ -1,0 +1,65 @@
+﻿@model App.Models.Memberships.Membership
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Cập nhật gói tập";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="All" class="text-danger"></div>
+             <input type="hidden" asp-for="MembershipId" />        
+
+            <div class="form-group">
+                <label asp-for="Level" class="control-label"></label>
+                <input asp-for="Level" class="form-control" />
+                <span asp-validation-for="Level" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                 <label asp-for="Fee" class="control-label"></label>
+                 <textarea asp-for="Fee" class="form-control"></textarea>
+                 <span asp-validation-for="Fee" class="text-danger"></span>
+             </div>
+             <div class="form-group">
+                 <label asp-for="Duration" class="control-label"></label>
+                 <input asp-for="Duration" class="form-control" />
+                 <span asp-validation-for="Duration" class="text-danger"></span>
+             </div>
+             <div class="form-group">
+                 <label asp-for="Hours" class="control-label"></label>
+                 <input asp-for="Hours" class="form-control" />
+                 <span asp-validation-for="Hours" class="text-danger"></span>
+             </div>
+            <div class="form-group">
+                <label asp-for="Bonus" class="control-label"></label>
+                <textarea asp-for="Bonus" class="form-control"></textarea>
+                <span asp-validation-for="Bonus" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Cập nhật" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Danh sách gói tập</a>
+</div>
+
+@{
+    var summernote = new App.Models.Summernote("#Content");
+}
+<partial name="_Summernote" model="summernote" />
+
+@{
+    _AdminSidebarService.SetActive("Product", "Edit", "Product");
+}
+@section Sidebar
+    {
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

@@ -40,24 +40,23 @@
     <header class="header-section">
         <div class="container">
             <div class="logo">
-                <a href="/index.html">
+                <a asp-action="Index" asp-controller="Home">
                     <img src="" alt="">
                 </a>
             </div>
             <div class="nav-menu">
                 <nav class="mainmenu mobile-menu">
                     <ul>
-                        <li class="active"><a href="./index.html">Trang chủ</a></li>
+                        <li class="active"><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
                         <li><a href="/service.html">Dịch vụ</a></li>
-                        <li><a href="/class.html">Lớp</a></li>
+                        <li><a asp-action="Index" asp-controller="ViewClass" asp-area="Class">Khóa tập</a></li>
                         <li><a asp-action="Index" asp-controller="ViewProduct" asp-area="Product">Sản phẩm</a></li>
                         <li><a asp-action="SendContact" asp-controller="Contact" asp-area="Contact">Liên hệ</a></li>
                         <li><a href="/about-us.html">Về chúng tôi</a></li>
                     </ul>
                 </nav>
-                <a href="#" class="primary-btn signup-btn">Đăng nhập</a>
+                <a asp-controller="Account" asp-action="Login" asp-area="Identity" class="primary-btn signup-btn">Đăng nhập</a>
                 <a asp-route="cart" class="primary-btn signup-btn"><i class="fa-sharp fa-solid fa-cart-shopping"></i> Giỏ hàng</a>
-                <a href="#" class="btn"> Tài khoản <i class="fa-solid fa-user"></i></a>
             </div>
             <div id="mobile-menu-wrap"></div>
         </div>
@@ -74,10 +73,9 @@
                     <div class="footer-option">
                         <ul>
                             <li> <span>Website</span></li>
-                            <li><a href="./index.html">Trang chủ</a></li>
-                            <li><a href="./service.html">Dịch vụ</a></li>
+                            <li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+                            <li><a asp-action="Index" asp-controller="ViewClass" asp-area="Class">Khóa tập</a></li>
                             <li><a asp-action="Index" asp-controller="ViewProduct" asp-area="Product">Sản phẩm</a></li>
-                            <li><a href="">Hướng dẫn</a></li>
                             <li><a asp-action="SendContact" asp-controller="Contact" asp-area="Contact">Liên hệ</a></li>
                             <li><a href="/about-us.html">Về chúng tôi</a></li>
                         </ul>
@@ -96,7 +94,6 @@
                     <div class="footer-option">
                         <ul>
                             <li> <span>Tham gia</span></li>
-                            <li><a href="">hướng dẫn đăng ký</a></li>
                             <li><a asp-controller="Account" asp-action="Register" asp-area="Identity">Đăng ký</a></li>
                             <li><a asp-controller="Account" asp-action="Login" asp-area="Identity">Đăng nhập</a></li>
                         </ul>

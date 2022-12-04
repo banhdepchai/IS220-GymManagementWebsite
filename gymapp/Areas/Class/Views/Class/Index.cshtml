@@ -1,0 +1,80 @@
+﻿@model IEnumerable<App.Models.Classes.Class>
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Danh sách khóa tập";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<partial name="_AlertMessage" />
+
+<p>
+    <a asp-action="Create">Tạo khóa tập mới </a>
+</p>
+<p>Tổng số khóa tập: @ViewBag.totalClasses</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassPeriod)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassCost)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @(++ViewBag.classIndex)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ClassId">
+                    @Html.DisplayFor(modelItem => item.ClassTitle)
+                </a> 
+                <br>
+                <small>
+                    @item.Instructor.Name
+                </small>
+                
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.ClassDate)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.ClassPeriod)
+            </td>
+            <th>
+                    @Html.DisplayFor(modelItem => item.ClassCost)
+            </th>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.ClassId">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.ClassId">Xóa</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<partial name="_PagingXTL" model="@ViewBag.pagingModel" />
+
+
+@{
+    _AdminSidebarService.SetActive("Class", "Index", "Class");
+}
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

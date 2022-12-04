@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using App.Models.Memberships;
 
 namespace App.Models.Payments
 {
@@ -24,5 +25,7 @@ namespace App.Models.Payments
         public decimal TotalPrice { set; get; }
 
         private List<PaymentDetail>? PaymentDetails { set; get; }
+
+        private List<SignupMembership> signupMemberships { set; get; }
     }
 }

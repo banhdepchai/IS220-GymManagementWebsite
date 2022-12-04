@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Class\Models\" />
     <Folder Include="Uploads\Products\" />
     <Folder Include="wwwroot\files\" />
   </ItemGroup>

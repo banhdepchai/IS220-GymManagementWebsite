@@ -1,0 +1,72 @@
+﻿@model App.Models.Classes.Class
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Thêm khóa tập mới";
+    var listRoom = ViewData["rooms"] as SelectList;
+    var listInstructor = ViewData["instructors"] as SelectList;
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>      
+
+            <div class="form-group">
+                <label asp-for="ClassTitle" class="control-label"></label>
+                <input asp-for="ClassTitle" class="form-control" />
+                <span asp-validation-for="ClassTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassDate" class="control-label"></label>
+                <textarea asp-for="ClassDate" class="form-control"></textarea>
+                <span asp-validation-for="ClassDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassPeriod" class="control-label"></label>
+                <textarea asp-for="ClassPeriod" class="form-control"></textarea>
+                <span asp-validation-for="ClassPeriod" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClassCost" class="control-label"></label>
+                <textarea asp-for="ClassCost" class="form-control"></textarea>
+                <span asp-validation-for="ClassCost" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="RoomId" class="control-label"></label>
+                <select asp-for="RoomId" asp-items="listRoom" class="w-40"></select>
+                <span asp-validation-for="RoomId" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="InstructorId" class="control-label"></label>
+                <select asp-for="InstructorId" asp-items="listInstructor" class="w-40"></select>
+                <span asp-validation-for="InstructorId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Thêm khóa tập" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Danh sách khóa tập</a>
+</div>
+
+@{
+    var summernote  = new App.Models.Summernote("#Content");
+}
+<partial name="_Summernote" model="summernote" />
+
+@{
+    _AdminSidebarService.SetActive("Class", "Create", "Class");
+}
+@section Sidebar
+    {
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}
+

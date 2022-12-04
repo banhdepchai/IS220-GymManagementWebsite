@@ -108,6 +108,78 @@ namespace App.Menu
                         },
                     },
             });
+
+            Items.Add(new SidebarItem()
+            {
+                Type = SidebarItemType.NavItem,
+                Title = "Quản lý huấn luyện viên",
+                AwesomeIcon = "far fa-folder",
+                collapseID = "instructor",
+                Items = new List<SidebarItem>() {
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Instructor",
+                        Action = "Index",
+                        Area = "Class",
+                        Title = "Danh sách huấn luyện viên"
+                    },
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Instructor",
+                        Action = "Create",
+                        Area = "Class",
+                        Title = "Tạo khóa tập mới"
+                    },
+                },
+            });
+
+            Items.Add(new SidebarItem()
+            {
+                Type = SidebarItemType.NavItem,
+                Title = "Quản lý phòng tập",
+                AwesomeIcon = "far fa-folder",
+                collapseID = "room",
+                Items = new List<SidebarItem>() {
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Room",
+                        Action = "Index",
+                        Area = "Class",
+                        Title = "Danh sách phòng tập"
+                    },
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Room",
+                        Action = "Create",
+                        Area = "Class",
+                        Title = "Tạo phòng tập mới"
+                    },
+                },
+            });
+
+            Items.Add(new SidebarItem()
+            {
+                Type = SidebarItemType.NavItem,
+                Title = "Quản lý khóa tập",
+                AwesomeIcon = "far fa-folder",
+                collapseID = "class",
+                Items = new List<SidebarItem>() {
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Class",
+                        Action = "Index",
+                        Area = "Class",
+                        Title = "Danh sách khóa tập"
+                    },
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Class",
+                        Action = "Create",
+                        Area = "Class",
+                        Title = "Tạo khóa tập mới"
+                    },
+                },
+            });
         }
 
         public string renderHtml()

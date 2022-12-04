@@ -1,0 +1,27 @@
+﻿@model App.Models.Classes.Class
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Xóa khóa tập";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>Bạn có chắc chắn muốn xóa khóa tập?</p>
+<h4>@Model.ClassTitle</h4>
+<div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ClassId" />
+        <input type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="Index">Danh sách khóa tập</a>
+    </form>
+</div>
+
+@{
+    _AdminSidebarService.SetActive("Class", "Delete", "Class");
+}
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

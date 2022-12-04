@@ -1,0 +1,64 @@
+﻿@model IEnumerable<App.Models.Classes.Room>
+@using App.Menu
+@inject AdminSidebarService _AdminSidebarService
+
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Danh sách phòng tập";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+
+
+<p>
+    <a asp-action="Create">Tạo phòng tập mới </a>
+</p>
+@*<p>Tổng số phòng tập: @ViewBag.totalPosts</p>*@
+<table class="table">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.RoomId)</th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoomName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Capacity)
+        </th>
+        
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.RoomId">
+                    @Html.DisplayFor(modelItem => item.RoomName)
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.RoomId">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.RoomId">Xóa</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@*<partial name="_PagingXTL" model="@ViewBag.pagingModel" />*@
+
+
+@{
+    _AdminSidebarService.SetActive("Room", "Index", "Class");
+}
+@section Sidebar
+{
+    @Html.Raw(_AdminSidebarService.renderHtml())
+}

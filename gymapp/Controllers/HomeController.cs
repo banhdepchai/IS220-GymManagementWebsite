@@ -1,12 +1,15 @@
 ﻿using App.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using App.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace App.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<AppUser> _userManager;
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -15,7 +18,18 @@ namespace App.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //if (User.Identity.IsAuthenticated && User.IsInRole(RoleName.Administrator))
+            //{
+            //    return RedirectToAction("Index", "AdminCP", new { area = "AdminCP" });
+            //}
+            //else if (User.Identity.IsAuthenticated && User.IsInRole(RoleName.Member))
+            //{
+            //    return RedirectToAction("Index", "AdminCP", new { area = "AdminCP" });
+            //}
+            //else
+            {
+                return View();
+            }
         }
 
         public IActionResult Privacy()

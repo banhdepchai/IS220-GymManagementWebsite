@@ -218,15 +218,15 @@ namespace App.Areas.Product.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Products
+            var product = await _context.Products
                 .Include(p => p.Author)
                 .FirstOrDefaultAsync(m => m.ProductID == id);
-            if (post == null)
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(post);
+            return View(product);
         }
 
         // POST: Blog/Post/Delete/5

@@ -1,7 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using App.Models.Memberships;
 using App.Models.Payments;
+using App.Models.SignupClasses;
 using Microsoft.AspNetCore.Identity;
 
 namespace App.Models
@@ -17,5 +19,9 @@ namespace App.Models
         public DateTime? BirthDate { get; set; }
 
         public List<Payment>? Payments { get; set; }
+
+        public List<SignupClass>? SignupClasses { get; set; }
+
+        public List<SignupMembership>? SignupMemberships { get; set; }
     }
 }
