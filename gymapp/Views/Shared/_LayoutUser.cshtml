@@ -52,12 +52,12 @@
             <div class="nav-menu">
                 <nav class="mainmenu mobile-menu">
                     <ul>
-                        <li class="active"><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
+                        <li><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
                         <li><a asp-action="Index" asp-controller="ViewMembership" asp-area="Membership">Dịch vụ</a></li>
                         <li><a asp-action="Index" asp-controller="ViewClass" asp-area="Class">Khóa tập</a></li>
                         <li><a asp-action="Index" asp-controller="ViewProduct" asp-area="Product">Sản phẩm</a></li>
                         <li><a asp-action="SendContact" asp-controller="Contact" asp-area="Contact">Liên hệ</a></li>
-                        <li><a href="/about-us.html">Về chúng tôi</a></li>
+                        <li><a asp-action="About" asp-controller="Home">Về chúng tôi</a></li>
                     </ul>
                 </nav>
                 <a asp-controller="Account" asp-action="Login" asp-area="Identity" class="primary-btn signup-btn">Đăng nhập</a>
@@ -82,7 +82,7 @@
                             <li><a asp-action="Index" asp-controller="ViewClass" asp-area="Class">Khóa tập</a></li>
                             <li><a asp-action="Index" asp-controller="ViewProduct" asp-area="Product">Sản phẩm</a></li>
                             <li><a asp-action="SendContact" asp-controller="Contact" asp-area="Contact">Liên hệ</a></li>
-                            <li><a href="/about-us.html">Về chúng tôi</a></li>
+                            <li><a asp-action="About" asp-controller="Home">Về chúng tôi</a></li>
                         </ul>
                     </div>
                 </div>

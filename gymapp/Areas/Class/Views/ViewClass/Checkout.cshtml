@@ -3,7 +3,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
     ViewData["Title"] = "Xác nhận đơn hàng";
-    var membership = ViewBag.membership as Membership;
+    var classModel = ViewBag.classModel as Class;
     var user = ViewBag.user as AppUser;
 }
 
@@ -76,7 +76,7 @@
                                     <h3 class="billing-heading mb-4">Tổng đơn hàng</h3>
                                     <p class="d-flex">
                                         <span>Chi phí</span>
-                                        <span>@Math.Round(membership.Fee, 0)đ</span>
+                                        <span>@Math.Round(classModel.ClassCost, 0)đ</span>
                                     </p>
                                     <p class="d-flex">
                                         <span>Giảm giá</span>
@@ -85,7 +85,7 @@
                                     <hr>
                                     <p class="d-flex total-price">
                                         <span>Tổng</span>
-                                        <span>@Math.Round(membership.Fee, 0)đ</span>
+                                        <span>@Math.Round(classModel.ClassCost, 0)đ</span>
                                     </p>
                                 </div>
                             </div>
@@ -115,10 +115,10 @@
                                     </div>
                                     <form asp-action="Checkout" method="post">
                                         <input asp-for="DateCreated" value="@DateTime.Today.ToString("yyyy-MM-dd")" type="hidden" />
-                                        <input asp-for="TotalPrice" value="@Math.Round(membership.Fee, 0)" type="hidden"/>
+                                        <input asp-for="TotalPrice" value="@Math.Round(classModel.ClassCost, 0)" type="hidden"/>
                                         <input asp-for="PaymentMode" id="paymentmode" value="Trả sau" type="hidden" />
                                         @*<input asp-for="DiscountId" value="null" type="hidden" />*@
-                                        <button type="submit" id="btn-submit" class="btn btn-primary btn-cart py-3 px-4" disabled="disabled">Đặt hàng</button>
+                                        <button type="submit" id="btn-submit" class="btn btn-primary btn-cart py-3 px-4" disabled="disabled">Thanh toán</button>
                                     </form>
                                     @*<p><a type="submit" class="btn btn-primary btn-cart py-3 px-4">Đặt hàng</a></p>*@
                                 </div>

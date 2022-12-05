@@ -184,6 +184,9 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
+                $('.mainmenu').find('li').removeClass('active');
+                $('.mainmenu').find('li').eq(3).addClass('active');
+            
             $(".detail").click(function () {
                 $link = $(this).attr("id");
                 window.location.href = "/" + $link + ".html";

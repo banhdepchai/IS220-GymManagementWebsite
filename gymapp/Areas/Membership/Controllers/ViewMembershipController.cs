@@ -1,4 +1,6 @@
 ﻿using App.Models;
+using App.Models.Memberships;
+using App.Models.Payments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace App.Areas.Membership.Controllers
 {
     [Area("Membership")]
-    [AllowAnonymous]
+    [Authorize]
     public class ViewMembershipController : Controller
     {
         private readonly GymAppDbContext _context;
@@ -53,6 +55,35 @@ namespace App.Areas.Membership.Controllers
             ViewBag.membership = membership;
             ViewBag.user = user;
 
+            return View();
+        }
+
+        [HttpPost]
+        [Route("/dich-vu/{MembershipId}/xac-nhan-don-hang")]
+        public async Task<IActionResult> Checkout(int MembershipId, [Bind("TotalPrice,DateCreated,PaymentMode")] Payment payment)
+        {
+            if (ModelState.IsValid)
+            {
+                var membership = await _context.Memberships.FirstOrDefaultAsync(m => m.MembershipId == MembershipId);
+                var user = await _userManager.GetUserAsync(this.User);
+                ViewBag.user = user;
+                payment.UserID = user.Id;
+
+                _context.Payments.Add(payment);
+                await _context.SaveChangesAsync();
+
+                var SignupMembership = new SignupMembership
+                {
+                    MembershipId = membership.MembershipId,
+                    PaymentId = payment.PaymentID,
+                    UserId = user.Id,
+                    SignupDate = payment.DateCreated
+                };
+                _context.SignupMemberships.Add(SignupMembership);
+                await _context.SaveChangesAsync();
+
+                return Content("Đặt hàng thành công");
+            }
             return View();
         }
     }

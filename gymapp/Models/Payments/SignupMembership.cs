@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using App.Models.Payments;
+using App.Models.Memberships;
 
-namespace App.Models.Memberships
+namespace App.Models.Payments
 {
     [Table("SignupMemberships")]
     public class SignupMembership

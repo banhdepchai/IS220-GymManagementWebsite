@@ -14,10 +14,11 @@ namespace App.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly GymAppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, GymAppDbContext context)
+        public HomeController(ILogger<HomeController> logger, GymAppDbContext context, UserManager<AppUser> userManager)
         {
             _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -25,6 +26,22 @@ namespace App.Controllers
             var memberships = await _context.Memberships.ToListAsync();
 
             ViewBag.memberships = memberships;
+            return View();
+        }
+
+        [Route("/ve-chung-toi")]
+        public async Task<IActionResult> About()
+        {
+            var classes = await _context.Classes.CountAsync();
+            var products = await _context.Products.CountAsync();
+            var users = await _context.Users.CountAsync();
+            var instructors = await _context.Instructors.CountAsync();
+
+            ViewBag.classes = classes;
+            ViewBag.products = products;
+            ViewBag.users = users;
+            ViewBag.instructors = instructors;
+
             return View();
         }
 

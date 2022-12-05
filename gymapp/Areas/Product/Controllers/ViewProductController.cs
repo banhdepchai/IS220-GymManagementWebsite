@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace gymapp.Areas.Product.Controllers
 {
     [Area("Product")]
-    [AllowAnonymous]
+    [Authorize]
     public class ViewProductController : Controller
     {
         private readonly GymAppDbContext _context;
@@ -133,7 +133,7 @@ namespace gymapp.Areas.Product.Controllers
             return RedirectToAction(nameof(Cart));
         }
 
-        [Route("/cart", Name = "cart")]
+        [Route("/gio-hang", Name = "cart")]
         public IActionResult Cart()
         {
             List<Discount> discounts = _context.Discounts.ToList();

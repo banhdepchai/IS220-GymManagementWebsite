@@ -39,8 +39,7 @@
                             <div class="si-text">
                                 <h4>@classModel.ClassTitle</h4>
                                 <span><i class="fa fa-user"></i>@classModel.Instructor.Name</span>
-                                <button type="button" class="btn btn-registerclass" data-toggle="modal"
-                                        data-target=".bd-example-modal-sm">Đăng ký</button>
+                                <button type="button" class="btn btn-registerclass" data-id="@classModel.ClassId" data-toggle="modal" data-target=".bd-example-modal-sm">Đăng ký</button>
                             </div>
                         </div>
                     </div>
@@ -63,7 +62,7 @@
                                                         <div class="row">
                                                             <div class="col-lg-6">
                                                                 <label for="name">Họ và tên</label>
-                                                                <input type="text" id="name" va>
+                                                                <input type="text" id="name" value="@user.FullName">
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <label for="last-name">Địa chỉ</label>
@@ -75,15 +74,15 @@
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <label for="hlv">Huấn luyện viên:</label>
-                                                                <input type="text" value="" readonly />
+                                                                <input type="text" value="@classModel.Instructor.Name" readonly />
                                                             </div>
                                                             <div class="col-lg-6">
                                                                 <label for="time">Lịch tập:</label>
-                                                                <input type="text" value="Lịch tập" readonly />
+                                                                <input type="text" value="@classModel.ClassPeriod" readonly />
                                                             </div>
                                                             <div class="col-lg-12">
                                                                 <label for="cost">Giá:</label>
-                                                                <input type="text" value="500.000 VND" readonly />
+                                                                <input type="text" value="@classModel.ClassCost VND" readonly />
                                                             </div>
                                                         </div>
                                                         <button type="submit" class="register-btn">Đăng ký</button>
@@ -110,19 +109,31 @@
 {
     <script>
         $(document).ready(function () {
+            $('.mainmenu').find('li').removeClass('active');
+            $('.mainmenu').find('li').eq(2).addClass('active');
+
             $(".btn-registerclass").click(function () {
-                var classTitle = $(this).parent().find("h4").text();
-                var instructorName = $(this).parent().find("span").text();
-                var instructorName = instructorName.substring(3);
-                var classTime = $(this).parent().find("p").text();
-                var classTime = classTime.substring(3);
-                var classCost = $(this).parent().find("h5").text();
-                var classCost = classCost.substring(3);
-                $(".register-text").find("input").eq(0).val(classTitle);
-                $(".register-text").find("input").eq(1).val(instructorName);
-                $(".register-text").find("input").eq(2).val(classTime);
-                $(".register-text").find("input").eq(3).val(classCost);
+                var classId = $(this).data('id');
+                $.ajax({
+                    url: '/khoa-tap/' + classId,
+                    type: 'GET',
+                    data: { classId: classId },
+                    success: function (data) {
+                        $(".register-form").html = "";
+                        $(".register-form").html(data);
+                    }
+                });
+            
             });
+            
+            $(this).on("click", ".register-btn", function () {
+                var classId = $(this).data('id');
+                window.location.href = '/khoa-tap/' + classId + '/xac-nhan-don-hang';
+                return false;
+                    
+            });
+            
+            
         });
     </script>
 }

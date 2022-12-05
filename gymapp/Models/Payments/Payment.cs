@@ -11,7 +11,9 @@ namespace App.Models.Payments
         [Key]
         public int PaymentID { set; get; }
 
-        public DateTime? DateCreated { set; get; }
+        public DateTime DateCreated { set; get; }
+
+        public string PaymentMode { set; get; }
 
         [Display(Name = "Khách hàng")]
         public string? UserID { set; get; }
@@ -20,7 +22,7 @@ namespace App.Models.Payments
         public AppUser? User { set; get; }
 
         [Display(Name = "Mã giảm giá")]
-        public int? DiscountCode { set; get; }
+        public int? DiscountId { set; get; }
 
         [Display(Name = "Mã giảm giá")]
         public Discount? Discount { set; get; }
@@ -30,6 +32,8 @@ namespace App.Models.Payments
 
         private List<PaymentDetail>? PaymentDetails { set; get; }
 
-        private List<SignupMembership> signupMemberships { set; get; }
+        private List<SignupMembership>? signupMemberships { set; get; }
+
+        private List<SignupClass>? signupClasses { set; get; }
     }
 }

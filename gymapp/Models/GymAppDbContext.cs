@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using App.Models.Classes;
-using App.Models.SignupClasses;
 using App.Models.Contacts;
 using App.Models.Memberships;
 using App.Models.Payments;
@@ -53,7 +52,7 @@ namespace App.Models
 
             modelBuilder.Entity<SignupClass>(entity =>
             {
-                entity.HasKey(sc => new { sc.ClassId, sc.UserId });
+                entity.HasKey(sc => new { sc.ClassId, sc.UserId, sc.PaymentId });
             });
 
             modelBuilder.Entity<SignupMembership>(entity =>

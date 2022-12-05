@@ -103,4 +103,14 @@
             referrerpolicy="no-referrer-when-downgrade"></iframe>
         <img src="/img/icon/location.png" alt="">
     </div>
-    <!-- Map Section End -->
+<!-- Map Section End -->
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+                $('.mainmenu').find('li').removeClass('active');
+            $('.mainmenu').find('li').eq(4).addClass('active');
+        });
+    </script>
+}

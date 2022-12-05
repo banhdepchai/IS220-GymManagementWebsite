@@ -100,27 +100,31 @@
 
 @section Scripts {
     <script>
-        $(function () {
+        $(document).ready(function () {
+            $('.mainmenu').find('li').removeClass('active');
+            $('.mainmenu').find('li').eq(1).addClass('active');
+
             $("#dichvu").change(function () {
-                $.ajax({
-                    type: "Get",
-                        url: "/membership/" + $(this).val(),  //remember change the controller to your owns.  
-                    success: function (data) {
-                        $(".membership-item").html("");
-                        $(".membership-item").html(data);
-                    },
-                    error: function (response) {
-                        console.log(response.responseText);
-                    }
-                });
+            $.ajax({
+                type: "Get",
+                    url: "/membership/" + $(this).val(),  //remember change the controller to your owns.  
+                success: function (data) {
+                    $(".membership-item").html("");
+                    $(".membership-item").html(data);
+                },
+                error: function (response) {
+                    console.log(response.responseText);
+                }
             });
-            
+
             $(".register-btn").click(function (e) {
                 e.preventDefault();
                 var service = $("#dichvu").val();
                 window.location.href = '/dich-vu/' + service + '/xac-nhan-don-hang';
                 return false;
+                });
             });
         });
     </script>
+
 }
