@@ -49,7 +49,7 @@
                                 decimal subTotal = item.quantity * item.product.Price;
                                 total += subTotal;
                                 <tr class="text-center">
-                                    <td class="product-remove"><a asp-route="removecart" asp-route-productid="@item.product.ProductID"><i class="trash-icon fa-solid fa-x"></i></a></td>
+                                            <td class="product-remove" ><a asp-route="removecart" data-productid="@item.product.ProductID" asp-route-productid="@item.product.ProductID" id="@($"remove-{item.product.ProductID}")"><i class="trash-icon fa-solid fa-x"></i></a></td>
 
                                     @{
                                         string imgSrc = "/contents/nophoto.png";
@@ -160,12 +160,33 @@ $(document).ready(function () {
                     quantity:quantity
                 },
                 success: function (result) {
-                    window.location.href = "@Url.RouteUrl("cart")";
+                    $("#quantity-" + productid).val() = quantity;
+                    var price = $("#quantity-" + productid).parent().parent().parent().find(".price").text();
+                    price = parseDouble(price);
+                    
+                    quantity = parseInt(quantity);
+                    $("#quantity-" + productid).parent().parent().parent().find(".total").text(quantity * price);
                 }
             });
         }
 
     });
+    
+        $(".product-remove").click(function (event) {
+            event.preventDefault();
+            var productid = $(this).attr("data-productid");
+            $.ajax({
+                type: "POST",
+                url: @Url.RouteUrl("removecart")
+                data: {
+                    productid: productid
+                },
+                success: function (result) {
+                    //window.location.href = "";
+                    $("#remove-" + productid).parent().remove();
+                }
+            });
+        });
 
 });
 </script>

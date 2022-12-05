@@ -15,7 +15,7 @@ namespace App.Models.Classes
 
         [Display(Name = "Sức chứa")]
         [Required(ErrorMessage = "Sức chứa không được để trống")]
-        public string Capacity { get; set; }
+        public int Capacity { get; set; }
 
         private List<Class>? Classes { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿using App.Data;
 using App.Models;
-using App.Models.Memberships;
+using MembershipModel = App.Models.Memberships.Membership;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -79,7 +79,7 @@ namespace App.Areas.Memebership.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Fee,Level,Duration,Hours,Bonus")] Membership membership)
+        public async Task<IActionResult> Create([Bind("Fee,Level,Duration,Hours,Bonus")] MembershipModel membership)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +107,7 @@ namespace App.Areas.Memebership.Controllers
                 return NotFound();
             }
 
-            var membershipEdit = new Membership()
+            var membershipEdit = new MembershipModel()
             {
                 Fee = membership.Fee,
                 Level = membership.Level,
@@ -121,7 +121,7 @@ namespace App.Areas.Memebership.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Fee,Level,Duration,Hours,Bonus")] Membership membership)
+        public async Task<IActionResult> Edit(int id, [Bind("Fee,Level,Duration,Hours,Bonus")] MembershipModel membership)
         {
             if (id != membership.MembershipId)
             {

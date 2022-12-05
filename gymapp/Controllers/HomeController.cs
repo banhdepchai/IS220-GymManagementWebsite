@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using App.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using App.Models.Memberships;
 
 namespace App.Controllers
 {
@@ -10,30 +12,19 @@ namespace App.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> _userManager;
+        private readonly GymAppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, GymAppDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            //if (User.Identity.IsAuthenticated && User.IsInRole(RoleName.Administrator))
-            //{
-            //    return RedirectToAction("Index", "AdminCP", new { area = "AdminCP" });
-            //}
-            //else if (User.Identity.IsAuthenticated && User.IsInRole(RoleName.Member))
-            //{
-            //    return RedirectToAction("Index", "AdminCP", new { area = "AdminCP" });
-            //}
-            //else
-            {
-                return View();
-            }
-        }
+            var memberships = await _context.Memberships.ToListAsync();
 
-        public IActionResult Privacy()
-        {
+            ViewBag.memberships = memberships;
             return View();
         }
 

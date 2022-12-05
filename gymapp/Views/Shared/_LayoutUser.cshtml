@@ -1,4 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject App.Models.GymAppDbContext context
+@using App.Models.Products
+@{
+    var categories = context.Categories.ToList();
+}
 
 <!DOCTYPE html>
 <html>
@@ -48,7 +53,7 @@
                 <nav class="mainmenu mobile-menu">
                     <ul>
                         <li class="active"><a asp-action="Index" asp-controller="Home">Trang chủ</a></li>
-                        <li><a href="/service.html">Dịch vụ</a></li>
+                        <li><a asp-action="Index" asp-controller="ViewMembership" asp-area="Membership">Dịch vụ</a></li>
                         <li><a asp-action="Index" asp-controller="ViewClass" asp-area="Class">Khóa tập</a></li>
                         <li><a asp-action="Index" asp-controller="ViewProduct" asp-area="Product">Sản phẩm</a></li>
                         <li><a asp-action="SendContact" asp-controller="Contact" asp-area="Contact">Liên hệ</a></li>
@@ -87,6 +92,10 @@
                             <li> <span>Sản phẩm</span></li>
                             <li><a href="">Thực phẩm chức năng</a></li>
                             <li><a href="">Sản phẩm bảo hộ</a></li>
+                            @foreach (var item in categories)
+                            {
+                                <li><a href="#">@item.Title</a></li>
+                            }
                         </ul>
                     </div>
                 </div>

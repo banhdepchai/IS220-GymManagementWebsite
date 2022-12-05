@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace gymapp.Migrations
 {
     [DbContext(typeof(GymAppDbContext))]
-    [Migration("20221128143846_AddProduct")]
-    partial class AddProduct
+    [Migration("20221205084402_seedDataaa")]
+    partial class seedDataaa
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,10 @@ namespace gymapp.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("FullName")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.Property<string>("HomeAdress")
                         .HasMaxLength(400)
@@ -96,6 +100,103 @@ namespace gymapp.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("App.Models.Classes.Class", b =>
+                {
+                    b.Property<int>("ClassId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClassId"), 1L, 1);
+
+                    b.Property<decimal>("ClassCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ClassDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClassPeriod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClassTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("InstructorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ClassId");
+
+                    b.HasIndex("InstructorId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Classes");
+                });
+
+            modelBuilder.Entity("App.Models.Classes.Instructor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Expertise")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Instructors");
+                });
+
+            modelBuilder.Entity("App.Models.Classes.Room", b =>
+                {
+                    b.Property<int>("RoomId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomId"), 1L, 1);
+
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RoomName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RoomId");
+
+                    b.ToTable("Rooms");
+                });
+
             modelBuilder.Entity("App.Models.Contacts.Contact", b =>
                 {
                     b.Property<int>("Id")
@@ -131,6 +232,138 @@ namespace gymapp.Migrations
                     b.ToTable("Contacts");
                 });
 
+            modelBuilder.Entity("App.Models.Memberships.Membership", b =>
+                {
+                    b.Property<int>("MembershipId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MembershipId"), 1L, 1);
+
+                    b.Property<string>("Bonus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Fee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Hours")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MembershipId");
+
+                    b.ToTable("Memberships");
+
+                    b.HasData(
+                        new
+                        {
+                            MembershipId = 4,
+                            Bonus = "Ưu tiên xếp lớp",
+                            Duration = 3,
+                            Fee = 500000m,
+                            Hours = 2,
+                            Level = "Đồng"
+                        },
+                        new
+                        {
+                            MembershipId = 5,
+                            Bonus = "Được sử dụng phòng tắm, và cá tiện ích gói trên",
+                            Duration = 3,
+                            Fee = 1000000m,
+                            Hours = 3,
+                            Level = "Bạc"
+                        },
+                        new
+                        {
+                            MembershipId = 6,
+                            Bonus = "Có huấn luyện viên cá nhân, và cá tiện ích gói trên",
+                            Duration = 3,
+                            Fee = 30000000m,
+                            Hours = 4,
+                            Level = "Vàng"
+                        });
+                });
+
+            modelBuilder.Entity("App.Models.Memberships.SignupMembership", b =>
+                {
+                    b.Property<int>("MembershipId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PaymentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SignupDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("MembershipId", "UserId", "PaymentId");
+
+                    b.HasIndex("PaymentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SignupMemberships");
+                });
+
+            modelBuilder.Entity("App.Models.Payments.Payment", b =>
+                {
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"), 1L, 1);
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DiscountCode")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DiscountId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("PaymentID");
+
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("App.Models.Payments.PaymentDetail", b =>
+                {
+                    b.Property<int>("PaymentID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("PaymentID", "ProductID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("PaymentDetails");
+                });
+
             modelBuilder.Entity("App.Models.Products.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -159,6 +392,26 @@ namespace gymapp.Migrations
                         .IsUnique();
 
                     b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("App.Models.Products.Discount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Percent")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discounts");
                 });
 
             modelBuilder.Entity("App.Models.Products.Product", b =>
@@ -197,13 +450,61 @@ namespace gymapp.Migrations
                         .HasMaxLength(160)
                         .HasColumnType("nvarchar(160)");
 
+                    b.Property<string>("Slug")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.HasKey("ProductID");
 
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("CategoryID");
 
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasFilter("[Slug] IS NOT NULL");
+
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("App.Models.Products.ProductPhoto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductPhoto");
+                });
+
+            modelBuilder.Entity("App.Models.SignupClasses.SignupClass", b =>
+                {
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("SignupDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ClassId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SignupClasses");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -339,6 +640,82 @@ namespace gymapp.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("App.Models.Classes.Class", b =>
+                {
+                    b.HasOne("App.Models.Classes.Instructor", "Instructor")
+                        .WithMany()
+                        .HasForeignKey("InstructorId");
+
+                    b.HasOne("App.Models.Classes.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId");
+
+                    b.Navigation("Instructor");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("App.Models.Memberships.SignupMembership", b =>
+                {
+                    b.HasOne("App.Models.Memberships.Membership", "Membership")
+                        .WithMany()
+                        .HasForeignKey("MembershipId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.Payments.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.AppUser", "User")
+                        .WithMany("SignupMemberships")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Membership");
+
+                    b.Navigation("Payment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("App.Models.Payments.Payment", b =>
+                {
+                    b.HasOne("App.Models.Products.Discount", "Discount")
+                        .WithMany()
+                        .HasForeignKey("DiscountId");
+
+                    b.HasOne("App.Models.AppUser", "User")
+                        .WithMany("Payments")
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("App.Models.Payments.PaymentDetail", b =>
+                {
+                    b.HasOne("App.Models.Payments.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.Products.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Payment");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("App.Models.Products.Product", b =>
                 {
                     b.HasOne("App.Models.AppUser", "Author")
@@ -354,6 +731,36 @@ namespace gymapp.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("App.Models.Products.ProductPhoto", b =>
+                {
+                    b.HasOne("App.Models.Products.Product", "Product")
+                        .WithMany("ProductPhotos")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("App.Models.SignupClasses.SignupClass", b =>
+                {
+                    b.HasOne("App.Models.Classes.Class", "Class")
+                        .WithMany()
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Models.AppUser", "User")
+                        .WithMany("SignupClasses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -405,6 +812,20 @@ namespace gymapp.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("App.Models.AppUser", b =>
+                {
+                    b.Navigation("Payments");
+
+                    b.Navigation("SignupClasses");
+
+                    b.Navigation("SignupMemberships");
+                });
+
+            modelBuilder.Entity("App.Models.Products.Product", b =>
+                {
+                    b.Navigation("ProductPhotos");
                 });
 #pragma warning restore 612, 618
         }

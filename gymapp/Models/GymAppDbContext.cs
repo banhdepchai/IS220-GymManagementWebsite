@@ -7,6 +7,7 @@ using App.Models.Memberships;
 using App.Models.Payments;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using App.Models.Products;
+using App.Extensions;
 
 namespace App.Models
 {
@@ -59,6 +60,8 @@ namespace App.Models
             {
                 entity.HasKey(sm => new { sm.MembershipId, sm.UserId, sm.PaymentId });
             });
+
+            modelBuilder.Seed();
         }
 
         public DbSet<Contact> Contacts { get; set; }

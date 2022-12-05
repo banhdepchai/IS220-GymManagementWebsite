@@ -183,9 +183,8 @@ namespace gymapp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomId"), 1L, 1);
 
-                    b.Property<string>("Capacity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
 
                     b.Property<string>("RoomName")
                         .IsRequired()
@@ -259,6 +258,35 @@ namespace gymapp.Migrations
                     b.HasKey("MembershipId");
 
                     b.ToTable("Memberships");
+
+                    b.HasData(
+                        new
+                        {
+                            MembershipId = 4,
+                            Bonus = "Ưu tiên xếp lớp",
+                            Duration = 3,
+                            Fee = 500000m,
+                            Hours = 2,
+                            Level = "Đồng"
+                        },
+                        new
+                        {
+                            MembershipId = 5,
+                            Bonus = "Được sử dụng phòng tắm, và cá tiện ích gói trên",
+                            Duration = 3,
+                            Fee = 1000000m,
+                            Hours = 3,
+                            Level = "Bạc"
+                        },
+                        new
+                        {
+                            MembershipId = 6,
+                            Bonus = "Có huấn luyện viên cá nhân, và cá tiện ích gói trên",
+                            Duration = 3,
+                            Fee = 30000000m,
+                            Hours = 4,
+                            Level = "Vàng"
+                        });
                 });
 
             modelBuilder.Entity("App.Models.Memberships.SignupMembership", b =>

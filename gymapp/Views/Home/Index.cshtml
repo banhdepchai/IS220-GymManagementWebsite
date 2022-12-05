@@ -1,5 +1,7 @@
-﻿@{
+﻿@using App.Models.Memberships
+@{
     ViewData["Title"] = "Home Page";
+    var memberships = ViewBag.memberships as IEnumerable<Membership>;
 }
 
 <!-- Hero Section Begin -->
@@ -182,7 +184,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 ">
                     <div class="single-card-item">
-                        <img src="img/trainer/about-trainer-4.png">
+                        <img src="/img/trainer/about-trainer-4.png">
                         <div class="card-text">
                             <h5>Tên huấn luyện viên</h5>
                             <span>Môn tập</span>
@@ -204,7 +206,7 @@
 
                 <div class="col-lg-4 col-md-6">
                     <div class="single-card-item">
-                        <img src="img/trainer/about-trainer-4.png">
+                        <img src="/img/trainer/about-trainer-4.png">
                         <div class="card-text">
                             <h5>Tên huấn luyện viên</h5>
                             <span>Môn tập</span>
@@ -234,7 +236,7 @@
                         <div class="testimonial-item">
                             <p>Nội dung phản hồi</p>
                             <div class="ti-pic">
-                                <img src="img/member.jpg" alt="">
+                                <img src="/img/member.jpg" alt="">
                                 <div class="quote">
                                     <!-- <img src="img/testimonial/quote-left.png" alt=""> -->
                                 </div>
@@ -247,7 +249,7 @@
                         <div class="testimonial-item">
                             <p>Nội dung phản hồi</p>
                             <div class="ti-pic">
-                                <img src="img/member.jpg" alt="">
+                                <img src="/img/member.jpg" alt="">
                                 <div class="quote">
                                     <!-- <img src="img/testimonial/quote-left.png" alt=""> -->
                                 </div>
@@ -265,7 +267,7 @@
     <!-- Testimonial Section End -->
 
     <!-- Banner Section Begin -->
-    <section class="banner-section set-bg" data-setbg="img/hero/sever-pic.jpg">
+    <section class="banner-section set-bg" data-setbg="/img/hero/sever-pic.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 mb-5">
@@ -292,77 +294,33 @@
                 </div>
             </div>
             <div class="row ">
-                <div class="col-lg-4">
-                    <div class="membership-item">
-                        <div class="mi-title">
-                            <h4>ĐỒNG</h4>
-                            <div class="triangle"></div>
+                @foreach (var membership in memberships)
+                {
+                    <div class="col-lg-4">
+                        <div class="membership-item">
+                            <div class="mi-title">
+                                <h4>@membership.Level.ToUpper()</h4>
+                                <div class="triangle"></div>
+                            </div>
+                                <h2 class="mi-price">@Math.Round(membership.Fee, 0)<span>/@membership.Duration tháng</span></h2>
+                            <ul>
+                                <li>
+                                    <p>Thời hạn</p>
+                                    <span>@membership.Duration tháng</span>
+                                </li>
+
+                                <li>
+                                    <p>Số giờ tập</p>
+                                    <span>@membership.Hours giờ/ ngày</span>
+                                </li>
+
+                            </ul>
+                            <li class="pt-2">
+                                <a href="#" class="primary-btn membership-btn">Bắt đầu ngay</a>
+                            </li>
                         </div>
-                        <h2 class="mi-price">GIÁ<span>/01 tháng</span></h2>
-                        <ul>
-                            <li>
-                                <p>Thời hạn</p>
-                                <span>số tháng</span>
-                            </li>
-
-                            <li>
-                                <p>Số giờ tập</p>
-                                <span>2 giờ/ ngày</span>
-                            </li>
-
-                        </ul>
-                        <li class="pt-2">
-                            <a href="#" class="primary-btn membership-btn">Bắt đầu ngay</a>
-                        </li>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="membership-item">
-                        <div class="mi-title">
-                            <h4>BẠC</h4>
-                            <div class="triangle"></div>
-                        </div>
-                        <h2 class="mi-price">GIÁ<span>/01 tháng</span></h2>
-                        <ul>
-                            <li>
-                                <p>Thời hạn</p>
-                                <span>số tháng</span>
-                            </li>
-
-                            <li>
-                                <p>Số giờ tập</p>
-                                <span>4 giờ/ngày</span>
-                            </li>
-
-                        </ul>
-                        <li class="pt-2">
-                            <a href="#" class="primary-btn membership-btn">Bắt đầu ngay</a>
-                        </li>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="membership-item">
-                        <div class="mi-title">
-                            <h4>VÀNG</h4>
-                            <div class="triangle"></div>
-                        </div>
-                        <h2 class="mi-price">GIÁ<span>/01 tháng</span></h2>
-                        <ul>
-                            <li>
-                                <p>Thời hạn</p>
-                                <span>số tháng</span>
-                            </li>
-                            <li>
-                                <p>Số giờ tập</p>
-                                <span>Không giới hạn</span>
-                            </li>
-
-                        </ul>
-                        <li class="pt-2">
-                            <a href="#" class="primary-btn membership-btn ">Bắt đầu ngay</a>
-                        </li>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </section>
