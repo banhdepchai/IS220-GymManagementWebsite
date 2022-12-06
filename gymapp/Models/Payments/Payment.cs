@@ -13,7 +13,7 @@ namespace App.Models.Payments
 
         public DateTime DateCreated { set; get; }
 
-        public string PaymentMode { set; get; }
+        public string? PaymentMode { set; get; }
 
         [Display(Name = "Khách hàng")]
         public string? UserID { set; get; }

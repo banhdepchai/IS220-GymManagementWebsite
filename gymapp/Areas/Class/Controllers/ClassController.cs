@@ -11,7 +11,7 @@ using ClassModel = App.Models.Classes.Class;
 namespace App.Areas.Class.Controllers
 {
     [Area("Class")]
-    [Route("admin/class/{action=Index}/{id?}")]
+    [Route("admin/{controller}/{action}/{id?}")]
     [Authorize(Roles = RoleName.Administrator + "," + RoleName.Editor)]
     public class ClassController : Controller
     {
@@ -32,7 +32,7 @@ namespace App.Areas.Class.Controllers
                 .Include(r => r.Room);
 
             int totalClasses = await classes.CountAsync();
-            if (pagesize <= 0) pagesize = 10;
+            if (pagesize <= 0) pagesize = 5;
             int countPages = (int)Math.Ceiling((double)totalClasses / pagesize);
 
             if (currentPage > countPages) currentPage = countPages;
@@ -61,16 +61,9 @@ namespace App.Areas.Class.Controllers
             return View(classesInPage);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var classModel = await _context.Classes
-                .Include(i => i.Instructor)
-                .Include(r => r.Room)
-                .FirstOrDefaultAsync(m => m.RoomId == id);
+            var classModel = _context.Classes.Include(i => i.Instructor).Include(r => r.Room).FirstOrDefault(c => c.ClassId == id);
             if (classModel == null)
             {
                 return NotFound();

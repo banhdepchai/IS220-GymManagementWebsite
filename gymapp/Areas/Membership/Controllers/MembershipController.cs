@@ -72,7 +72,7 @@ namespace App.Areas.Memebership.Controllers
             return View(membership);
         }
 
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             return View();
         }

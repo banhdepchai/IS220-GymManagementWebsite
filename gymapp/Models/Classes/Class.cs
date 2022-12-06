@@ -32,10 +32,10 @@ namespace App.Models.Classes
         [Display(Name = "Phòng tập")]
         public Room? Room { get; set; }
 
-        [Display(Name = "Huân luyện viên")]
+        [Display(Name = "Huấn luyện viên")]
         public int? InstructorId { get; set; }
 
-        [Display(Name = "Huân luyện viên")]
+        [Display(Name = "Huấn luyện viên")]
         public Instructor? Instructor { get; set; }
     }
 }

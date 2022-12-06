@@ -21,11 +21,36 @@ namespace App.Areas.Class.Controllers
 
         [TempData] public string StatusMessage { set; get; }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize)
         {
-            var rooms = _context.Rooms.ToList();
+            int totalRooms = await _context.Rooms.CountAsync();
+            if (pagesize <= 0) pagesize = 5;
+            int countPages = (int)Math.Ceiling((double)totalRooms / pagesize);
 
-            return View(rooms);
+            if (currentPage > countPages) currentPage = countPages;
+            if (currentPage < 1) currentPage = 1;
+
+            var pagingModel = new PagingModel()
+            {
+                countpages = countPages,
+                currentpage = currentPage,
+                generateUrl = (pageNumber) => Url.Action("Index", new
+                {
+                    p = pageNumber,
+                    pagesize = pagesize
+                }) ?? string.Empty
+            };
+
+            ViewBag.pagingModel = pagingModel;
+            ViewBag.totalRooms = totalRooms;
+
+            ViewBag.roomIndex = (currentPage - 1) * pagesize;
+
+            var roomrsInPage = await _context.Rooms.Skip((currentPage - 1) * pagesize)
+                .Take(pagesize)
+                .ToListAsync();
+
+            return View(roomrsInPage);
         }
 
         [HttpGet]

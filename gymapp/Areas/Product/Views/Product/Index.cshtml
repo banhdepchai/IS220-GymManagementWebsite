@@ -80,8 +80,8 @@
                                     @Math.Round(item.Price, 0) VNĐ
                                 </th>
                                 <td>
-                                    <a asp-action="Details" asp-route-id="@item.ProductID">Chi tiết</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.ProductID">Xóa</a>
+                                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.ProductID">Chi tiết</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.ProductID">Xóa</a>
                                 </td>
                             </tr>
                         }

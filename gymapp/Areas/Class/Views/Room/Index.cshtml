@@ -7,52 +7,74 @@
     ViewData["Title"] = "Danh sách phòng tập";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách phòng tập</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminCP" asp-area="AdminCP">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách phòng tập</li>
+    </ol>
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="Create">Tạo mới</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+                            </div>
+                            <div class="cold-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='/User/Index'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-
-
-<p>
-    <a asp-action="Create">Tạo phòng tập mới </a>
-</p>
-@*<p>Tổng số phòng tập: @ViewBag.totalPosts</p>*@
-<table class="table">
-    <thead>
-    <tr>
-        <th>@Html.DisplayNameFor(model => model.RoomId)</th>
-        <th>
-            @Html.DisplayNameFor(model => model.RoomName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Capacity)
-        </th>
-        
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.RoomId">
-                    @Html.DisplayFor(modelItem => item.RoomName)
-                </a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.RoomId">Chi tiết</a> |
-                <a asp-action="Delete" asp-route-id="@item.RoomId">Xóa</a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
-
-@*<partial name="_PagingXTL" model="@ViewBag.pagingModel" />*@
+        <div class="card-body">
+            <div class="row">
+                <partial name="_AlertMessage" />
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên phòng tập</th>
+                            <th>Sức chứa</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(++ViewBag.roomIndex)</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.RoomId">
+                                        @Html.DisplayFor(modelItem => item.RoomName)
+                                    </a>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Capacity)
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.RoomId">Chi tiết</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.RoomId">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <partial name="_PagingXTL" model="@ViewBag.pagingModel" />
+        </div>
+    </div>
+</div>
 
 
 @{

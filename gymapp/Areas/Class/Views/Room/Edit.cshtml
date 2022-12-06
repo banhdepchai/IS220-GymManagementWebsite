@@ -6,138 +6,49 @@
     ViewData["Title"] = "Cập nhật phòng tập";
 }
 
-<h1>@ViewData["Title"]</h1>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit" asp-controller="Room" asp-area="Class" method="post">
-             <input type="hidden" asp-for="RoomId"/>
-             <div class="form-group">
-                 <label asp-for="RoomName" class="control-label"></label>
-                 <input asp-for="RoomName" class="form-control" />
-                 <span asp-validation-for="RoomName" class="text-danger"></span>
-             </div>
-             <div class="form-group">
-                 <label asp-for="Capacity" class="control-label"></label>
-                 <input asp-for="Capacity" class="form-control" />
-                 <span asp-validation-for="Capacity" class="text-danger"></span>
-             </div>
-
-            <div class="form-group">
-                <input type="submit" value="Cập nhật" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
 <div>
     <a asp-action="Index">Danh sách phòng tập</a>
 </div>
 
-@{
-    var summernote  = new App.Models.Summernote("#Content");
-}
-<partial name="_Summernote" model="summernote" />
+<div class="container-fluid">
+    <h1 class="mt-4">Cập nhật phòng tập</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminCP" asp-area="AdminCP">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Cập nhật phòng tập</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index">Danh sách phòng tập</a>
+        </div>
 
-@*@section Scripts {
-    <script>
-                function AutoUploadPhoto()
-                {
-                     var formData = new FormData();
-                     var id = $("#box-photo-upload").data("id");
-                     formData.append("id", id);
-                     var sofile = document.getElementById("selectfileupload").files.length;
-                     if (sofile == 0) return;
-                     var fileData = document.getElementById("selectfileupload").files[0];
-                     formData.append("FileUpload", fileData)
-                     var urlUpload = "@Url.Action("UploadPhotoApi")";
-                    $.ajax({
-                        data: formData,
-                        cache: false,
-                        url: urlUpload,
-                        type: "POST",
-                        contentType: false,
-                        processData: false,
-                        success: function(data) 
-                        {
-                            // ... xu ly du lieu lay duoc
-                            LoadPhotos();
-                        }
-                    });
+        <div class="card-body">
+            <div class="col-md-4">
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                } 
-                function ClickButtoUpload()
-                {
-                    $("#selectfileupload").click();
-                }
-                function setClickDeletePhoto()
-                {
-                    $("#box-photo-upload .photodetail span").click(function () {
-                         if (confirm("Có chắc chắn xóa ảnh?") != true) return;
-                         var spanButton = $(this);
-                         var id = spanButton.data("id");
-                         var formData = new FormData();
-                         formData.append("id", id);
-                         var urlDeletePhoto = "@Url.Action("DeletePhoto")";
-                    $.ajax({
-                        data: formData,
-                        cache: false,
-                        url: urlDeletePhoto,
-                        type: "POST",
-                        contentType: false,
-                        processData: false,
-                        success: function(data) 
-                        {
-                            // ... xu ly du lieu lay duoc
-                            LoadPhotos();
+                    <input type="hidden" asp-for="RoomId"/>
+                    <div class="form-group">
+                        <label asp-for="RoomName" class="control-label"></label>
+                        <input asp-for="RoomName" class="form-control" />
+                        <span asp-validation-for="RoomName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Capacity" class="control-label"></label>
+                        <input asp-for="Capacity" class="form-control" />
+                        <span asp-validation-for="Capacity" class="text-danger"></span>
+                    </div>
 
-                        }
-                    });
-
-                    });
-                }
-                function LoadPhotos()
-                {
-                    var box = $("#box-photo-upload");
-                    var ProductID = box.data("id");
-                    box.empty();
-                    var formData = new FormData();
-                    formData.append("id", ProductID);
-                    var urlListPhoto = "@Url.Action("ListPhotos")";
-                    $.ajax({
-                        data: formData,
-                        cache: false,
-                        url: urlListPhoto,
-                        type: "POST",
-                        contentType: false,
-                        processData: false,
-                        success: function(data) 
-                        {
-                            // ... xu ly du lieu lay duoc
-                            data.photos.forEach(function(item) {
-                                // console.log(item.id);
-                                // console.log(item.path);
-                                var e = $(
-                                    '<div class="photodetail w-25 p-1">'
-                                       + '<img class="w-100" src="'+ item.path +'" />'
-                                       + '<span class="btn btn-danger" data-id="'+ item.id +'">Delete</span></div>');
-                                 box.append(e);      
-                            });
-                            setClickDeletePhoto();
-                        }
-                    });
-
-                    // console.log(ProductID);
-                }
-                $(document).ready(function() {
-                    LoadPhotos();
-                });
-            </script>
-
-}*@
+                    <div class="form-group">
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @{
-    _AdminSidebarService.SetActive("Room", "Edit", "Class");
+    _AdminSidebarService.SetActive("Room", "Index", "Class");
 }
 @section Sidebar
     {

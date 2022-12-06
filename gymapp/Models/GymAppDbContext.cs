@@ -7,6 +7,7 @@ using App.Models.Payments;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using App.Models.Products;
 using App.Extensions;
+using Microsoft.AspNetCore.Identity;
 
 namespace App.Models
 {

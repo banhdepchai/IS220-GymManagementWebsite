@@ -15,6 +15,7 @@ namespace App.Models.Classes
         public string Name { get; set; }
 
         [Display(Name = "Ngày sinh")]
+        [DataType(DataType.Date)]
         [Required(ErrorMessage = "Ngày sinh không được để trống")]
         public DateTime DateOfBirth { get; set; }
 
@@ -23,15 +24,19 @@ namespace App.Models.Classes
         public string Gender { get; set; }
 
         [Display(Name = "Email")]
+        [Required(ErrorMessage = "Email không được để trống")]
         public string Email { get; set; }
 
         [Display(Name = "Số điện thoại")]
+        [Required(ErrorMessage = "Số điện thoại không được để trống")]
         public string Phone { get; set; }
 
         [Display(Name = "Chuyên môn")]
+        [Required(ErrorMessage = "Chuyên môn không được để trống")]
         public string Expertise { get; set; }
 
         [Display(Name = "Mức lương")]
+        [Required(ErrorMessage = "Mức lương không được để trống")]
         public decimal Salary { get; set; }
 
         private List<Class>? Classes { get; set; }

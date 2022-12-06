@@ -41,7 +41,7 @@ namespace App.Areas.Product.Controllers
                         .OrderByDescending(p => p.DateUpdated);
 
             int totalProducts = await products.CountAsync();
-            if (pagesize <= 0) pagesize = 10;
+            if (pagesize <= 0) pagesize = 5;
             int countPages = (int)Math.Ceiling((double)totalProducts / pagesize);
 
             if (currentPage > countPages) currentPage = countPages;

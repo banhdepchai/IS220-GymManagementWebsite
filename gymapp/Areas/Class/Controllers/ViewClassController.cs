@@ -107,5 +107,46 @@ namespace App.Areas.Class.Controllers
             }
             return View();
         }
+
+        //[HttpGet]
+        //[Route("/khoa-tap/{classId}/xac-nhan-don-hang")]
+        //public async Task<IActionResult> Checkout(int classId)
+        //{
+        //    var classModel = await _context.Classes.FirstOrDefaultAsync(m => m.ClassId == classId);
+        //    var user = await _userManager.GetUserAsync(User);
+
+        //    ViewBag.classModel = classModel;
+        //    ViewBag.user = user;
+
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //[Route("/khoa-tap/{classId}/xac-nhan-don-hang")]
+        //public async Task<IActionResult> Checkout(int classId, [Bind("TotalPrice,DateCreated,PaymentMode")] Payment payment)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var classModel = await _context.Classes.FirstOrDefaultAsync(m => m.ClassId == classId);
+        //        var user = await _userManager.GetUserAsync(this.User);
+        //        ViewBag.user = user;
+        //        payment.UserID = user.Id;
+
+        //        _context.Payments.Add(payment);
+        //        await _context.SaveChangesAsync();
+
+        //        var signupClass = new SignupClass()
+        //        {
+        //            ClassId = classId,
+        //            UserId = user.Id,
+        //            PaymentId = payment.PaymentID
+        //        };
+        //        _context.SignupClasses.Add(signupClass);
+        //        await _context.SaveChangesAsync();
+
+        //        return Content($"Đăng ký khóa tập {classModel.ClassTitle} thành công");
+        //    }
+        //    return View();
+        //}
     }
 }

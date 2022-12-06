@@ -23,16 +23,58 @@ namespace App.Areas.Class.Controllers
 
         [TempData] public string StatusMessage { set; get; }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize)
         {
-            var instructors = _context.Instructors.ToList();
+            var instructors = _context.Instructors;
 
-            return View(instructors);
+            int totalInstructors = await instructors.CountAsync();
+            if (pagesize <= 0) pagesize = 5;
+            int countPages = (int)Math.Ceiling((double)totalInstructors / pagesize);
+
+            if (currentPage > countPages) currentPage = countPages;
+            if (currentPage < 1) currentPage = 1;
+
+            var pagingModel = new PagingModel()
+            {
+                countpages = countPages,
+                currentpage = currentPage,
+                generateUrl = (pageNumber) => Url.Action("Index", new
+                {
+                    p = pageNumber,
+                    pagesize = pagesize
+                }) ?? string.Empty
+            };
+
+            ViewBag.pagingModel = pagingModel;
+            ViewBag.totalInstructors = totalInstructors;
+
+            ViewBag.instructorIndex = (currentPage - 1) * pagesize;
+
+            var instructorsInPage = await _context.Instructors.Skip((currentPage - 1) * pagesize)
+                .Take(pagesize)
+                .ToListAsync();
+
+            return View(instructorsInPage);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
+            List<SelectListItem> expertiseList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "-- Chọn chuyên môn --", Value = "-- Chọn chuyên môn --" },
+                new SelectListItem { Text = "Gym", Value = "Gym" },
+                new SelectListItem { Text = "Yoga", Value = "Yoga" },
+                new SelectListItem { Text = "Boxing", Value = "Boxing" },
+                new SelectListItem { Text = "Dance", Value = "Dance" },
+                new SelectListItem { Text = "Swimming", Value = "Swimming" },
+                new SelectListItem { Text = "Cycling", Value = "Cycling" },
+                new SelectListItem { Text = "Zumba", Value = "Zumba" },
+                new SelectListItem { Text = "Pilates", Value = "Pilates" },
+                new SelectListItem { Text = "Aerobics", Value = "Aerobics" }
+            };
+
+            ViewData["expertiseList"] = expertiseList;
             return View();
         }
 
@@ -76,6 +118,19 @@ namespace App.Areas.Class.Controllers
                 Expertise = instructor.Expertise,
                 Salary = instructor.Salary
             };
+
+            List<SelectListItem> expertiseList = new List<SelectListItem>();
+            expertiseList.Add(new SelectListItem { Text = "Gym", Value = "Gym" });
+            expertiseList.Add(new SelectListItem { Text = "Yoga", Value = "Yoga" });
+            expertiseList.Add(new SelectListItem { Text = "Boxing", Value = "Boxing" });
+            expertiseList.Add(new SelectListItem { Text = "Dance", Value = "Dance" });
+            expertiseList.Add(new SelectListItem { Text = "Swimming", Value = "Swimming" });
+            expertiseList.Add(new SelectListItem { Text = "Cycling", Value = "Cycling" });
+            expertiseList.Add(new SelectListItem { Text = "Zumba", Value = "Zumba" });
+            expertiseList.Add(new SelectListItem { Text = "Pilates", Value = "Pilates" });
+            expertiseList.Add(new SelectListItem { Text = "Aerobics", Value = "Aerobics" });
+
+            ViewBag.expertiseList = expertiseList;
 
             return View(instructorEdit);
         }
@@ -144,6 +199,8 @@ namespace App.Areas.Class.Controllers
         {
             _context.Instructors.Remove(instructor);
             _context.SaveChanges();
+
+            StatusMessage = "Vừa xóa huấn luyện viên";
             return RedirectToAction("Index");
         }
 
