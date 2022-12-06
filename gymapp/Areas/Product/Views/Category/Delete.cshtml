@@ -6,33 +6,57 @@
     ViewData["Title"] = "Xóa danh mục sản phẩm";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container-fluid">
+    <h1 class="mt-4">Xóa danh mục sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminCP" asp-area="AdminCP">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Xóa danh mục sản phẩm</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header"> 
+            <a class="btn btn-success" asp-action="Index" asp-controller="Category" asp-area="Product">Danh sách danh mục sản phẩm</a>
+        </div>
 
-<h3>Có chắc chắn xóa?</h3>
-<div>
+        <div class="card-body">
+            <div class="col-md-12">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Id)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Id)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Title)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Title)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Slug)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Slug)
+                    </dd>
+                </dl>
 
-    <dl class="row">
-        <dt class = "col-sm-4">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-8">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-    </dl>
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Xóa" class="btn btn-danger" /> |
-        <a asp-action="Index">Danh sách chuyên mục Blog</a>
-    </form>
-</div>
-
-<div>
-    <a asp-action="Index">Danh sách danh mục sản phẩm</a>
+                <form asp-action="Delete">
+                    <input asp-for="Id" type="hidden" />
+                    <input type="submit" value="Xóa" class="btn btn-danger" />
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 @{
-    _AdminSidebarService.SetActive("Category", "Delete", "Product");
+    _AdminSidebarService.SetActive("Category", "Index", "Product");
 }
 @section Sidebar
     {

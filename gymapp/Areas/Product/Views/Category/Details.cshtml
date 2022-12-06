@@ -6,34 +6,47 @@
     ViewData["Title"] = Model.Title;
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container-fluid">
+    <h1 class="mt-4">Danh mục sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminCP" asp-area="AdminCP">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh mục sản phẩm</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index" asp-controller="Category" asp-area="Product">Danh sách danh mục sản phẩm</a>
+        </div>
 
-<div>
-    <h4>Danh mục sản phẩm</h4>
-    <hr />
-    <dl class="row">
+        <div class="card-body">
+            <div class="col-md-12">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        Tên danh mục
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Title)
+                    </dd>
+                    <dt class="col-sm-2">
+                        Nội dung
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.Raw(Model.Description)
+                    </dd>
+                    <dt class="col-sm-2">
+                        Url
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Slug)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <dt class = "col-sm-2">
-            Nội dung
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.Raw(Model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            Url
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Chỉnh sửa</a> |
-    <a asp-action="Index">Danh sách danh mục sản phẩm</a>
-</div>
 
 @{
-    _AdminSidebarService.SetActive("Category", "Details", "Product");
+    _AdminSidebarService.SetActive("Category", "Index", "Product");
 }
 @section Sidebar
 {

@@ -6,53 +6,81 @@
     ViewData["Title"] = "Danh mục sản phẩm";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="container-fluid">
+    <h1 class="mt-4">Danh sách danh mục sản phẩm</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminCP" asp-area="AdminCP">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Danh sách danh mục sản phẩm</li>
+    </ol>
+    <div class="card mb-12">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6 col-xs-12">
+                    <a class="btn btn-success" asp-action="Create" asp-controller="Category" asp-area="Product">Tạo mới</a>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <form asp-action="Index" method="get">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <input type="text" value="@ViewBag.Keyword" name="keyword" class="form-control" />
+                            </div>
+                            <div class="cold-md-3">
+                                <button type="submit" class="btn btn-primary">Tìm</button>
+                                <button type="button" onclick="window.location.href='admin/product/category/Index'" class="btn btn-dark">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary btn-sm">Tạo danh mục sản phẩm</a>
-</p>
-<table class="table">
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Slug)
-        </th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-
-    @foreach (var item in Model) {
-        await RenderCategory(item,0);
-    }
-
-    </tbody>
-</table>
-
-
-@{ 
-    async Task RenderCategory(Category item, int level) {
-        string prefix = string.Concat(Enumerable.Repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", level));
-        <tr>
-            <td>
-                @Html.Raw(prefix) 
-                <a asp-action="Edit" asp-route-id="@item.Id">
-                    @Html.DisplayFor(modelItem => item.Title)
-                </a> 
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Slug)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
-            </td>
-        </tr> 
-    }
-}
+        <div class="card-body">
+            @*<div class="row">
+                @if (ViewBag.SuccessMsg != null)
+                {
+                        <div id="msgAlert" class="alert alert-success" role="alert">
+                        @ViewBag.SuccessMsg
+                        </div>
+                }
+            </div>*@
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Title)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Slug)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id">
+                                        @Html.DisplayFor(modelItem => item.Title)
+                                    </a> 
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Slug)
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @*@await Component.InvokeAsync("Pager", Model)*@
+        </div>
+    </div>
+</div>
 
 @{
     _AdminSidebarService.SetActive("Category", "Index", "Product");

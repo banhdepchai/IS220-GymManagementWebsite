@@ -81,6 +81,7 @@ namespace App.Areas.Product.Controllers
 
             var product = await _context.Products
                 .Include(p => p.Author)
+                .Include(c => c.Category)
                 .FirstOrDefaultAsync(m => m.ProductID == id);
             if (product == null)
             {
@@ -220,6 +221,7 @@ namespace App.Areas.Product.Controllers
 
             var product = await _context.Products
                 .Include(p => p.Author)
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.ProductID == id);
             if (product == null)
             {
