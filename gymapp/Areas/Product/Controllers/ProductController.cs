@@ -34,11 +34,24 @@ namespace App.Areas.Product.Controllers
         public string? StatusMessage { get; set; }
 
         // GET: Product/Product
-        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize)
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize, string keyword)
         {
-            var products = _context.Products
-                        .Include(p => p.Author)
-                        .OrderByDescending(p => p.DateUpdated);
+            ViewBag.Keyword = keyword;
+
+            IOrderedQueryable<ProductModel> products;
+            if (keyword != null)
+            {
+                products = _context.Products
+                    .Include(p => p.Author)
+                    .Where(p => p.ProductName.Contains(keyword))
+                    .OrderByDescending(p => p.DateUpdated);
+            }
+            else
+            {
+                products = _context.Products
+                    .Include(p => p.Author)
+                    .OrderByDescending(p => p.DateUpdated);
+            }
 
             int totalProducts = await products.CountAsync();
             if (pagesize <= 0) pagesize = 5;
@@ -51,10 +64,12 @@ namespace App.Areas.Product.Controllers
             {
                 countpages = countPages,
                 currentpage = currentPage,
+                keyword = keyword,
                 generateUrl = (pageNumber) => Url.Action("Index", new
                 {
                     p = pageNumber,
-                    pagesize = pagesize
+                    pagesize = pagesize,
+                    keyword = keyword
                 }) ?? string.Empty
             };
 

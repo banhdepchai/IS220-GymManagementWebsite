@@ -61,14 +61,14 @@
                         <div class="w-100"></div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="phone">@user.PhoneNumber</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <label> Số điện thoại</label>
+                                <input type="text" value="@user.PhoneNumber" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="data-setbg" asp-for="DateCreated">Ngày đặt hàng</label>
-                                <input class="form-control" >
+                                <input class="form-control"asp-for="DateCreated" value="@DateTime.Now" >
                             </div>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p><a href="#" class="btn btn-primary btn-cart py-3 px-4">Đặt hàng</a></p>
+                            <p><a asp-action="Checkout" class="btn btn-primary btn-cart py-3 px-4">Đặt hàng</a></p>
                         </div>
                     </div>
                 </div>

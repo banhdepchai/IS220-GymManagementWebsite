@@ -25,11 +25,25 @@ namespace App.Areas.Class.Controllers
         [TempData] public string? StatusMessage { get; set; }
 
         // GET: Product/Product
-        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize)
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize, string keyword)
         {
-            var classes = _context.Classes
-                .Include(i => i.Instructor)
-                .Include(r => r.Room);
+            ViewBag.Keyword = keyword;
+
+            IQueryable<ClassModel> classes;
+
+            if (keyword != null)
+            {
+                classes = _context.Classes
+                    .Where(c => c.ClassTitle.Contains(keyword))
+                    .Include(i => i.Instructor)
+                    .Include(r => r.Room);
+            }
+            else
+            {
+                classes = _context.Classes
+                    .Include(i => i.Instructor)
+                    .Include(r => r.Room);
+            }
 
             int totalClasses = await classes.CountAsync();
             if (pagesize <= 0) pagesize = 5;
@@ -42,10 +56,12 @@ namespace App.Areas.Class.Controllers
             {
                 countpages = countPages,
                 currentpage = currentPage,
+                keyword = keyword,
                 generateUrl = (pageNumber) => Url.Action("Index", new
                 {
                     p = pageNumber,
-                    pagesize = pagesize
+                    pagesize = pagesize,
+                    keyword = keyword
                 }) ?? string.Empty
             };
 

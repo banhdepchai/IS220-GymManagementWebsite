@@ -21,9 +21,9 @@ namespace App.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var memberships = await _context.Memberships.ToListAsync();
+            var memberships = _context.Memberships.ToList();
 
             ViewBag.memberships = memberships;
             return View();

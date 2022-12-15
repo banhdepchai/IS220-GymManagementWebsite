@@ -180,6 +180,30 @@ namespace App.Menu
                     },
                 },
             });
+
+            Items.Add(new SidebarItem()
+            {
+                Type = SidebarItemType.NavItem,
+                Title = "Quản lý mã giảm giá",
+                AwesomeIcon = "far fa-folder",
+                collapseID = "discount",
+                Items = new List<SidebarItem>() {
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Discount",
+                        Action = "Index",
+                        Area = "Product",
+                        Title = "Danh sách mã giảm giá"
+                    },
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Class",
+                        Action = "Create",
+                        Area = "Product",
+                        Title = "Tạo mã giảm giá mới"
+                    },
+                },
+            });
         }
 
         public string renderHtml()

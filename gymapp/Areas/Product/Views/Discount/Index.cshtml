@@ -1,17 +1,17 @@
-﻿@model IEnumerable<App.Models.Classes.Class>
+﻿@model IEnumerable<App.Models.Payments.Discount>
 @using App.Menu
 @inject AdminSidebarService _AdminSidebarService
 
 @{
     Layout = "_LayoutAdmin";
-    ViewData["Title"] = "Danh sách khóa tập";
+    ViewData["Title"] = "Danh sách mã giảm giá";
 }
 
 <div class="container-fluid">
-    <h1 class="mt-4">Danh sách khóa tập</h1>
+    <h1 class="mt-4">Danh sách mã giảm giá</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminCP" asp-area="AdminCP">Trang chủ</a></li>
-        <li class="breadcrumb-item active">Danh sách khóa tập</li>
+        <li class="breadcrumb-item active">Danh sách mã giảm giá</li>
     </ol>
     <div class="card mb-12">
         <div class="card-header">
@@ -27,7 +27,7 @@
                             </div>
                             <div class="cold-md-3">
                                 <button type="submit" class="btn btn-primary">Tìm</button>
-                                <button type="button" onclick="window.location.href='/admin/class/index'" class="btn btn-dark">Reset</button>
+                                <button type="button" onclick="window.location.href='/User/Index'" class="btn btn-dark">Reset</button>
                             </div>
                         </div>
                     </form>
@@ -44,10 +44,8 @@
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>@Html.DisplayNameFor(model => model.ClassTitle)</th>
-                            <th>@Html.DisplayNameFor(model => model.ClassDate)</th>
-                            <th>@Html.DisplayNameFor(model => model.ClassPeriod)</th>
-                            <th>@Html.DisplayNameFor(model => model.ClassCost)</th>
+                            <th>Tên phòng tập</th>
+                            <th>Sức chứa</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -55,31 +53,14 @@
                         @foreach (var item in Model)
                         {
                             <tr>
+                                    <td>@(++ViewBag.discountIndex)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Code)</td>
                                 <td>
-                                    @(++ViewBag.classIndex)
+                                    @Html.DisplayFor(modelItem => item.Percent)
                                 </td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@item.ClassId">
-                                        @Html.DisplayFor(modelItem => item.ClassTitle)
-                                    </a> 
-                                    <br>
-                                    <small>
-                                        @item.Instructor?.Name
-                                    </small>
-                
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ClassDate)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ClassPeriod)
-                                </td>
-                                <th>
-                                    @Math.Round(item.ClassCost, 0) VNĐ
-                                </th>
-                                <td>
-                                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ClassId">Chi tiết</a>
-                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.ClassId">Xóa</a>
+                                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Chi tiết</a>
+                                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
                                 </td>
                             </tr>
                         }
@@ -91,8 +72,9 @@
     </div>
 </div>
 
+
 @{
-    _AdminSidebarService.SetActive("Class", "Index", "Class");
+    _AdminSidebarService.SetActive("Discount", "Index", "Product");
 }
 @section Sidebar
 {

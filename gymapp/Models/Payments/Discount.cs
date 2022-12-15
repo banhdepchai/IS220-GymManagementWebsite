@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace App.Models.Products
+namespace App.Models.Payments
 {
     [Table("Discounts")]
     public class Discount
