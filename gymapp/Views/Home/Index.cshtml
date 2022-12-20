@@ -1,7 +1,10 @@
 ﻿@using App.Models.Memberships
+@using App.Models.Classes
 @{
     ViewData["Title"] = "Trang chủ";
     var memberships = ViewBag.memberships as IEnumerable<Membership>;
+    var classes = ViewBag.classes as IEnumerable<Class>;
+    var instructors = ViewBag.instructors as IEnumerable<Instructor>;
 }
 
 <!-- Hero Section Begin -->
@@ -12,7 +15,7 @@
                     <div class="hero-text">
                         <span>Trung tâm chilling</span>
                         <h1>Việc tập luyện thực sự bắt đầu khi bạn muốn dừng lại.</h1>
-                        <a href="#" class="primary-btn">TÌM HIỂU THÊM</a>
+                        <a href="/ve-chung-toi" class="primary-btn">TÌM HIỂU THÊM</a>
                     </div>
                 </div>
             </div>
@@ -69,7 +72,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="services-item bg-gray">
-                                    <img src="img/services/service-icon-1.png" alt="">
+                                    <img src="/img/services/service-icon-1.png" alt="">
                                     <h4>Tăng chiều cao</h4>
                                     <p>Cơ hội trải nghiệm nhiều môn tập tư cơ bản đến nâng cao tại chilling.</p>
                                 </div>
@@ -110,62 +113,30 @@
                 </div>
             </div>
             <div class="row classes-slider owl-carousel">
-                <div class="col-lg-4">
-                    <div class="single-class-item set-bg" data-setbg="/img/classes/classes-1.jpg">
-                        <div class="si-text">
-                            <h4>Giảm mỡ sau sinh</h4>
-                            <span><i class="fa fa-user"></i> Tên huấn luyện viên</span>
-                        </div>
+                @foreach (var item in classes)
+                {
+                    <div class="col-lg-4">
+                        
+                        @if(item.PhotoUrl != null)
+                        {
+                            <div class="single-class-item set-bg" data-setbg="/images/@item.PhotoUrl">
+                                <div class="si-text">
+                                    <h4>@item.ClassTitle</h4>
+                                    <span><i class="fa fa-user"></i> @item.Instructor.Name</span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="single-class-item set-bg" data-setbg="/contents/nophoto.png">
+                                <div class="si-text">
+                                    <h4>@item.ClassTitle</h4>
+                                    <span><i class="fa fa-user"></i> @item.Instructor.Name</span>
+                                </div>
+                            </div>
+                        }
                     </div>
-                    <div class="single-class-item set-bg" data-setbg="/img/classes/classes-4.jpg">
-                        <div class="si-text">
-                            <h4>Giảm mỡ bụng</h4>
-                            <span><i class="fa fa-user"></i> Tên huấn luyện viên</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-class-item set-bg" data-setbg="img/classes/classes-2.jpg">
-                        <div class="si-text">
-                            <h4>Aerobic</h4>
-                            <span><i class="fa fa-user"></i> Tên huấn luyện viên</span>
-                        </div>
-                    </div>
-                    <div class="single-class-item set-bg" data-setbg="/img/classes/classes-5.jpg">
-                        <div class="si-text">
-                            <h4>Giảm mỡ cấp tốc</h4>
-                            <span><i class="fa fa-user"></i> Tên huấn luyện viên</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-class-item set-bg" data-setbg="/img/classes/classes-3.jpg">
-                        <div class="si-text">
-                            <h4>Phục hồi chức năng</h4>
-                            <span><i class="fa fa-user"></i>Tên huấn luyện viên</span>
-                        </div>
-                    </div>
-                    <div class="single-class-item set-bg" data-setbg="/img/classes/classes-6.jpg">
-                        <div class="si-text">
-                            <h4>Gym cho nữ giới</h4>
-                            <span><i class="fa fa-user"></i> Tên huấn luyện viên</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="single-class-item set-bg" data-setbg="/img/classes/classes-7.jpg">
-                        <div class="si-text">
-                            <h4>Tăng cường cơ bắp</h4>
-                            <span><i class="fa fa-user"></i>Tên huấn luyện viên</span>
-                        </div>
-                    </div>
-                    <div class="single-class-item set-bg" data-setbg="/img/classes/classes-8.jpg">
-                        <div class="si-text">
-                            <h4>Gym cho nam giới</h4>
-                            <span><i class="fa fa-user"></i>Tên huấn luyện viên</span>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </section>
@@ -182,38 +153,19 @@
                 </div>
             </div>
             <div class="row">
+            @foreach(var instructor in instructors)
+            {
                 <div class="col-lg-4 col-md-6 ">
                     <div class="single-card-item">
                         <img src="/img/trainer/about-trainer-4.png">
                         <div class="card-text">
-                            <h5>Tên huấn luyện viên</h5>
-                            <span>Môn tập</span>
+                            <h5>@instructor.Name</h5>
+                            <span>@instructor.Expertise</span>
                             <p>Mô tả</p>
                         </div>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-card-item">
-                        <img src="img/trainer/about-trainer-4.png">
-                        <div class="card-text">
-                            <h5>Tên huấn luyện viên</h5>
-                            <span>Môn tập</span>
-                            <p>Mô tả</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-card-item">
-                        <img src="/img/trainer/about-trainer-4.png">
-                        <div class="card-text">
-                            <h5>Tên huấn luyện viên</h5>
-                            <span>Môn tập</span>
-                            <p>Mô tả</p>
-                        </div>
-                    </div>
-                </div>
+            }
 
             </div>
         </div>
@@ -316,7 +268,7 @@
 
                             </ul>
                             <li class="pt-2">
-                                <a href="#" class="primary-btn membership-btn">Bắt đầu ngay</a>
+                                <a href="/dich-vu" class="primary-btn membership-btn">Bắt đầu ngay</a>
                             </li>
                         </div>
                     </div>
@@ -326,20 +278,6 @@
     </section>
     <!-- Membership Section End -->
 
-    <!-- Latest  Section Begin -->
-<section class="latest-blog-section spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="section-title">
-                    <h2>SẢN PHẨM HỖ TRỢ</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row product-silder owl-carousel">
-        </div>
-    </div>
-</section>
 
 @section Scripts
 {

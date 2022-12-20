@@ -11,12 +11,15 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddTransient<UserManager<AppUser>>();
+builder.Services.AddTransient<SignInManager<AppUser>>();
+
 // Add services to the container.
 builder.Services.AddDistributedMemoryCache();           // Đăng ký dịch vụ lưu cache trong bộ nhớ (Session sẽ sử dụng nó)
 builder.Services.AddSession(cfg =>
 {                    // Đăng ký dịch vụ Session
     cfg.Cookie.Name = "gymapp";                 // Đặt tên Session - tên này sử dụng ở Browser (Cookie)
-    cfg.IdleTimeout = new TimeSpan(0, 30, 0);    // Thời gian tồn tại của Session
+    cfg.IdleTimeout = new TimeSpan(0, 10, 0);    // Thời gian tồn tại của Session
 });
 
 builder.Services.AddOptions();
@@ -95,7 +98,6 @@ builder.Services.AddTransient<CartService>();
 
 builder.Services.AddTransient<IActionContextAccessor, ActionContextAccessor>();
 builder.Services.AddTransient<AdminSidebarService>();
-
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

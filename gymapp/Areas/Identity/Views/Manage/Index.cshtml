@@ -1,134 +1,1748 @@
 ﻿@model IndexViewModel
 @{
-    ViewData["Title"] = "Quản lý tài khoản của bạn";
+    ViewData["Title"] = "Thông tin tài khoản";
+    Layout = "_LayoutUser";
+    var ChangePasswordModel = ViewBag.ChangePassword as ChangePasswordViewModel;
 }
 
-<h1>@ViewData["Title"].</h1>
-<p class="text-success">@ViewData["StatusMessage"]</p>
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-section set-bg" data-setbg="/img/breadcrumb/classes-breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h2>TÀI KHOẢN</h2>
+                    <div class="breadcrumb-option">
+                        <a asp-action="Index" asp-controller="Home"><i class="fa fa-home"></i> Trang chủ</a>
+                        <span>Giỏ hàng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
 
-<div>
-    <h4>Cập nhật thông tin tài khoản</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-4">Thông tin cơ bản:</dt>
-        <dd class="col-sm-6"> 
-            <dl class="row">
-                 <dt class = "col-sm-6">
-                    @Html.DisplayNameFor(m => Model.profile.UserName)
-                 </dt>   
-                 <dd class = "col-sm-6">
-                    @Html.DisplayFor(m => Model.profile.UserName)
-                 </dd>
-            </dl>
-             <dl class="row">
-                 <dt class = "col-sm-6">
-                    @Html.DisplayNameFor(m => Model.profile.UserEmail)
-                 </dt>   
-                 <dd class = "col-sm-6">
-                    @Html.DisplayFor(m => Model.profile.UserEmail)
-                 </dd>
-            </dl>
-              <dl class="row">
-                 <dt class = "col-sm-6">
-                    @Html.DisplayNameFor(m => Model.profile.PhoneNumber)
-                 </dt>   
-                 <dd class = "col-sm-6">
-                    @Html.DisplayFor(m => Model.profile.PhoneNumber)
-                 </dd>
-            </dl>
-               <dl class="row">
-                 <dt class = "col-sm-6">
-                    @Html.DisplayNameFor(m => Model.profile.HomeAdress)
-                 </dt>   
-                 <dd class = "col-sm-6">
-                    @Html.DisplayFor(m => Model.profile.HomeAdress)
-                 </dd>
-            </dl>                   
-                <dl class="row">
-                 <dt class = "col-sm-6">
-                    @Html.DisplayNameFor(m => Model.profile.BirthDate)
-                 </dt>   
-                 <dd class = "col-sm-6">
-                    @Html.DisplayFor(m => Model.profile.BirthDate)
-                 </dd>
-            </dl>      
-            <a asp-action="EditProfile" class="btn btn-primary btn-sm">Sửa</a>
- 
-        </dd>
+<section class=" account-detail-section spad">
+<!-- <div class="container"> -->
+            <div class="bg-white rounded-lg d-block d-sm-flex">
+                <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-3 pb-5">
+                        <div class="profile-tab-nav border">
+                            <div class="profile-setting">
+                                <div class="img-circle text-center mb-3">
+                                    <img src="/img/member.jpg" alt="Image" class="shadow">
+                                </div>
+                                <h4 class="text-center">@Model.profile.FullName</h4>
+                            </div>
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
+                                 aria-orientation="vertical">
+                                <a class="nav-link active" id="account-tab" data-toggle="pill" href="#info_account"
+                                   role="tab" aria-controls="account" aria-selected="true">
+                                    <i class="fa fa-home text-center mr-1"></i>
+                                    Tài khoản
+                                </a>
+                                <a class="nav-link" id="password-tab" data-toggle="pill" href="#password" role="tab"
+                                   aria-controls="password" aria-selected="false">
+                                    <i class="fa fa-key text-center mr-1"></i>
+                                    Mật khẩu
+                                </a>
+                                <!-- <a class="nav-link" id="security-tab" data-toggle="pill" href="#security" role="tab"
+                                        aria-controls="security" aria-selected="false">
+                                    <i class="fa fa-user text-center mr-1"></i>
+                                    Security
+                                </a> -->
+                                <a class="nav-link" id="application-tab" data-toggle="pill" href="#ordered" role="tab"
+                                   aria-controls="application" aria-selected="false">
+                                    <i class="fa fa-tv text-center mr-1"></i>
+                                    Đơn hàng
+                                </a>
+                                <a class="nav-link" id="notification-tab" data-toggle="pill" href="#notification"
+                                   role="tab" aria-controls="notification" aria-selected="false">
+                                    <i class="fa fa-bell text-center mr-1"></i>
+                                    Thông báo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
-        <dt class="col-sm-4">Mật khẩu:</dt>
-        <dd class="col-sm-6">
-            @if (Model.HasPassword)
-            {
-                <a asp-controller="Manage" asp-action="ChangePassword">Đổi mật khẩu</a>
-            }
-            else
-            {
-                <a asp-controller="Manage" asp-action="SetPassword">Tạo mật khẩu</a>
-            }
-        </dd>
-        <dt class = "col-sm-4">Liên kết tài khoản ngoài:</dt>
-        <dd class = "col-sm-6">
-            Có @Model.Logins.Count liên kết. <a asp-controller="Manage" asp-action="ManageLogins">Quản lý liên kết ngoài</a>
-        </dd>
+                    <div class="col-xl-8 col-lg-9 pb-5">
+                        <div class="tab-content account-details pl-3" id="v-pills-tabContent">
+                            <div class="tab-pane fade show active" id="info_account" role="tabpanel"aria-labelledby="account-tab">
+                                <h3 class="mb-4">Cài đặt tài khoản</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group account-deatil">
+                                            <label>Họ Tên</label>
+                                            <input asp-for="profile.FullName" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group account-deatil">
+                                            <label>Tên đăng nhập</label>
+                                            <input asp-for="profile.UserName" class="form-control">
+                                        </div>
+                                    </div>
 
-        <dt class="col-sm-4">Số điện thoại:</dt>
-        <dd class = "col-sm-6">
-            <p>
-                Số điện thoại dùng để xác thực hai yêu tố
-            </p>
-            @(Model.PhoneNumber ?? "không có")
-                @if (Model.PhoneNumber != null)
-                {
-                    <text>:</text>
-                    <text>&nbsp;&nbsp;<a asp-controller="Manage" asp-action="AddPhoneNumber">Thay đổi</a>&nbsp;&nbsp;</text>
-                    <form asp-controller="Manage" asp-action="RemovePhoneNumber" method="post" role="form">
-                        <button type="submit" class="btn btn-danger btn-sm">Loại bỏ số điện thoại</button>
-                    </form>
-                }
-                else
-                {
-                    <text>&nbsp;&nbsp;<a asp-controller="Manage" asp-action="AddPhoneNumber">Thêm số điện thoại</a></text>
-                }
-        </dd>
+                                    <div class="col-md-6">
+                                        <div class="form-group account-deatil">
+                                            <label>Email</label>
+                                            <input asp-for="profile.UserEmail" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group account-deatil">
+                                            <label>Số điện thoại</label>
+                                            <input asp-for="profile.PhoneNumber" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group account-deatil">
+                                            <label>Địa chỉ</label>
+                                            <textarea asp-for="profile.HomeAdress" class="form-control" rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary account-details">Cập nhật</button>
+                                    <button class="btn btn-light account-details">Hủy</button>
+                                </div>
+                            </div>
+                        
+                            <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+                                <h3 class="mb-4">Đặt lại mặt khẩu</h3>
+                                <div id="msgChangePassword"></div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group account-deatil">
+                                            <label>Mật khẩu cũ</label>
+                                            <input type="password" id="oldPassword" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group account-deatil">
+                                            <label>Mật khẩu mới</label>
+                                            <input type="password" id="newPassword" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group account-deatil">
+                                            <label>Xác nhận mật khẩu</label>
+                                            <input type="password" id="confirmPassword" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary account-details" id="btn-submit">Đặt lại</button>
+                                    <button class="btn btn-light account-details" id="btn-password-cancel">Hủy</button>
+                                </div>
+                            </div>
 
-        <dt class="col-sm-4">Xác thực hai yếu tố:</dt>
-        <dd class = "col-sm-6">
-            <!--<p>
-                There are no two-factor authentication providers configured. See <a href="http://go.microsoft.com/fwlink/?LinkID=532713">this article</a>
-                for setting up this application to support two-factor authentication.
-            </p>-->
-            @if (Model.TwoFactor)
-                {
-                    <form asp-controller="Manage" asp-action="DisableTwoFactorAuthentication" method="post" class="form-horizontal" role="form">
-                        (Đang kích hoạt) <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
-                    </form>
-                }
-                else
-                {
-                    <form asp-controller="Manage" asp-action="EnableTwoFactorAuthentication" method="post" class="form-horizontal" role="form">
-                        <button type="submit" class="btn btn-primary btn-sm">Kích hoạt</button>
-                    </form>
-                }
-        </dd>
+                        
+<!-- <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+    <h3 class="mb-4">Security Settings</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group account-deatil">
+                <label>Login</label>
+                <input type="text" class="form-control">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group account-deatil">
+                <label>Two-factor auth</label>
+                <input type="text" class="form-control">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group account-deatil">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="recovery">
+                    <label class="form-check-label" for="recovery">
+                        Recovery
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-primary account-details">Update</button>
+        <button class="btn btn-light account-details">Cancel</button>
+    </div>
+</div> -->
+<div class="tab-pane fade" id="ordered" role="tabpanel" aria-labelledby="application-tab">
+<div class="group-tabs">
+<ul class="nav nav-tabs account-details order-details text-center" role="tablist">
+    <li role="presentation"><a href="#confirm-waiting"
+                               aria-controls="confirm-waiting" role="tab" data-toggle="tab"
+                               class="active-color"><span>Chờ xác nhận</span>
+    </a></li>
+    <li role="presentation"><a href="#confirmed" aria-controls="confirmed"
+                               role="tab" data-toggle="tab" class="conffirmed">Đã xác nhận</a></li>
+    <li role="presentation"><a href="#shipping" aria-controls="shipping" role="tab"
+                               data-toggle="tab">Đang vận chuyển</a></li>
+    <li role="presentation" class="need"><a href="#shipped" aria-controls="shipped"
+                                            role="tab" data-toggle="tab">Đã giao</a></li>
+    <li role="presentation"><a href="#cancel" aria-controls="cancel" role="tab"
+                               data-toggle="tab">Đã hủy</a></li>
+</ul>
 
-        <dt class="col-sm-4">Xác thực ứng dụng:</dt>
-        <dd class = "col-sm-6">
-            @if (Model.AuthenticatorKey == null)
-            {
-                <form asp-controller="Manage" asp-action="ResetAuthenticatorKey" method="post" class="form-horizontal" role="form">
-                    <button type="submit" class="btn btn-sm btn-primary">Phát sinh mã</button>
-                </form>
-            }
-            else
-            {
-                <text>Mã xác thực là: @Model.AuthenticatorKey</text>
-                <p>Nhập mã này khi yêu cầu xác thực 2 yếu tố</p>
-                <form asp-controller="Manage" asp-action="GenerateRecoveryCode" method="post" class="form-horizontal" role="form">
-                   <button type="submit" class="btn btn-sm btn-primary">Phát sinh mã phục hồi</button>
-                   <p>Mã phục hồi sử dụng để xác thực hai yếu tố</p>
-                </form>
-            }
-        </dd>
-    </dl>
+<div class="tab-content  pt-3">
+<div role="tabpanel" class="tab-pane needed active" id="confirm-waiting">
+<div class="row">
+<div class="col-xl-12">
+<div class="card-product-ordered pt-4">
+<div class="card-product order-details">
+    <nav class="status-check">
+
+        <div class="status-tittle order-details">
+            <button class="fake-btn-status-check"
+                    data-toggle="modal"
+                    data-target="#status-check-header">Chờ xác nhận
+            </button>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col-3">
+            <div class="order-item-img">
+                <img
+                    src="/img/blog/product_1.jpg">
+            </div>
+        </div>
+
+        <div class="col-9">
+            <div class="description order-details">
+                <div class="contet-product-order">
+                    <h2>Tên sản phẩm</h2>
+                    <div class="qty-and-price">
+                        <h2>số lượng</h2>
+                        <h1>giá tiền</h1>
+                    </div>
+
+                    <div class="total-product order-detail">
+                        <span class="tittle">TỔNG</span>
+                        <span class="price-total">100.00đ</span>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div class="col-12">
+            <div class="btn-product-detail pt-4">
+                <button
+                    class="btn btn-primary order-details ">Hủy
+                    đơn
+                </button>
+                <button class="btn btn-primary order-details "
+                        data-toggle="modal"
+                        data-target="#login_itech">Chỉnh sửa
+                    đơn</button>
+
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<div class="row">
+    <div class="col-xl-6 col-12">
+        <div class="modal animated fadeIn edit-order-details"
+             id="login_itech" tabindex="-1" role="dialog"
+             aria-hidden="true">
+            <div class="modal-dialog position-edit-order-deatils"
+                 role="document">
+                <div class="modal-content ">
+                    <div
+                        class="modal-header edit-order-details">
+                        <h5
+                            class="modal-title edit-order-details">
+                            Chỉnh
+                            sửa đơn
+                            hàng
+                        </h5>
+                        <button type="button"
+                                class="close edit-details"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true"
+                                  class="text-center">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Số
+                                lượng</label>
+                            <input type="text"
+                                   class="form-control">
+                        </div>
+                        <div class=" form-group">
+                            <label for="">Địa chỉ nhận
+                                hàng</label>
+                            <textarea
+                                                                                        class="form-control edit-details"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="text-center pb-2"
+                         id="loader_itech">
+                        <button type="button"
+                                class="btn btn-primary order-details">XÁC
+                            NHẬN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal animated fadeIn edit-order-details"
+     id="status-check-header" tabindex="-1" role="dialog"
+     aria-hidden="true">
+
+    <div
+        class="container d-flex justify-content-center position-status-order-deatils">
+
+        <div class="card status-check order-details">
+            <div class="close-btn status-check ">
+                <button type="button" class="close edit-details"
+                        data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"
+                          class="text-center">&times;</span>
+                </button>
+            </div>
+
+            <div class="container px-5">
+                <div
+                    class="row d-flex justify-content-evenly px-3 header-status-check deatil">
+                    <div class="col-md-6 d-flex">
+                        <h5>Đơn <span
+                                    class="text-primary font-weight-bold">#Y34XDHR</span>
+                        </h5>
+                    </div>
+                    <div
+                        class="col-md-6 d-flex flex-column text-sm-right code-order-details">
+                        <p class="mb-0">Ngày đặt
+                            <span>01/12/22</span>
+                        </p>
+                        <p>Mã đơn hàng <span
+                                           class="font-weight-bold">234094567242423422898</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Add class 'active' to progress -->
+            <div class="row d-flex justify-content-center">
+                <div class="col-12">
+                    <ul id="progressbar" class="text-center">
+                        <li class="active step0"></li>
+                        <li class="active step0"></li>
+                        <li class="active step0"></li>
+                        <li class="step0"></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="row justify-content-between d-flex header-status-check">
+                <div
+                    class="col-3 d-flex icon-content status-check">
+                    <i
+                        class="icon status-check fa-solid fa-ban"></i>
+                    <div class="d-flex flex-column">
+                        <p class="font-weight-bold">Hủy <br> đơn
+                        </p>
+                    </div>
+                </div>
+                <div
+                    class="col-3 d-flex icon-content status-check">
+                    <i
+                        class="icon status-check fa-solid fa-check-to-slot"></i>
+                    <div class="d-flex flex-column">
+                        <p class="font-weight-bold">Xác <br>
+                            Nhận</p>
+                    </div>
+                </div>
+                <div
+                    class="col-3 d-flex icon-content status-check">
+                    <i
+                        class="icon status-check fa-solid fa-truck-fast"></i>
+                    <div class="d-flex flex-column">
+                        <p class="font-weight-bold">Đang <br>
+                            vận chuyển
+                        </p>
+                    </div>
+                </div>
+                <div
+                    class="col-3 d-flex icon-content status-check">
+                    <i
+                        class="icon status-check fa-sharp fa-solid fa-house"></i>
+                    <div class="d-flex flex-column">
+                        <p class="font-weight-bold">Đã <br> giao
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</div>
+</div>
+
+<div class="col-xl-12">
+    <div class="card-product-ordered pt-4">
+        <div class="card-product order-details">
+            <nav class="status-check">
+
+                <div class="status-tittle order-details">
+                    <button class="fake-btn-status-check"
+                            data-toggle="modal"
+                            data-target="#status-check-header">Chờ xác nhận
+                    </button>
+                </div>
+            </nav>
+            <div class="row">
+                <div class="col-3">
+                    <div class="order-item-img">
+                        <img
+                            src="./img/blog/product_1.jpg">
+                    </div>
+                </div>
+
+                <div class="col-9">
+                    <div class="description order-details">
+                        <div class="contet-product-order">
+                            <h2>Tên sản phẩm</h2>
+                            <div class="qty-and-price">
+                                <h2>số lượng</h2>
+                                <h1>giá tiền</h1>
+                            </div>
+
+                            <div class="total-product order-detail">
+                                <span class="tittle">TỔNG</span>
+                                <span class="price-total">100.00đ</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-12">
+                    <div class="btn-product-detail pt-4">
+                        <button
+                            class="btn btn-primary order-details ">Hủy
+                            đơn
+                        </button>
+                        <button class="btn btn-primary order-details "
+                                data-toggle="modal"
+                                data-target="#login_itech">Chỉnh sửa
+                            đơn</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal animated fadeIn edit-order-details"
+             id="login_itech" tabindex="-1" role="dialog"
+             aria-hidden="true">
+            <div class="modal-dialog position-edit-order-deatils"
+                 role="document">
+                <div class="modal-content ">
+                    <div class="modal-header edit-order-details">
+                        <h5 class="modal-title edit-order-details">Chỉnh
+                            sửa đơn
+                            hàng
+                        </h5>
+                        <button type="button" class="close edit-details"
+                                data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"
+                                  class="text-center">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Số
+                                lượng</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class=" form-group">
+                            <label for="">Địa chỉ nhận
+                                hàng</label>
+                            <textarea
+                                                                                class="form-control edit-details"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="text-center pb-2" id="loader_itech">
+                        <button type="button"
+                                class="btn btn-primary order-details">XÁC
+                            NHẬN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal animated fadeIn edit-order-details"
+             id="status-check-header" tabindex="-1" role="dialog"
+             aria-hidden="true">
+
+            <div
+                class="container d-flex justify-content-center position-status-order-deatils">
+
+                <div class="card status-check order-details">
+                    <div class="close-btn status-check ">
+                        <button type="button" class="close edit-details"
+                                data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"
+                                  class="text-center">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="container px-5">
+                        <div
+                            class="row d-flex justify-content-evenly px-3 header-status-check">
+                            <div class="col-xl-6 d-flex">
+                                <h5>Đơn <span
+                                            class="text-primary font-weight-bold">#Y34XDHR</span>
+                                </h5>
+                            </div>
+                            <div
+                                class="col-xl-6 d-flex flex-column text-sm-right">
+                                <p class="mb-0">Ngày đặt
+                                    <span>01/12/22</span>
+                                </p>
+                                <p>Mã đơn hàng <span
+                                                   class="font-weight-bold">234094567242423422898</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Add class 'active' to progress -->
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-12">
+                            <ul id="progressbar" class="text-center">
+                                <li class="active step0"></li>
+                                <li class="active step0"></li>
+                                <li class="active step0"></li>
+                                <li class="step0"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div
+                        class="row justify-content-between d-flex header-status-check">
+                        <div
+                            class="col-xl-3 d-flex icon-content status-check">
+                            <i
+                                class="icon status-check fa-solid fa-ban"></i>
+                            <div class="d-flex flex-column">
+                                <p class="font-weight-bold">Hủy <br> đơn
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-xl-3 d-flex icon-content status-check">
+                            <i
+                                class="icon status-check fa-solid fa-check-to-slot"></i>
+                            <div class="d-flex flex-column">
+                                <p class="font-weight-bold">Xác <br>
+                                    Nhận</p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-xl-3 d-flex icon-content status-check">
+                            <i
+                                class="icon status-check fa-solid fa-truck-fast"></i>
+                            <div class="d-flex flex-column">
+                                <p class="font-weight-bold">Đang <br>
+                                    vận chuyển
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-xl-3 d-flex icon-content status-check">
+                            <i
+                                class="icon status-check fa-sharp fa-solid fa-house"></i>
+                            <div class="d-flex flex-column">
+                                <p class="font-weight-bold">Đã <br> giao
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="col-xl-12">
+    <div class="card-product-ordered pt-4">
+        <div class="card-product order-details">
+            <nav class="status-check">
+
+                <div class="status-tittle order-details">
+                    <button class="fake-btn-status-check"
+                            data-toggle="modal"
+                            data-target="#status-check-header">Chờ xác nhận
+                    </button>
+                </div>
+            </nav>
+            <div class="row">
+                <div class="col-3">
+                    <div class="order-item-img">
+                        <img
+                            src="./img/blog/product_1.jpg">
+                    </div>
+                </div>
+
+                <div class="col-9">
+                    <div class="description order-details">
+                        <div class="contet-product-order">
+                            <h2>Tên sản phẩm</h2>
+                            <div class="qty-and-price">
+                                <h2>số lượng</h2>
+                                <h1>giá tiền</h1>
+                            </div>
+
+                            <div class="total-product order-detail">
+                                <span class="tittle">TỔNG</span>
+                                <span class="price-total">100.00đ</span>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="col-12">
+                    <div class="btn-product-detail pt-4">
+                        <button
+                            class="btn btn-primary order-details ">Hủy
+                            đơn
+                        </button>
+                        <button class="btn btn-primary order-details "
+                                data-toggle="modal"
+                                data-target="#login_itech">Chỉnh sửa
+                            đơn</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal animated fadeIn edit-order-details"
+             id="login_itech" tabindex="-1" role="dialog"
+             aria-hidden="true">
+            <div class="modal-dialog position-edit-order-deatils"
+                 role="document">
+                <div class="modal-content ">
+                    <div class="modal-header edit-order-details">
+                        <h5 class="modal-title edit-order-details">Chỉnh
+                            sửa đơn
+                            hàng
+                        </h5>
+                        <button type="button" class="close edit-details"
+                                data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"
+                                  class="text-center">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Số
+                                lượng</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class=" form-group">
+                            <label for="">Địa chỉ nhận
+                                hàng</label>
+                            <textarea
+                                                                                class="form-control edit-details"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="text-center pb-2" id="loader_itech">
+                        <button type="button"
+                                class="btn btn-primary order-details">XÁC
+                            NHẬN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal animated fadeIn edit-order-details"
+             id="status-check-header" tabindex="-1" role="dialog"
+             aria-hidden="true">
+
+            <div
+                class="container d-flex justify-content-center position-status-order-deatils">
+
+                <div class="card status-check order-details">
+                    <div class="close-btn status-check ">
+                        <button type="button" class="close edit-details"
+                                data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"
+                                  class="text-center">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="container px-5">
+                        <div
+                            class="row d-flex justify-content-evenly px-3 header-status-check">
+                            <div class="col-xl-6 d-flex">
+                                <h5>Đơn <span
+                                            class="text-primary font-weight-bold">#Y34XDHR</span>
+                                </h5>
+                            </div>
+                            <div
+                                class="col-xl-6 d-flex flex-column text-sm-right">
+                                <p class="mb-0">Ngày đặt
+                                    <span>01/12/22</span>
+                                </p>
+                                <p>Mã đơn hàng <span
+                                                   class="font-weight-bold">234094567242423422898</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Add class 'active' to progress -->
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-12">
+                            <ul id="progressbar" class="text-center">
+                                <li class="active step0"></li>
+                                <li class="active step0"></li>
+                                <li class="active step0"></li>
+                                <li class="step0"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div
+                        class="row justify-content-between d-flex header-status-check">
+                        <div
+                            class="col-xl-3 d-flex icon-content status-check">
+                            <i
+                                class="icon status-check fa-solid fa-ban"></i>
+                            <div class="d-flex flex-column">
+                                <p class="font-weight-bold">Hủy <br> đơn
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-xl-3 d-flex icon-content status-check">
+                            <i
+                                class="icon status-check fa-solid fa-check-to-slot"></i>
+                            <div class="d-flex flex-column">
+                                <p class="font-weight-bold">Xác <br>
+                                    Nhận</p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-xl-3 d-flex icon-content status-check">
+                            <i
+                                class="icon status-check fa-solid fa-truck-fast"></i>
+                            <div class="d-flex flex-column">
+                                <p class="font-weight-bold">Đang <br>
+                                    vận chuyển
+                                </p>
+                            </div>
+                        </div>
+                        <div
+                            class="col-xl-3 d-flex icon-content status-check">
+                            <i
+                                class="icon status-check fa-sharp fa-solid fa-house"></i>
+                            <div class="d-flex flex-column">
+                                <p class="font-weight-bold">Đã <br> giao
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+</div>
+</div>
+
+
+
+<div role="tabpanel" class="tab-pane needed" id="confirmed">
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card-product-ordered pt-4">
+                <div class="card-product order-details">
+                    <nav class="status-check">
+
+                        <div class="status-tittle order-details">
+                            <button class="fake-btn-status-check"
+                                    data-toggle="modal"
+                                    data-target="#status-check-header--checked">Đã
+                                xác nhận
+                            </button>
+                        </div>
+                    </nav>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="order-item-img">
+                                <img
+                                    src="./img/blog/product_1.jpg">
+                            </div>
+                        </div>
+
+                        <div class="col-9">
+                            <div class="description order-details">
+                                <div class="contet-product-order">
+                                    <h2>Tên sản phẩm</h2>
+                                    <div class="qty-and-price">
+                                        <h2>số lượng</h2>
+                                        <h1>giá tiền</h1>
+                                    </div>
+
+                                    <div class="total-product order-detail">
+                                        <span class="tittle">TỔNG</span>
+                                        <span class="price-total">100.00đ</span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12">
+                            <div class="btn-product-detail pt-4">
+                                <button
+                                    class="btn btn-primary order-details disabled">Hủy
+                                    đơn
+                                </button>
+                                <button
+                                    class="btn btn-primary order-details disabled"
+                                    data-toggle="modal"
+                                    data-target="#login_itech">Chỉnh sửa
+                                    đơn</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal animated fadeIn edit-order-details"
+                     id="login_itech" tabindex="-1" role="dialog"
+                     aria-hidden="true">
+                    <div class="modal-dialog position-edit-order-deatils"
+                         role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header edit-order-details">
+                                <h5 class="modal-title edit-order-details">Chỉnh
+                                    sửa đơn
+                                    hàng
+                                </h5>
+                                <button type="button" class="close edit-details"
+                                        data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"
+                                          class="text-center">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Số
+                                        lượng</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class=" form-group">
+                                    <label for="">Địa chỉ nhận
+                                        hàng</label>
+                                    <textarea
+                                                                                class="form-control edit-details"></textarea>
+                                </div>
+
+                            </div>
+
+                            <div class="text-center pb-2" id="loader_itech">
+                                <button type="button"
+                                        class="btn btn-primary order-details">XÁC
+                                    NHẬN</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal animated fadeIn edit-order-details"
+                     id="status-check-header--checked" tabindex="-1"
+                     role="dialog" aria-hidden="true">
+
+                    <div
+                        class="container d-flex justify-content-center position-status-order-deatils">
+
+                        <div class="card status-check order-details">
+                            <div class="close-btn status-check ">
+                                <button type="button" class="close edit-details"
+                                        data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"
+                                          class="text-center">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="container px-5">
+                                <div
+                                    class="row d-flex justify-content-evenly px-3 header-status-check">
+                                    <div class="col-xl-6 d-flex">
+                                        <h5>Đơn <span
+                                                    class="text-primary font-weight-bold">#Y34XDHR</span>
+                                        </h5>
+                                    </div>
+                                    <div
+                                        class="col-xl-6 d-flex flex-column text-sm-right">
+                                        <p class="mb-0">Ngày đặt
+                                            <span>01/12/22</span>
+                                        </p>
+                                        <p>Mã đơn hàng <span
+                                                           class="font-weight-bold">234094567242423422898</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Add class 'active' to progress -->
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-12">
+                                    <ul id="progressbar" class="text-center">
+                                        <li class="active step0"></li>
+                                        <li class="active step0"></li>
+                                        <li class=" step0"></li>
+                                        <li class="step0"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div
+                                class="row justify-content-between d-flex header-status-check">
+                                <div
+                                    class="col-xl-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-solid fa-ban"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Hủy <br> đơn
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-solid fa-check-to-slot"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Xác <br>
+                                            Nhận</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-solid fa-truck-fast"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Đang <br>
+                                            vận chuyển
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-sharp fa-solid fa-house"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Đã <br> giao
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div role="tabpanel" class="tab-pane" id="shipping">
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card-product-ordered pt-4">
+            <div class="card-product order-details">
+                <nav class="status-check">
+
+                    <div class="status-tittle order-details">
+                        <button class="fake-btn-status-check"
+                                data-toggle="modal"
+                                data-target="#status-check-header--shipping">Đang
+                            vận chuyển
+                        </button>
+                    </div>
+                </nav>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="order-item-img">
+                            <img
+                                src="./img/blog/product_1.jpg">
+                        </div>
+                    </div>
+
+                    <div class="col-9">
+                        <div class="description order-details">
+                            <div class="contet-product-order">
+                                <h2>Tên sản phẩm</h2>
+                                <div class="qty-and-price">
+                                    <h2>số lượng</h2>
+                                    <h1>giá tiền</h1>
+                                </div>
+
+                                <div class="total-product order-detail">
+                                    <span class="tittle">TỔNG</span>
+                                    <span class="price-total">100.00đ</span>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-12">
+                        <div class="btn-product-detail pt-4">
+                            <button
+                                class="btn btn-primary order-details disabled">Hủy
+                                đơn
+                            </button>
+                            <button
+                                class="btn btn-primary order-details disabled"
+                                data-toggle="modal"
+                                data-target="#login_itech">Chỉnh sửa
+                                đơn</button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal animated fadeIn edit-order-details"
+                 id="login_itech" tabindex="-1" role="dialog"
+                 aria-hidden="true">
+                <div class="modal-dialog position-edit-order-deatils"
+                     role="document">
+                    <div class="modal-content ">
+                        <div class="modal-header edit-order-details">
+                            <h5 class="modal-title edit-order-details">Chỉnh
+                                sửa đơn
+                                hàng
+                            </h5>
+                            <button type="button" class="close edit-details"
+                                    data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"
+                                      class="text-center">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Số
+                                    lượng</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class=" form-group">
+                                <label for="">Địa chỉ nhận
+                                    hàng</label>
+                                <textarea
+                                                                                class="form-control edit-details"></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="text-center pb-2" id="loader_itech">
+                            <button type="button"
+                                    class="btn btn-primary order-details">XÁC
+                                NHẬN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal animated fadeIn edit-order-details"
+                 id="status-check-header--shipping" tabindex="-1"
+                 role="dialog" aria-hidden="true">
+
+                <div
+                    class="container d-flex justify-content-center position-status-order-deatils">
+
+                    <div class="card status-check order-details">
+                        <div class="close-btn status-check ">
+                            <button type="button" class="close edit-details"
+                                    data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"
+                                      class="text-center">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="container px-5">
+                            <div
+                                class="row d-flex justify-content-evenly px-3 header-status-check">
+                                <div class="col-xl-6 d-flex">
+                                    <h5>Đơn <span
+                                                class="text-primary font-weight-bold">#Y34XDHR</span>
+                                    </h5>
+                                </div>
+                                <div
+                                    class="col-xl-6 d-flex flex-column text-sm-right">
+                                    <p class="mb-0">Ngày đặt
+                                        <span>01/12/22</span>
+                                    </p>
+                                    <p>Mã đơn hàng <span
+                                                       class="font-weight-bold">234094567242423422898</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Add class 'active' to progress -->
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-12">
+                                <ul id="progressbar" class="text-center">
+                                    <li class="active step0"></li>
+                                    <li class="active step0"></li>
+                                    <li class="active step0"></li>
+                                    <li class="step0"></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div
+                            class="row justify-content-between d-flex header-status-check">
+                            <div
+                                class="col-xl-3 d-flex icon-content status-check">
+                                <i
+                                    class="icon status-check fa-solid fa-ban"></i>
+                                <div class="d-flex flex-column">
+                                    <p class="font-weight-bold">Hủy <br> đơn
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="col-xl-3 d-flex icon-content status-check">
+                                <i
+                                    class="icon status-check fa-solid fa-check-to-slot"></i>
+                                <div class="d-flex flex-column">
+                                    <p class="font-weight-bold">Xác <br>
+                                        Nhận</p>
+                                </div>
+                            </div>
+                            <div
+                                class="col-xl-3 d-flex icon-content status-check">
+                                <i
+                                    class="icon status-check fa-solid fa-truck-fast"></i>
+                                <div class="d-flex flex-column">
+                                    <p class="font-weight-bold">Đang <br>
+                                        vận chuyển
+                                    </p>
+                                </div>
+                            </div>
+                            <div
+                                class="col-xl-3 d-flex icon-content status-check">
+                                <i
+                                    class="icon status-check fa-sharp fa-solid fa-house"></i>
+                                <div class="d-flex flex-column">
+                                    <p class="font-weight-bold">Đã <br> giao
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div role="tabpanel" class="tab-pane" id="shipped">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card-product-ordered pt-4">
+                <div class="card-product order-details">
+                    <nav class="status-check">
+
+                        <div class="status-tittle order-details">
+                            <button class="fake-btn-status-check"
+                                    data-toggle="modal"
+                                    data-target="#status-check-header--shipped">Đang
+                                giao
+                            </button>
+                        </div>
+                    </nav>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="order-item-img">
+                                <img
+                                    src="./img/blog/product_1.jpg">
+                            </div>
+                        </div>
+
+                        <div class="col-9">
+                            <div class="description order-details">
+                                <div class="contet-product-order">
+                                    <h2>Tên sản phẩm</h2>
+                                    <div class="qty-and-price">
+                                        <h2>số lượng</h2>
+                                        <h1>giá tiền</h1>
+                                    </div>
+
+                                    <div class="total-product order-detail">
+                                        <span class="tittle">TỔNG</span>
+                                        <span class="price-total">100.00đ</span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12">
+                            <div class="btn-product-detail pt-4">
+                                <button
+                                    class="btn btn-primary order-details disabled">Hủy
+                                    đơn
+                                </button>
+                                <button
+                                    class="btn btn-primary order-details disabled"
+                                    data-toggle="modal"
+                                    data-target="#login_itech">Chỉnh sửa
+                                    đơn</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal animated fadeIn edit-order-details"
+                     id="login_itech" tabindex="-1" role="dialog"
+                     aria-hidden="true">
+                    <div class="modal-dialog position-edit-order-deatils"
+                         role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header edit-order-details">
+                                <h5 class="modal-title edit-order-details">Chỉnh
+                                    sửa đơn
+                                    hàng
+                                </h5>
+                                <button type="button" class="close edit-details"
+                                        data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"
+                                          class="text-center">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Số
+                                        lượng</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class=" form-group">
+                                    <label for="">Địa chỉ nhận
+                                        hàng</label>
+                                    <textarea
+                                                                                class="form-control edit-details"></textarea>
+                                </div>
+
+                            </div>
+
+                            <div class="text-center pb-2" id="loader_itech">
+                                <button type="button"
+                                        class="btn btn-primary order-details">XÁC
+                                    NHẬN</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal animated fadeIn edit-order-details"
+                     id="status-check-header--shipped" tabindex="-1"
+                     role="dialog" aria-hidden="true">
+
+                    <div
+                        class="container d-flex justify-content-center position-status-order-deatils">
+
+                        <div class="card status-check order-details">
+                            <div class="close-btn status-check ">
+                                <button type="button" class="close edit-details"
+                                        data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"
+                                          class="text-center">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="container px-5">
+                                <div
+                                    class="row d-flex justify-content-evenly px-3 header-status-check">
+                                    <div class="col-xl-6 d-flex">
+                                        <h5>Đơn <span
+                                                    class="text-primary font-weight-bold">#Y34XDHR</span>
+                                        </h5>
+                                    </div>
+                                    <div
+                                        class="col-xl-6 d-flex flex-column text-sm-right">
+                                        <p class="mb-0">Ngày đặt
+                                            <span>01/12/22</span>
+                                        </p>
+                                        <p>Mã đơn hàng <span
+                                                           class="font-weight-bold">234094567242423422898</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Add class 'active' to progress -->
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-12">
+                                    <ul id="progressbar" class="text-center">
+                                        <li class="active step0"></li>
+                                        <li class="active step0"></li>
+                                        <li class="active step0"></li>
+                                        <li class="active step0"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div
+                                class="row justify-content-between d-flex header-status-check">
+                                <div
+                                    class="col-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-solid fa-ban"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Hủy <br> đơn
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="col-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-solid fa-check-to-slot"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Xác <br>
+                                            Nhận</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-solid fa-truck-fast"></i>
+                                    <div class=" text-icon d-flex flex-column">
+                                        <p class="font-weight-bold">Đang <br>
+                                            vận chuyển
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-sharp fa-solid fa-house"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Đã <br> giao
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div role="tabpanel" class="tab-pane" id="cancel">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card-product-ordered pt-4">
+                <div class="card-product order-details">
+                    <nav class="status-check">
+
+                        <div class="status-tittle order-details">
+                            <button class="fake-btn-status-check"
+                                    data-toggle="modal"
+                                    data-target="#status-check-header--cancel">Đã
+                                hủy
+                            </button>
+                        </div>
+                    </nav>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="order-item-img">
+                                <img
+                                    src="./img/blog/product_1.jpg">
+                            </div>
+                        </div>
+
+                        <div class="col-9">
+                            <div class="description order-details">
+                                <div class="contet-product-order">
+                                    <h2>Tên sản phẩm</h2>
+                                    <div class="qty-and-price">
+                                        <h2>số lượng</h2>
+                                        <h1>giá tiền</h1>
+                                    </div>
+
+                                    <div class="total-product order-detail">
+                                        <span class="tittle">TỔNG</span>
+                                        <span class="price-total">100.00đ</span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-12">
+                            <div class="btn-product-detail pt-4">
+                                <button
+                                    class="btn btn-primary order-details disabled">Hủy
+                                    đơn
+                                </button>
+                                <button
+                                    class="btn btn-primary order-details disabled"
+                                    data-toggle="modal"
+                                    data-target="#login_itech">Chỉnh sửa
+                                    đơn</button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal animated fadeIn edit-order-details"
+                     id="login_itech" tabindex="-1" role="dialog"
+                     aria-hidden="true">
+                    <div class="modal-dialog position-edit-order-deatils"
+                         role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header edit-order-details">
+                                <h5 class="modal-title edit-order-details">Chỉnh
+                                    sửa đơn
+                                    hàng
+                                </h5>
+                                <button type="button" class="close edit-details"
+                                        data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"
+                                          class="text-center">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Số
+                                        lượng</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class=" form-group">
+                                    <label for="">Địa chỉ nhận
+                                        hàng</label>
+                                    <textarea
+                                                                                class="form-control edit-details"></textarea>
+                                </div>
+
+                            </div>
+
+                            <div class="text-center pb-2" id="loader_itech">
+                                <button type="button"
+                                        class="btn btn-primary order-details">XÁC
+                                    NHẬN</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal animated fadeIn edit-order-details"
+                     id="status-check-header--cancel" tabindex="-1" role="dialog"
+                     aria-hidden="true">
+
+                    <div
+                        class="container d-flex justify-content-center position-status-order-deatils">
+
+                        <div class="card status-check order-details">
+                            <div class="close-btn status-check ">
+                                <button type="button" class="close edit-details"
+                                        data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true"
+                                          class="text-center">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="container px-5">
+                                <div
+                                    class="row d-flex justify-content-evenly px-3 header-status-check">
+                                    <div class="col-xl-6 d-flex">
+                                        <h5>Đơn <span
+                                                    class="text-primary font-weight-bold">#Y34XDHR</span>
+                                        </h5>
+                                    </div>
+                                    <div
+                                        class="col-xl-6 d-flex flex-column text-sm-right">
+                                        <p class="mb-0">Ngày đặt
+                                            <span>01/12/22</span>
+                                        </p>
+                                        <p>Mã đơn hàng <span
+                                                           class="font-weight-bold">234094567242423422898</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Add class 'active' to progress -->
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-12">
+                                    <ul id="progressbar" class="text-center">
+                                        <li class=" step0"></li>
+                                        <li class=" step0"></li>
+                                        <li class=" step0"></li>
+                                        <li class="step0"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div
+                                class="row justify-content-between d-flex header-status-check">
+                                <div
+                                    class="col-xl-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-solid fa-ban"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Hủy <br> đơn
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-solid fa-check-to-slot"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Xác <br>
+                                            Nhận</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-solid fa-truck-fast"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Đang <br>
+                                            vận chuyển
+                                        </p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="col-xl-3 d-flex icon-content status-check">
+                                    <i
+                                        class="icon status-check fa-sharp fa-solid fa-house"></i>
+                                    <div class="d-flex flex-column">
+                                        <p class="font-weight-bold">Đã <br> giao
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+
+</div>
+</div>
+<div class="tab-pane fade" id="notification" role="tabpanel"
+     aria-labelledby="notification-tab">
+    <div class="mdc-tab-bar" role="tablist">
+        <div class="mdc-tab-scroller">
+            <div class="mdc-tab-scroller__scroll-area">
+                <div class="mdc-tab-scroller__scroll-content">
+                    <button class="mdc-tab mdc-tab--active" role="tab" aria-selected="true"
+                            tabindex="0">
+                        <span class="mdc-tab__content">
+                            <!-- <span class="mdc-tab__icon material-icons" aria-hidden="true">favorite</span>
+                            <span class="mdc-tab__text-label">Favorites</span> -->
+                        </span>
+                        <span class="mdc-tab-indicator mdc-tab-indicator--active">
+                            <span
+                                class="mdc-tab-indicator__content mdc-tab-indicator__content--underline"></span>
+                        </span>
+                        <span class="mdc-tab__ripple"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+</div>
+<!-- </div> -->
+</section>
+
+@section Scripts {
+    <script>
+                $("#btn-password-cancel").click(function () {
+                $("#oldPassword").val("");
+                $("#newPassword").val("");
+                $("#confirmPassword").val("");
+            });
+            
+            $("#btn-submit").on("click", function () {
+                var oldPassword = $("#oldPassword").val();
+                var newPassword = $("#newPassword").val();
+                var confirmPassword = $("#confirmPassword").val();
+                
+                var temp = true;
+                 if (oldPassword == "") {
+                     $("#oldPassword").addClass("is-invalid");
+                     $("#oldPassword").focus();
+                     $("#oldPassword").attr("placeholder", "Vui lòng nhập mật khẩu cũ");
+                     temp = false;
+                 }
+                 else {
+                     $("#oldPassword").removeClass("is-invalid");
+                 }
+
+                 if (newPassword == "") {
+                     $("#newPassword").addClass("is-invalid");
+                     $("#newPassword").focus();
+                     $("#newPassword").attr("placeholder", "Vui lòng nhập mật khẩu mới");
+                     temp = false;
+                 }
+                 else {
+                     $("#newPassword").removeClass("is-invalid");
+                 }
+
+                 if (confirmPassword == "") {
+                     $("#confirmPassword").addClass("is-invalid");
+                     $("#confirmPassword").focus();
+                     $("#confirmPassword").attr("placeholder", "Vui lòng nhập lại mật khẩu mới");
+                     temp = false;
+                     }
+                 else {
+                     $("#confirmPassword").removeClass("is-invalid");
+                 }
+
+                 if (newPassword != confirmPassword) {
+                     $("#confirmPassword").addClass("is-invalid");
+                     $("#confirmPassword").focus();
+                     $("#confirmPassword").val("");
+                     $("#confirmPassword").attr("placeholder", "Mật khẩu không khớp");
+                        temp = false;
+                 }
+                 else {
+                     $("#confirmPassword").removeClass("is-invalid");
+                 }
+                
+                
+                if (temp == true) {
+                        var urlListPhoto = "@Url.Action("TEst", "Manage")";
+                    $.ajax({
+                        url: urlListPhoto,
+                        type: "POST",
+                        data: {
+                            oldPassword: oldPassword,
+                            newPassword: newPassword,
+                            confirmPassword: confirmPassword
+                            },
+                        success: function (data) {
+                            if (data.success == "1") {
+                                $("#oldPassword").val("");
+                                $("#newPassword").val("");
+                                $("#confirmPassword").val("");
+                                $("#oldPassword").removeClass("is-invalid");
+                                $("#oldPassword").attr("placeholder", "");
+                                $("#newPassword").removeClass("is-invalid");
+                                $("#newPassword").attr("placeholder", "");
+                                $("#confirmPassword").removeClass("is-invalid");
+                                    $("#confirmPassword").attr("placeholder", "");
+
+                                //var myDiv = document.getElementById("MyModalSuccessAlertBody");
+                                //myDiv.innerHTML = "Thay đổi mật khẩu thành công";
+                                //$('#myModalSuccess').modal('show');
+                                var html = "<div class='alert alert-success'>Thay đổi mật khẩu thành công</div>";
+                                $("#msgChangePassword").html(html);
+                            }
+                            else {
+                                $("#oldPassword").addClass("is-invalid");
+                                $("#oldPassword").focus();
+                                $("#oldPassword").val("");
+                                $("#oldPassword").attr("placeholder", "Mật khẩu cũ không đúng");
+                                
+                                    var html = "<div class='alert alert-success'>Thay đổi mật khẩu thành công</div>";
+                                    $("#msgChangePassword").html(html);
+                            }
+                        }
+                    });
+                }
+                        
+                    
+            });
+    </script>
+
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    } 

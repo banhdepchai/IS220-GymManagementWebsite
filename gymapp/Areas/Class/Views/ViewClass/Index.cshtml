@@ -35,13 +35,26 @@
                 @foreach (var classModel in Model)
                 {
                     <div class="col-lg-4 col-md-6">
-                        <div class="single-class-item set-bg" data-setbg="/img/classes/classes-1.jpg">
-                            <div class="si-text">
-                                <h4>@classModel.ClassTitle</h4>
-                                <span><i class="fa fa-user"></i>@classModel.Instructor.Name</span>
-                                <button type="button" class="btn btn-registerclass" data-id="@classModel.ClassId" data-toggle="modal" data-target=".bd-example-modal-sm">Đăng ký</button>
+                        @if (classModel.PhotoUrl == null)
+                        {
+                            <div class="single-class-item set-bg" data-setbg="/contents/nophoto.png">
+                                <div class="si-text">
+                                    <h4>@classModel.ClassTitle</h4>
+                                    <span><i class="fa fa-user"></i>@classModel.Instructor.Name</span>
+                                    <button type="button" class="btn btn-registerclass" data-id="@classModel.ClassId" data-toggle="modal" data-target=".bd-example-modal-sm">Đăng ký</button>
+                                </div>
                             </div>
-                        </div>
+                        }
+                        else
+                        {
+                            <div class="single-class-item set-bg" data-setbg="/images/@classModel.PhotoUrl">
+                                <div class="si-text">
+                                    <h4>@classModel.ClassTitle</h4>
+                                    <span><i class="fa fa-user"></i>@classModel.Instructor.Name</span>
+                                    <button type="button" class="btn btn-registerclass" data-id="@classModel.ClassId" data-toggle="modal" data-target=".bd-example-modal-sm">Đăng ký</button>
+                                </div>
+                            </div>
+                        }
                     </div>
                     
                     <!-- Classes Popup Begin -->
@@ -107,6 +120,9 @@
     
 @section Scripts
 {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
         $(document).ready(function () {
             $('.mainmenu').find('li').removeClass('active');

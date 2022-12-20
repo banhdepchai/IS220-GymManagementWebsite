@@ -14,7 +14,6 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Areas.Identity.Controllers
 {
-
     [Authorize]
     [Area("Identity")]
     [Route("/Member/[action]")]
@@ -62,6 +61,7 @@ namespace App.Areas.Identity.Controllers
                 AuthenticatorKey = await _userManager.GetAuthenticatorKeyAsync(user),
                 profile = new EditExtraProfileModel()
                 {
+                    FullName = user.FullName,
                     BirthDate = user.BirthDate,
                     HomeAdress = user.HomeAdress,
                     UserName = user.UserName,
@@ -69,8 +69,10 @@ namespace App.Areas.Identity.Controllers
                     PhoneNumber = user.PhoneNumber,
                 }
             };
+
             return View(model);
         }
+
         public enum ManageMessageId
         {
             AddPhoneSuccess,
@@ -82,6 +84,7 @@ namespace App.Areas.Identity.Controllers
             RemovePhoneSuccess,
             Error
         }
+
         private Task<AppUser> GetCurrentUserAsync()
         {
             return _userManager.GetUserAsync(HttpContext.User);
@@ -89,22 +92,17 @@ namespace App.Areas.Identity.Controllers
 
         //
         // GET: /Manage/ChangePassword
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult ChangePassword()
+        //{
+        //    return View();
+        //}
 
         //
         // POST: /Manage/ChangePassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ActionName("TEst")]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
             var user = await GetCurrentUserAsync();
             if (user != null)
             {
@@ -112,14 +110,21 @@ namespace App.Areas.Identity.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
+
                     _logger.LogInformation(3, "User changed their password successfully.");
-                    return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
+
+                    return Json(new
+                    {
+                        success = 0,
+                    });
                 }
-                ModelState.AddModelError(result);
-                return View(model);
             }
-            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+            return Json(new
+            {
+                success = 1,
+            });
         }
+
         //
         // GET: /Manage/SetPassword
         [HttpGet]
@@ -179,7 +184,6 @@ namespace App.Areas.Identity.Controllers
             });
         }
 
-
         //
         // POST: /Manage/LinkLogin
         [HttpPost]
@@ -212,7 +216,6 @@ namespace App.Areas.Identity.Controllers
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
 
-
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]
@@ -232,6 +235,7 @@ namespace App.Areas.Identity.Controllers
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
+
         //
         // GET: /Manage/AddPhoneNumber
         public IActionResult AddPhoneNumber()
@@ -255,6 +259,7 @@ namespace App.Areas.Identity.Controllers
             await _emailSender.SendSmsAsync(model.PhoneNumber, "Mã xác thực là: " + code);
             return RedirectToAction(nameof(VerifyPhoneNumber), new { PhoneNumber = model.PhoneNumber });
         }
+
         //
         // GET: /Manage/VerifyPhoneNumber
         [HttpGet]
@@ -289,6 +294,7 @@ namespace App.Areas.Identity.Controllers
             ModelState.AddModelError(string.Empty, "Lỗi thêm số điện thoại");
             return View(model);
         }
+
         //
         // GET: /Manage/RemovePhoneNumber
         [HttpPost]
@@ -307,7 +313,6 @@ namespace App.Areas.Identity.Controllers
             }
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
-
 
         //
         // POST: /Manage/EnableTwoFactorAuthentication
@@ -339,6 +344,7 @@ namespace App.Areas.Identity.Controllers
             }
             return RedirectToAction(nameof(Index), "Manage");
         }
+
         //
         // POST: /Manage/ResetAuthenticatorKey
         [HttpPost]
@@ -374,7 +380,7 @@ namespace App.Areas.Identity.Controllers
         public async Task<IActionResult> EditProfileAsync()
         {
             var user = await GetCurrentUserAsync();
-            
+
             var model = new EditExtraProfileModel()
             {
                 BirthDate = user.BirthDate,
@@ -385,6 +391,7 @@ namespace App.Areas.Identity.Controllers
             };
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> EditProfileAsync(EditExtraProfileModel model)
         {
@@ -396,9 +403,6 @@ namespace App.Areas.Identity.Controllers
 
             await _signInManager.RefreshSignInAsync(user);
             return RedirectToAction(nameof(Index), "Manage");
-
         }
-
-
     }
 }

@@ -37,5 +37,12 @@ namespace App.Models.Classes
 
         [Display(Name = "Huấn luyện viên")]
         public Instructor? Instructor { get; set; }
+
+        [Display(Name = "Hình ảnh")]
+        public string? PhotoUrl { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Hình ảnh")]
+        public IFormFile? ImageFile { get; set; }
     }
 }

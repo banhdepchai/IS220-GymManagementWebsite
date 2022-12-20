@@ -58,16 +58,63 @@
                         <li><a asp-action="Index" asp-controller="ViewProduct" asp-area="Product">Sản phẩm</a></li>
                         <li><a asp-action="SendContact" asp-controller="Contact" asp-area="Contact">Liên hệ</a></li>
                         <li><a asp-action="About" asp-controller="Home">Về chúng tôi</a></li>
+                        
+                        
+                        <partial name="_LoginPartial1" />
                     </ul>
                 </nav>
-                <a asp-controller="Account" asp-action="Login" asp-area="Identity" class="primary-btn signup-btn">Đăng nhập</a>
-                <a asp-route="cart" class="primary-btn signup-btn"><i class="fa-sharp fa-solid fa-cart-shopping"></i> Giỏ hàng</a>
+                
             </div>
             <div id="mobile-menu-wrap"></div>
         </div>
     </header>
     <!-- Header End -->
-    
+    <!--Success Dialog Start-->
+            <div id="myModalSuccess" class="modal fade text-width:30%;" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h2>Thông báo</h2>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div id="MyModalSuccessAlertBody" class="modal-body alert alert-success">
+                            this is a modal body. our message will appear here.
+                        </div>
+
+                        <div class="modal-footer">
+                            &nbsp;
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Đóng</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--Success Dialog End-->
+            <!--Error Dialog Start-->
+            <div id="myModalError" class="modal fade text-width:30%;" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h2>Lỗi</h2>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <div id="MyModalErrorAlertBody" class="modal-body alert alert-danger">
+                            this is a modal body. our message will appear here.
+                        </div>
+
+                        <div class="modal-footer">
+                            &nbsp;
+                            <button type="button" class="btn btn-info" data-dismiss="modal">Đóng</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--Error Dialog End-->
     @RenderBody()
 
     <!-- Footer Section Begin -->
@@ -90,11 +137,9 @@
                     <div class="footer-option">
                         <ul>
                             <li> <span>Sản phẩm</span></li>
-                            <li><a href="">Thực phẩm chức năng</a></li>
-                            <li><a href="">Sản phẩm bảo hộ</a></li>
                             @foreach (var item in categories)
                             {
-                                <li><a href="#">@item.Title</a></li>
+                                <li><a href="/san-pham/@item.Slug">@item.Title</a></li>
                             }
                         </ul>
                     </div>
@@ -142,8 +187,11 @@
     <script src="/js/jquery.slicknav.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
     <script src="/js/main.js"></script>
+    <script src="/js/site.js" asp-append-version="true"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

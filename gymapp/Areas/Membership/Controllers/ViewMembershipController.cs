@@ -82,7 +82,8 @@ namespace App.Areas.Membership.Controllers
                 _context.SignupMemberships.Add(SignupMembership);
                 await _context.SaveChangesAsync();
 
-                return Content("Đặt hàng thành công");
+                TempData["SuccessMessage"] = "Đăng ký thành công";
+                return RedirectToAction(nameof(Index));
             }
             return View();
         }

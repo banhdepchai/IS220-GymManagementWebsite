@@ -44,8 +44,12 @@
                                         <input id="name" value="@user.FullName">
                                     </div>
                                     <div class="col-lg-6">
-                                        <label for="phone-number">Số điện thoại</label>
+                                        <label for="phone-number">Email</label>
                                         <input id="email" value="@user.Email">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="phone-number">Số điện thoại</label>
+                                        <input id="email" value="@user.PhoneNumber">
                                     </div>
                                     <div class="col-lg-6">
                                         <label for="address">Địa chỉ</label>
@@ -61,7 +65,7 @@
                                     </div>
 
                                 </div>
-                                <button type="submit" class="register-btn" >Đăng ký</button>
+                                <button class="register-btn" >Đăng ký</button>
                             </form>
                         </div>
                     </div>
@@ -99,10 +103,15 @@
 <!-- Register Section End -->
 
 @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script>
         $(document).ready(function () {
             $('.mainmenu').find('li').removeClass('active');
             $('.mainmenu').find('li').eq(1).addClass('active');
+            
+            $("#dichvu").val($("#dichvu option:first").val());
 
             $("#dichvu").change(function () {
             $.ajax({
@@ -120,6 +129,7 @@
             $(".register-btn").click(function (e) {
                 e.preventDefault();
                 var service = $("#dichvu").val();
+                
                 window.location.href = '/dich-vu/' + service + '/xac-nhan-don-hang';
                 return false;
                 });

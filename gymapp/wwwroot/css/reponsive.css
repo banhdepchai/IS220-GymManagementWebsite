@@ -288,6 +288,8 @@
 		background-color: #1d1c1cb2;
 	}
 
+	
+
 
 
 }
@@ -444,7 +446,32 @@
 		width: 50%
 	}
 
+	.shopping-item{
+		display: none;
+	}
 
+	.user-item{
+		display: none;
+	}
+
+	.user-section-login--mobile{
+		display: flex;
+		/* flex-direction: column; */
+		padding: 10px 0 0 0;
+		float: left;
+		/* justify-self: unset; */
+		/* justify-content: space-between; */
+		padding-left: 100px;
+	}
+
+	.user-cart-login--mobile{
+		display: flex;
+		/* flex-direction: column; */
+		padding: 31px 0 0 0;
+		float: left;
+		padding-bottom: 10px !important;
+	
+	}
 
 }
 

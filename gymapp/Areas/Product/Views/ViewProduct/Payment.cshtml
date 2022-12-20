@@ -1,4 +1,6 @@
-﻿@model App.Models.Payments.Payment
+﻿@using App.Areas.Product.Service
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model App.Models.Payments.Payment
 @{
     Layout = "_LayoutUser";
     ViewData["Title"] = "Chi tiết đơn hàng";
@@ -104,14 +106,14 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio" class="mr-2"> Trực tiếp qua Momo</label>
+                                        <label><input type="radio" name="optradio" class="mr-2" value="paypal"><i class="fa-brands fa-cc-paypal"></i> Thanh toán bằng paypal</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="radio">
-                                        <label><input type="radio" name="optradio" class="mr-2"> Trả sau</label>
+                                        <label><input type="radio" name="optradio" class="mr-2" value="trasau"><i class="fa-solid fa-wallet"></i> Trả sau</label>
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +124,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p><a asp-action="Checkout" class="btn btn-primary btn-cart py-3 px-4">Đặt hàng</a></p>
+                            <p><a @*asp-action="Checkout"*@ id="btn-tt" class="btn btn-primary btn-cart py-3 px-4">Đặt hàng</a></p>
                         </div>
                     </div>
                 </div>
@@ -132,3 +134,24 @@
     </div>
 </section> 
 <!-- .section -->
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function () {
+            $("#btn-tt").on("click", function () {
+                var optradio = $("input[name='optradio']:checked").val();
+                if (optradio == "paypal") {
+                    $(location).prop('href', '/thanh-toan-paypal')
+                }
+                else if (optradio == "trasau") {
+                    $(location).prop('href', '/xac-nhan-don-hang')
+                }
+                else {
+                    alert("Vui lòng chọn phương thức thanh toán");
+                }
+            });
+        });
+    </script>
+}

@@ -1,4 +1,5 @@
 ﻿using App.Areas.Product.Models;
+using App.Models.Payments;
 using Newtonsoft.Json;
 
 namespace App.Areas.Product.Service
@@ -34,6 +35,7 @@ namespace App.Areas.Product.Service
         {
             var session = HttpContext.Session;
             session.Remove(CARTKEY);
+            session.Remove("discount");
         }
 
         // Lưu Cart (Danh sách CartItem) vào session
@@ -42,6 +44,26 @@ namespace App.Areas.Product.Service
             var session = HttpContext.Session;
             string jsoncart = JsonConvert.SerializeObject(ls);
             session.SetString(CARTKEY, jsoncart);
+        }
+
+        // Lưu Discount vào session
+        public void SaveDiscountSession(Discount discount)
+        {
+            var session = HttpContext.Session;
+            string jsondiscount = JsonConvert.SerializeObject(discount);
+            session.SetString("discount", jsondiscount);
+        }
+
+        // Lấy Discount từ session
+        public Discount GetDiscount()
+        {
+            var session = HttpContext.Session;
+            string jsondiscount = session.GetString("discount");
+            if (jsondiscount != null)
+            {
+                return JsonConvert.DeserializeObject<Discount>(jsondiscount);
+            }
+            return null;
         }
     }
 }

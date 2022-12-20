@@ -17,89 +17,6 @@
     Layout = null;
     ViewData["Title"] = "Đăng nhập";
 }
-
-@*<h1>@ViewData["Title"].</h1>
-<div class="row">
-    <div class="col-md-8">
-        <section>
-            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-                <h4>Sử dụng tài khoản đã đăng ký để đăng nhập</h4>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="UserNameOrEmail" class="control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="UserNameOrEmail" class="form-control" />
-                        <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <div class="checkbox">
-                            <label asp-for="RememberMe">
-                                <input asp-for="RememberMe" />
-                                @Html.DisplayNameFor(m => m.RememberMe)
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="submit" class="btn btn-primary">Đăng nhập</button>
-                    </div>
-                </div>
-                <p>
-                    <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Chưa có tài khoản? Đăng ký</a>
-                </p>
-                <p>
-                    <a asp-action="ForgotPassword">Quyên mật khẩu?</a>
-                </p>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section>
-            <h4>Đăng nhập bằng tài khoản.</h4>
-            <hr />
-            @{
-                var schemes = await SignInManager.GetExternalAuthenticationSchemesAsync();
-                var loginProviders = schemes.ToList();
-                if (loginProviders.Count == 0)
-                {
-                    <div>
-                        <p>
-                            Ứng dụng chưa hỗ trợ đăng nhập từ tài khoản ngoài
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" role="form">
-                        <div>
-                            <p>
-                                @foreach (var provider in loginProviders)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.Name account">@provider.Name</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
-</div>
-
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}*@
 <!DOCTYPE html>
 <html lang="vie">
 
@@ -149,82 +66,148 @@
 </head>
 
 <body>
-    <section class="vh-100 bg-image">
-        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-            <div class="container h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col-11 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-                        <div class="card" style="border-radius: 15px;">
-                            <div class="card-body login-sinup">
-                                @*<form>*@
+<section class="vh-100 bg-image">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-11 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body login-sinup">
+                            @*<form>*@
 
-                                    <h5 class="header__title-login text-uppercase text-center pb-2">ĐĂNG NHẬP</h5>
+                            <h5 class="header__title-login text-uppercase text-center pb-2">ĐĂNG NHẬP</h5>
 
-                                    <div class="login__with-gg text-center ">
-                                        <div class="btn btn-with fw-bold" style="border: 1px solid #9999; width: 100%;">
-                                            <img class="login__with-gg-img" src="./img/login/Google__G__Logo.svg"
-                                                alt="">
-                                            Đăng nhập với google
-                                        </div>
+                            <div class="login__with-gg text-center ">
+                                <div class="btn btn-with fw-bold" style="border: 1px solid #9999; width: 100%;">
+                                    <img class="login__with-gg-img" src="/img/login/Google__G__Logo.svg"
+                                         alt="">
+                                    Đăng nhập với google
+                                </div>
 
-                                        <div class="login__another fw-bold">
+                                <div class="login__another fw-bold">
 
-                                            <div class="divider text-center position-relative my-3">
-                                                <span class="line position-absolute start-0 end-0 "
-                                                    style="background-color: #d4d4d4;"></span>
+                                    <div class="divider text-center position-relative my-3">
+                                        <span class="line position-absolute start-0 end-0 "
+                                              style="background-color: #d4d4d4;"></span>
 
-                                                <div class="content position-relative bg-white px-3 mx-auto">
-                                                    <span class="fw-bold" style="color:#8e8e8e">Hoặc</span>
-                                                </div>
-                                            </div>
+                                        <div class="content position-relative bg-white px-3 mx-auto">
+                                            <span class="fw-bold" style="color:#8e8e8e">Hoặc</span>
                                         </div>
                                     </div>
-
-                                    <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form">
-
-                                            <div class="form-outline mb-1" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post"role="form">
-                                                <label class="form-label" asp-for="UserNameOrEmail">Số điện thoại</label>
-                                                <input type="text" asp-for="UserNameOrEmail" class="form-control form-control" />
-                                        </div>
-
-                                        <div class="form-outline mb-1">
-                                                <label class="form-label"  asp-for="Password">Mật khẩu</label>
-                                            <input  asp-for="Password"
-                                                class="form-control form-control" />
-                                        </div>
-
-                                        <div class="form-check d-flex justify-content-start pt-3 pb-3">
-                                            
-                                            <label class="form-check-label" asp-for="RememberMe" ></label>
-                                            
-                                                <input class="form-check-input me-2"  asp-for="RememberMe" />
-                                        </div>
-
-                                        <div class="d-flex justify-content-center">
-                                            <button type="submit"
-                                                class="btn btn-primary-color btn--sinup fw-bold text-white text-uppercase">
-                                                ĐĂNG NHẬP</button>
-                                        </div>
-
-
-                                        <p class="text-center mt-4 mb-0"><a href="#"
-                                                class=" px-1 fst-italic text-body text-sm-start"><u>Quên mật
-                                                    khẩu?</u></a></p>
-                                        <div class="vr"></div>
-                                            <p class="text-center mt-3 mb-0">Chưa có tài khoản? <a  asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]"
-                                                class=" fst-italic text-body"><u>Đăng ký </u></a></p>
-
-
-                                    </form>
-
+                                </div>
                             </div>
+
+                            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form" id="login-form">
+
+                                <div class="form-outline mb-1" asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post"role="form">
+                                    <label class="form-label" asp-for="UserNameOrEmail">Tên đăng nhập</label>
+                                    <input type="text" asp-for="UserNameOrEmail" id="username" class="form-control form-control" />
+                                </div>
+
+                                <div class="form-outline mb-1">
+                                    <label class="form-label"  asp-for="Password">Mật khẩu</label>
+                                    <input asp-for="Password" id="password" class="form-control form-control" />
+                                </div>
+
+                                <div class="form-check d-flex justify-content-start pt-3 pb-3">
+                                            
+                                    <label class="form-check-label" asp-for="RememberMe" ></label>
+                                    <input class="form-check-input me-2"  asp-for="RememberMe" />
+                                </div>
+
+                                <div class="d-flex justify-content-center">
+                                    <button id="btn-login" type="submit"
+                                            class="btn btn-primary-color btn--sinup fw-bold text-white text-uppercase">ĐĂNG NHẬP</button>
+                                </div>
+                                @if (ViewData.ModelState.ErrorCount > 0)
+                                {
+                                    <div class="d-flex justify-content-center text-danger">
+                                        <ul>
+                                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                            {
+                                                <li>@error.ErrorMessage</li>
+                                            }
+                                        </ul>
+                                    </div>
+                                }
+
+
+                                <p class="text-center mt-4 mb-0"><a href="#"
+                                                                    class=" px-1 fst-italic text-body text-sm-start"><u>Quên mật
+                                    khẩu?</u></a></p>
+                                <div class="vr"></div>
+                                <p class="text-center mt-3 mb-0">Chưa có tài khoản? <a  asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]"
+                                                                                        class=" fst-italic text-body"><u>Đăng ký </u></a></p>
+
+
+                            </form>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    </section> -->
+    </div>
+</section>
+
+
+
+<!-- Js Plugins -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/main.js"></script>
+
+<script>
+$(document).ready(function () {
+    $("#login-form").submit(function (e) {
+        e.preventDefault();
+        var username = $("#username").val();
+        var password = $("#password").val();
+        
+        if (username == "" && password == "") {
+            $("#username").addClass("is-invalid");
+            $("#password").addClass("is-invalid");
+            $("#username").focus();
+            $("#username").attr("placeholder", "Vui lòng nhập tên đăng nhập");
+            $("#password").attr("placeholder", "Vui lòng nhập mật khẩu");
+            return false;
+        } 
+        else if (username == "") {
+            $("#username").addClass("is-invalid");
+            $("#username").focus();
+            $("#username").attr("placeholder", "Vui lòng nhập tên đăng nhập");
+            return false;
+        } 
+        else if (password == "") {
+            $("#password").addClass("is-invalid");
+            $("#password").focus();
+            $("#password").attr("placeholder", "Vui lòng nhập mật khẩu");
+            return false;
+        } 
+        else {
+            $("#btn-login").attr("disabled", true);
+            $("#btn-login").html("Đang đăng nhập...");
+            $("#login-form").unbind("submit").submit();
+        }
+        
+    });
+    
+    $("#username").keyup(function () {
+        $("#username").removeClass("is-invalid");
+    });
+    
+    $("#password").keyup(function () {
+        $("#password").removeClass("is-invalid");
+    });
+});
+</script>
+
+
 </body>
 
 </html>

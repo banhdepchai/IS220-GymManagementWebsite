@@ -11,7 +11,7 @@
                     <div class="breadcrumb-text">
                         <h2>Chi tiết sản phẩm</h2>
                         <div class="breadcrumb-option">
-                            <a href="./index.html"><i class="fa fa-home"></i> Trang chủ</a>
+                            <a asp-action="Index" asp-controller="Home"><i class="fa fa-home"></i> Trang chủ</a>
                             <span>Sản phẩm</span>
                             <span>> @Model.ProductName</span>
                         </div>
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <ul class="preview-thumbnail nav nav-tabs">
-                                <li class="active">
+                                @*<li class="active">
                                     <a data-target="#pic-1" data-toggle="tab">
                                         <img src="/img/blog/product_3.webp" alt="">
                                     </a>
@@ -67,7 +67,16 @@
                                     <a data-target="#pic-5" data-toggle="tab">
                                         <img src="/img/blog/product_3.webp" alt="">
                                     </a>
-                                </li>
+                                </li>*@
+                                
+                                @foreach (var item in Model.ProductPhotos)
+                                {
+                                    <li class="active">
+                                        <a data-target="#pic-1" data-toggle="tab">
+                                                <img src="/contents/products/@item.FileName" alt="">
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </div>
                         <div class="details col-md-6">
@@ -181,7 +190,7 @@
                                         <div class="comment-widgets">
                                             <!-- Comment Row -->
                                             <div class="d-flex flex-row comment-row m-t-0">
-                                                <div class="p-2"><img src="./img/icon/icon-1.png" alt="user"
+                                                <div class="p-2"><img src="/img/icon/icon-1.png" alt="user"
                                                         width="50" class="rounded-circle"></div>
                                                 <div class="comment-text w-100">
                                                     <h6 class="font-medium">Trần Nhật Sinh</h6> <span
@@ -196,7 +205,7 @@
                                                 </div>
                                             </div> <!-- Comment Row -->
                                             <div class="d-flex flex-row comment-row">
-                                                <div class="p-2"><img src="./img/icon/icon-1.png" alt="user"
+                                                <div class="p-2"><img src="/img/icon/icon-1.png" alt="user"
                                                         width="50" class="rounded-circle"></div>
                                                 <div class="comment-text active w-100">
                                                     <h6 class="font-medium">Nguyễn Hoàng Trung</h6> <span
@@ -211,7 +220,7 @@
                                                 </div>
                                             </div> <!-- Comment Row -->
                                             <div class="d-flex flex-row comment-row">
-                                                <div class="p-2"><img src="./img/icon/icon-1.png" alt="user"
+                                                <div class="p-2"><img src="/img/icon/icon-1.png" alt="user"
                                                         width="50" class="rounded-circle"></div>
                                                 <div class="comment-text w-100">
                                                     <h6 class="font-medium">Trần Nhật Sinh</h6> <span

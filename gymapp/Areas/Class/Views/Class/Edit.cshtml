@@ -8,6 +8,27 @@
     var listInstructor = ViewData["instructors"] as SelectList;
 }
 
+<style>
+
+    .custom-file-button input[type=file] {
+        margin-left: -2px !important;
+    }
+
+    .custom-file-button input[type=file]::-webkit-file-upload-button {
+        display: none;
+    }
+
+    .custom-file-button input[type=file]::file-selector-button {
+        display: none;
+    }
+
+    .custom-file-button:hover label {
+        background-color: #dde0e3;
+        cursor: pointer;
+    }
+
+</style>
+
 <div class="container-fluid">
     <h1 class="mt-4">Cập nhật khóa tập</h1>
     <ol class="breadcrumb mb-4">
@@ -21,7 +42,7 @@
 
         <div class="card-body">
             <div class="col-md-4">
-                <form asp-action="Edit">
+                <form asp-action="Edit" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="ClassId" />
                     <div class="form-group">
@@ -55,6 +76,44 @@
                         <select asp-for="InstructorId" asp-items="listInstructor" class="form-control"></select>
                         <span asp-validation-for="InstructorId" class="text-danger"></span>
                     </div>
+                    
+                    <div class="col-md-12 btn-group pb-2">
+
+                        <div class="form-group col-4 p-0">
+
+                            <label asp-for="ImageFile" class="control-label">Hình ảnh</label>				                                                
+
+                            @if(Model.PhotoUrl == null)
+                            {
+                                <img id="PreviewPhoto" src="/contents/nophoto.png" alt="Logo Image"
+                                     width="125" height="125"/>
+                            }
+                            else
+                            {
+                                <img id="PreviewPhoto" src="~/images/@Model.PhotoUrl" alt="Logo Image"
+                                     width="125" height="125"/>
+                            }
+
+                            <span asp-validation-for="PhotoUrl" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="col-1 p-0">
+                        </div>
+
+                        <div class="form-group col-7 p-0">
+                            <div class="input-group custom-file-button mt-5 pt-5">
+                                <input asp-for="ImageFile" class="form-control custom-file-input" id="customFile">
+                                <label class="input-group-text" for="customFile">Browse</label>
+                            </div>				
+                        </div>
+
+                    </div>
+                    <div class="form-group pt-0 mt-0">
+                        <div ID="HiddenDiv" style="visibility: hidden;">
+                            <input asp-for="PhotoUrl" id="PhotoUrl" value=""/>                        
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <input type="submit" value="Cập nhật" class="btn btn-primary" />
@@ -77,4 +136,19 @@
 @section Sidebar
     {
     @Html.Raw(_AdminSidebarService.renderHtml())
+}
+
+@section Scripts
+{
+    <script>
+        $(".custom-file-input").on("change", function () {
+
+                var fileName = $(this).val().split("\\").pop();           
+
+                document.getElementById('PreviewPhoto').src = window.URL.createObjectURL(this.files[0]);
+
+                document.getElementById('PhotoUrl').value = fileName;     
+
+        });
+    </script>
 }

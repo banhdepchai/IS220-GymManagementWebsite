@@ -16,10 +16,12 @@ namespace App.Areas.Class.Controllers
     public class ClassController : Controller
     {
         private readonly GymAppDbContext _context;
+        private readonly IWebHostEnvironment _webHost;
 
-        public ClassController(GymAppDbContext context)
+        public ClassController(GymAppDbContext context, IWebHostEnvironment webHost)
         {
             _context = context;
+            _webHost = webHost;
         }
 
         [TempData] public string? StatusMessage { get; set; }
@@ -99,17 +101,22 @@ namespace App.Areas.Class.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClassTitle,ClassDate,ClassPeriod,ClassCost,RoomId,InstructorId")] ClassModel classModel)
+        public async Task<IActionResult> Create(ClassModel classModel)
         {
             if (ModelState.IsValid)
             {
+                string uniqueFileName = GetProfilePhotoFileName(classModel);
+                classModel.PhotoUrl = uniqueFileName;
                 _context.Add(classModel);
 
                 await _context.SaveChangesAsync();
                 StatusMessage = "Vừa tạo khóa tập mới: " + classModel.ClassTitle;
                 return RedirectToAction(nameof(Index));
             }
-
+            var rooms = new SelectList(await _context.Rooms.ToListAsync(), "RoomId", "RoomName");
+            ViewData["rooms"] = rooms;
+            var instructors = new SelectList(await _context.Instructors.ToListAsync(), "Id", "Name");
+            ViewData["instructors"] = instructors;
             return View(classModel);
         }
 
@@ -135,7 +142,8 @@ namespace App.Areas.Class.Controllers
                 ClassPeriod = classModel.ClassPeriod,
                 ClassCost = classModel.ClassCost,
                 RoomId = classModel.RoomId,
-                InstructorId = classModel.InstructorId
+                InstructorId = classModel.InstructorId,
+                PhotoUrl = classModel.PhotoUrl
             };
             ViewData["rooms"] = new SelectList(await _context.Rooms.ToListAsync(), "RoomId", "RoomName");
             ViewData["instructors"] = new SelectList(await _context.Instructors.ToListAsync(), "Id", "Name");
@@ -145,7 +153,7 @@ namespace App.Areas.Class.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("ClassId,ClassTitle,ClassDate,ClassPeriod,ClassCost,RoomId,InstructorId")] ClassModel classModel)
+        public async Task<IActionResult> Edit(ClassModel classModel)
         {
             if (ModelState.IsValid)
             {
@@ -156,6 +164,9 @@ namespace App.Areas.Class.Controllers
                     {
                         return NotFound();
                     }
+
+                    string uniqueFileName = GetProfilePhotoFileName(classModel);
+                    classUpdate.PhotoUrl = uniqueFileName;
 
                     classUpdate.ClassTitle = classModel.ClassTitle;
                     classUpdate.ClassDate = classModel.ClassDate;
@@ -226,6 +237,23 @@ namespace App.Areas.Class.Controllers
         private bool ClassExists(int id)
         {
             return _context.Classes.Any(e => e.ClassId == id);
+        }
+
+        private string GetProfilePhotoFileName(ClassModel classModel)
+        {
+            string uniqueFileName = null;
+
+            if (classModel.ImageFile != null)
+            {
+                string uploadsFolder = Path.Combine(_webHost.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + classModel.ImageFile.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    classModel.ImageFile.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
         }
     }
 }

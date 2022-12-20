@@ -23,37 +23,44 @@ namespace App.Areas.Class.Controllers
         }
 
         [Route("/khoa-tap/")]
-        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize)
+        public async Task<IActionResult> Index(/*[FromQuery(Name = "p")] int currentPage, int pagesize*/)
         {
+            //var classes = _context.Classes.Include(i => i.Instructor);
+            //var user = await _userManager.GetUserAsync(this.User);
+
+            //int totalClasses = await _context.Classes.CountAsync();
+            //if (pagesize <= 0) pagesize = 9;
+            //int countPages = (int)Math.Ceiling((double)totalClasses / pagesize);
+
+            //if (currentPage > countPages) currentPage = countPages;
+            //if (currentPage < 1) currentPage = 1;
+
+            //var pagingModel = new PagingModel()
+            //{
+            //    countpages = countPages,
+            //    currentpage = currentPage,
+            //    generateUrl = (pageNumber) => Url.Action("Index", new
+            //    {
+            //        p = pageNumber,
+            //        pagesize = pagesize
+            //    })
+            //};
+
+            //var classesInPage = await classes.Skip((currentPage - 1) * pagesize)
+            //    .Take(pagesize).ToListAsync();
+
+            //ViewBag.pagingModel = pagingModel;
+            //ViewBag.totalProducts = totalClasses;
+            //ViewBag.user = user;
+
+            //return View(classesInPage);
+
             var classes = _context.Classes.Include(i => i.Instructor);
             var user = await _userManager.GetUserAsync(this.User);
 
-            int totalClasses = await _context.Classes.CountAsync();
-            if (pagesize <= 0) pagesize = 9;
-            int countPages = (int)Math.Ceiling((double)totalClasses / pagesize);
-
-            if (currentPage > countPages) currentPage = countPages;
-            if (currentPage < 1) currentPage = 1;
-
-            var pagingModel = new PagingModel()
-            {
-                countpages = countPages,
-                currentpage = currentPage,
-                generateUrl = (pageNumber) => Url.Action("Index", new
-                {
-                    p = pageNumber,
-                    pagesize = pagesize
-                })
-            };
-
-            var classesInPage = await classes.Skip((currentPage - 1) * pagesize)
-                .Take(pagesize).ToListAsync();
-
-            ViewBag.pagingModel = pagingModel;
-            ViewBag.totalProducts = totalClasses;
             ViewBag.user = user;
 
-            return View(classesInPage);
+            return View(await classes.ToListAsync());
         }
 
         [Route("/khoa-tap/{id}")]
@@ -102,8 +109,9 @@ namespace App.Areas.Class.Controllers
                 };
                 _context.SignupClasses.Add(signupClass);
                 await _context.SaveChangesAsync();
-
-                return Content($"Đăng ký khóa tập {classModel.ClassTitle} thành công");
+                TempData["SuccessMessage"] = "Đăng ký thành công";
+                return RedirectToAction(nameof(Index));
+                //return Content($"Đăng ký khóa tập {classModel.ClassTitle} thành công");
             }
             return View();
         }

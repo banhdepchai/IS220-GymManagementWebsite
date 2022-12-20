@@ -64,9 +64,10 @@ namespace App.Areas.Contact.Controllers
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
 
-                StatusMessage = "Liên hệ của bạn đã được gửi";
+                TempData["SuccessMessage"] = "Gửi liên hệ thành công.";
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("SendContact");
+                //return RedirectToAction("Index", "Contact");
             }
 
             return View(contact);

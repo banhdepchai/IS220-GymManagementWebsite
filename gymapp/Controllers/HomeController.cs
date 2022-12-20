@@ -5,9 +5,11 @@ using App.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using App.Models.Memberships;
+using Microsoft.AspNetCore.Authorization;
 
 namespace App.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -24,8 +26,12 @@ namespace App.Controllers
         public IActionResult Index()
         {
             var memberships = _context.Memberships.ToList();
+            var classes = _context.Classes.Include(i => i.Instructor).ToList();
+            var instructors = _context.Instructors.Take(3).ToList();
 
             ViewBag.memberships = memberships;
+            ViewBag.classes = classes;
+            ViewBag.instructors = instructors;
             return View();
         }
 

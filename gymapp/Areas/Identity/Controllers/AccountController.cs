@@ -45,9 +45,10 @@ namespace App.Areas.Identity.Controllers
         // GET: /Account/Login
         [HttpGet("/login/")]
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login(/*string returnUrl = null*/)
         {
-            ViewData["ReturnUrl"] = returnUrl;
+            //ViewData["ReturnUrl"] = returnUrl;
+            _signInManager.SignOutAsync();
             return View();
         }
 
@@ -56,31 +57,28 @@ namespace App.Areas.Identity.Controllers
         [HttpPost("/login/")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model/*, string returnUrl = null*/)
         {
-            returnUrl ??= Url.Content("~/");
-            ViewData["ReturnUrl"] = returnUrl;
+            //returnUrl ??= Url.Content("~/");
+            //ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password, false, lockoutOnFailure: false);
                 // Tìm UserName theo Email, đăng nhập lại
                 if ((!result.Succeeded) && AppUtilities.IsValidEmail(model.UserNameOrEmail))
                 {
                     var user = await _userManager.FindByEmailAsync(model.UserNameOrEmail);
                     if (user != null)
                     {
-                        result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                        result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, false, lockoutOnFailure: false);
                     }
                 }
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToAction(nameof(SendCode), new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    //return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "Home");
                 }
 
                 if (result.IsLockedOut)
@@ -90,7 +88,7 @@ namespace App.Areas.Identity.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Không đăng nhập được.");
+                    ModelState.AddModelError("Đăng nhập thất bại: Tài khoản hoặc mật khẩu bị sai");
                     return View(model);
                 }
             }
@@ -111,10 +109,10 @@ namespace App.Areas.Identity.Controllers
         // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Register(/*string returnUrl = null*/)
         {
-            returnUrl ??= Url.Content("~/");
-            ViewData["ReturnUrl"] = returnUrl;
+            //returnUrl ??= Url.Content("~/");
+            //ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
@@ -123,49 +121,19 @@ namespace App.Areas.Identity.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel model/*, string returnUrl = null*/)
         {
-            returnUrl ??= Url.Content("~/");
-            ViewData["ReturnUrl"] = returnUrl;
+            //returnUrl ??= Url.Content("~/");
+            //ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new AppUser { UserName = model.UserName, Email = model.Email };
+                var user = new AppUser { UserName = model.UserName, Email = model.Email, FullName = model.FullName, PhoneNumber = model.PhoneNumber, HomeAdress = model.HomeAddress };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    //_logger.LogInformation("Đã tạo user mới.");
-
-                    //// Phát sinh token để xác nhận email
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                    //// https://localhost:5001/confirm-email?userId=fdsfds&code=xyz&returnUrl=
-                    //var callbackUrl = Url.ActionLink(
-                    //    action: nameof(ConfirmEmail),
-                    //    values:
-                    //        new { area = "Identity",
-                    //              userId = user.Id,
-                    //              code = code},
-                    //    protocol: Request.Scheme);
-
-                    //await _emailSender.SendEmailAsync(model.Email,
-                    //    "Xác nhận địa chỉ email",
-                    //    @$"Bạn đã đăng ký tài khoản trên RazorWeb,
-                    //       hãy <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>bấm vào đây</a>
-                    //       để kích hoạt tài khoản.");
-
-                    //if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    //{
-                    //    return LocalRedirect(Url.Action(nameof(RegisterConfirmation)));
-                    //}
-                    //else
-                    //{
-                    //    await _signInManager.SignInAsync(user, isPersistent: false);
-                    //    return LocalRedirect(returnUrl);
-                    //}
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
+                    //return LocalRedirect(returnUrl);
+                    return RedirectToAction("Index", "Home", new { area = "" });
                 }
 
                 ModelState.AddModelError(result);
@@ -173,14 +141,6 @@ namespace App.Areas.Identity.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
-        }
-
-        // GET: /Account/ConfirmEmail
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult RegisterConfirmation()
-        {
-            return View();
         }
 
         // GET: /Account/ConfirmEmail
