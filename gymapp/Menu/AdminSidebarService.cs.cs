@@ -184,6 +184,30 @@ namespace App.Menu
             Items.Add(new SidebarItem()
             {
                 Type = SidebarItemType.NavItem,
+                Title = "Quản lý gói tập",
+                AwesomeIcon = "far fa-folder",
+                collapseID = "membership",
+                Items = new List<SidebarItem>() {
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Membership",
+                        Action = "Index",
+                        Area = "Membership",
+                        Title = "Danh sách gói tập"
+                    },
+                    new SidebarItem() {
+                        Type = SidebarItemType.NavItem,
+                        Controller = "Membership",
+                        Action = "Create",
+                        Area = "Membership",
+                        Title = "Tạo gói tập mới"
+                    },
+                },
+            });
+
+            Items.Add(new SidebarItem()
+            {
+                Type = SidebarItemType.NavItem,
                 Title = "Quản lý mã giảm giá",
                 AwesomeIcon = "fa-solid fa-sack-dollar",
                 collapseID = "discount",

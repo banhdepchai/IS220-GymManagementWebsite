@@ -27,7 +27,7 @@
                             </div>
                             <div class="cold-md-3">
                                 <button type="submit" class="btn btn-primary">Tìm</button>
-                                <button type="button" onclick="window.location.href='/User/Index'" class="btn btn-dark">Reset</button>
+                                <button type="button" onclick="window.location.href='/admin/room'" class="btn btn-dark">Reset</button>
                             </div>
                         </div>
                     </form>
@@ -36,9 +36,7 @@
         </div>
 
         <div class="card-body">
-            <div class="row">
-                <partial name="_AlertMessage" />
-            </div>
+            <partial name="_StatusMessage" />
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
@@ -63,7 +61,7 @@
                                     @Html.DisplayFor(modelItem => item.Capacity)
                                 </td>
                                 <td>
-                                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.RoomId">Chi tiết</a>
+                                    <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.RoomId">Chi tiết</a>
                                     <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.RoomId">Xóa</a>
                                 </td>
                             </tr>

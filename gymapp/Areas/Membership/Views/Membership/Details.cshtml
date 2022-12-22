@@ -3,55 +3,63 @@
 @inject AdminSidebarService _AdminSidebarService
 @{
     Layout = "_LayoutAdmin";
-    ViewData["Title"] = @Model.Level;
+    ViewData["Title"] = "Chi tiết gói tập";
 }
 
-<h1>@ViewData["Title"]</h1>
+        <div class="container-fluid">
+    <h1 class="mt-4">Chi tiết gói tập</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminCP" asp-area="AdminCP">Trang chủ</a></li>
+        <li class="breadcrumb-item active">Chi tiết gói tập</li>
+    </ol>
+    <div class="card mb-4">
+        <div class="card-header">
+            <a class="btn btn-success" asp-action="Index">Danh sách gói tập</a>
+        </div>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Level)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayNameFor(model => model.Level)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fee)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fee)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hours)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hours)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Bonus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Bonus)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.MembershipId">Sửa</a> |
-    <a asp-action="Index">Các gói tập</a>
+        <div class="card-body">
+            <div class="col-md-12">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Level)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Level)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Fee)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Math.Round(Model.Fee) VNĐ
+                    </dd>
+                    <dt class="col-sm-2">
+                        Số giờ tập
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Hours) giờ/ngày
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Duration) 
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Duration) tháng
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Bonus)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Bonus)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
 </div>
 
 @{
-    _AdminSidebarService.SetActive("Membership", "Details", "Membership");
+    _AdminSidebarService.SetActive("Product", "Index", "Product");
 }
 @section Sidebar
-{
+    {
     @Html.Raw(_AdminSidebarService.renderHtml())
 }

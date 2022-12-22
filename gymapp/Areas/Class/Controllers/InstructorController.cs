@@ -94,6 +94,20 @@ namespace App.Areas.Class.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("Name,DateOfBirth,Gender,Email,Phone,Expertise,Salary")] Instructor instructor)
         {
+            List<SelectListItem> expertiseList = new List<SelectListItem>
+            {
+                new SelectListItem { Text = "-- Chọn chuyên môn --", Value = "-- Chọn chuyên môn --" },
+                new SelectListItem { Text = "Gym", Value = "Gym" },
+                new SelectListItem { Text = "Yoga", Value = "Yoga" },
+                new SelectListItem { Text = "Boxing", Value = "Boxing" },
+                new SelectListItem { Text = "Dance", Value = "Dance" },
+                new SelectListItem { Text = "Swimming", Value = "Swimming" },
+                new SelectListItem { Text = "Cycling", Value = "Cycling" },
+                new SelectListItem { Text = "Zumba", Value = "Zumba" },
+                new SelectListItem { Text = "Pilates", Value = "Pilates" },
+                new SelectListItem { Text = "Aerobics", Value = "Aerobics" }
+            };
+            ViewData["expertiseList"] = expertiseList;
             if (ModelState.IsValid)
             {
                 _context.Instructors.Add(instructor);

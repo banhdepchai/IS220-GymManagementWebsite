@@ -205,7 +205,7 @@ namespace App.Areas.Membership.Controllers
             _context.SignupMemberships.Add(SignupMembership);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Đăng ký thành công";
+            TempData["SuccessMessage"] = "Đăng ký gói tập " + membership.Level + " thành công";
             return RedirectToAction("Index");
             //return Json(new { redirectUrl = "/dich-vu/" });
         }
@@ -242,7 +242,7 @@ namespace App.Areas.Membership.Controllers
 
             _context.SaveChanges();
 
-            TempData["SuccessMessage"] = "Đặt hàng thành công";
+            TempData["SuccessMessage"] = "Đăng ký gói tập "+ membership.Level + " thành công";
             //TempData["StatusMessage"] = "Đặt hàng thành công";
 
             return RedirectToAction(nameof(Index));
@@ -251,7 +251,14 @@ namespace App.Areas.Membership.Controllers
         [Route("/dich-vu/thanh-toan-paypal/that-bai", Name = "paypalfaill")]
         public IActionResult CheckoutFail()
         {
-            TempData["ErrorMessage"] = "Đặt hàng thất bại";
+            var membership = _context.Memberships.FirstOrDefault(m => m.MembershipId == memId);
+
+            if (membership == null)
+            {
+                return NotFound();
+            }
+
+            TempData["ErrorMessage"] = "Đăng ký gói tập " + membership.Level + " thất bại";
             //TempData["StatusMessage"] = "Đặt hàng thất bại";
             return RedirectToAction(nameof(Index));
         }

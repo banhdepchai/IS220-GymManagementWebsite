@@ -13,6 +13,7 @@ namespace App.Models.Payments
         public string Code { get; set; }
 
         [Required(ErrorMessage = "Phần trăm giảm giá không được để trống")]
+        [Range(0, 100, ErrorMessage = "Phần trăm giảm giá phải từ 0 đến 100")]
         [Display(Name = "Phần trăm giảm giá")]
         public int Percent { get; set; }
     }

@@ -96,6 +96,7 @@ namespace App.Areas.Class.Controllers
             ViewData["rooms"] = rooms;
             var instructors = new SelectList(await _context.Instructors.ToListAsync(), "Id", "Name");
             ViewData["instructors"] = instructors;
+            ViewData["listHours"] = listHours;
             return View();
         }
 
@@ -103,6 +104,9 @@ namespace App.Areas.Class.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ClassModel classModel)
         {
+
+            ViewData["listHours"] = listHours;
+
             if (ModelState.IsValid)
             {
                 string uniqueFileName = GetProfilePhotoFileName(classModel);
@@ -117,6 +121,7 @@ namespace App.Areas.Class.Controllers
             ViewData["rooms"] = rooms;
             var instructors = new SelectList(await _context.Instructors.ToListAsync(), "Id", "Name");
             ViewData["instructors"] = instructors;
+            ViewData["listHours"] = listHours;
             return View(classModel);
         }
 
@@ -147,7 +152,7 @@ namespace App.Areas.Class.Controllers
             };
             ViewData["rooms"] = new SelectList(await _context.Rooms.ToListAsync(), "RoomId", "RoomName");
             ViewData["instructors"] = new SelectList(await _context.Instructors.ToListAsync(), "Id", "Name");
-
+            ViewData["listHours"] = listHours;
             return View(classEdit);
         }
 
@@ -155,6 +160,9 @@ namespace App.Areas.Class.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ClassModel classModel)
         {
+            ViewData["rooms"] = new SelectList(await _context.Rooms.ToListAsync(), "RoomId", "RoomName");
+            ViewData["instructors"] = new SelectList(await _context.Instructors.ToListAsync(), "Id", "Name");
+            ViewData["listHours"] = listHours;
             if (ModelState.IsValid)
             {
                 try
@@ -255,5 +263,24 @@ namespace App.Areas.Class.Controllers
             }
             return uniqueFileName;
         }
+        
+        private List<SelectListItem> listHours = new List<SelectListItem>
+        {
+            new SelectListItem { Text = "-- Chọn giờ tập --", Value = "-- Chọn giờ tập --" },
+            new SelectListItem { Text = "5:00 - 6:00", Value = "5:00 - 6:00" },
+            new SelectListItem { Text = "6:00 - 7:00", Value = "6:00 - 7:00" },
+            new SelectListItem { Text = "7:00 - 8:00", Value = "7:00 - 8:00" },
+            new SelectListItem { Text = "8:00 - 9:00", Value = "8:00 - 9:00" },
+            new SelectListItem { Text = "9:00 - 10:00", Value = "9:00 - 10:00" },
+            new SelectListItem { Text = "10:00 - 11:30", Value = "10:00 - 11:00" },
+            new SelectListItem { Text = "13:00 - 14:00", Value = "13:00 - 14:00" },
+            new SelectListItem { Text = "14:00 - 15:00", Value = "14:00 - 15:00" },
+            new SelectListItem { Text = "15:00 - 16:00", Value = "15:00 - 16:00" },
+            new SelectListItem { Text = "16:00 - 17:00", Value = "16:00 - 17:00" },
+            new SelectListItem { Text = "17:00 - 18:00", Value = "17:00 - 18:00" },
+            new SelectListItem { Text = "18:00 - 19:00", Value = "18:00 - 19:00" },
+            new SelectListItem { Text = "19:00 - 20:00", Value = "19:00 - 20:00" },
+            new SelectListItem { Text = "20:00 - 21:00", Value = "20:00 - 21:00" }
+        };
     }
 }

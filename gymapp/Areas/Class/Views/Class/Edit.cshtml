@@ -6,6 +6,7 @@
     ViewData["Title"] = "Cập nhật khóa tập";
     var listRoom = ViewData["rooms"] as SelectList;
     var listInstructor = ViewData["instructors"] as SelectList;
+    var listHours = ViewData["listHours"] as IEnumerable<SelectListItem>;
 }
 
 <style>
@@ -57,7 +58,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="ClassPeriod"></label>
-                        <input asp-for="ClassPeriod" class="form-control">
+                        <select asp-for="ClassPeriod" class="form-control" asp-items="listHours" id="hours"></select>
                         <span asp-validation-for="ClassPeriod" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -141,6 +142,9 @@
 @section Scripts
 {
     <script>
+        $(document).ready(function () {
+                $("#hours option:first-child").attr("disabled", "disabled");
+                })
         $(".custom-file-input").on("change", function () {
 
                 var fileName = $(this).val().split("\\").pop();           
@@ -150,5 +154,6 @@
                 document.getElementById('PhotoUrl').value = fileName;     
 
         });
+    
     </script>
 }

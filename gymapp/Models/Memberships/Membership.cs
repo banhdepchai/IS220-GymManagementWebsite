@@ -14,14 +14,17 @@ namespace App.Models.Memberships
         public string Level { get; set; }
 
         [Display(Name = "Giá")]
+        [Range(0, 1000000000, ErrorMessage = "Giá không hợp lệ")]
         [Required(ErrorMessage = "Giá gói tập không được để trống")]
         public decimal Fee { get; set; }
 
         [Display(Name = "Thời hạn")]
+        [Range(1, 12, ErrorMessage = "Thời hạn phải từ 1 đến 12 tháng")]
         [Required(ErrorMessage = "Thời hạn gói tập không được để trống")]
         public int Duration { get; set; }
 
         [Display(Name = "Số giờ tập")]
+        [Range(1, 24, ErrorMessage = "Vui lòng nhập số giờ tập lớn hơn 0 và nhỏ hơn 24")]
         [Required(ErrorMessage = "Số giờ tập không được để trống")]
         public int Hours { get; set; }
 

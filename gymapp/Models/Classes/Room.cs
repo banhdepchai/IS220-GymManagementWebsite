@@ -14,6 +14,7 @@ namespace App.Models.Classes
         public string RoomName { get; set; }
 
         [Display(Name = "Sức chứa")]
+        [Range(0, int.MaxValue, ErrorMessage = "Sức chứa không được nhỏ hơn 0")]
         [Required(ErrorMessage = "Sức chứa không được để trống")]
         public int Capacity { get; set; }
 

@@ -143,11 +143,12 @@
             $('input[name="optradio"]').click(function () {
                var result = $("input[name='optradio']:checked").val();
                 //$("#paymentmode").val(PaymentMode);
-                if (result == "paypal") {
-                    PaymentMode = "Paypal";
-                    console.log(PaymentMode);
-                }
-                $("#paymentmode").val(PaymentMode);
+                    var PaymentMode = "Trả sau";
+                    if (result == "paypal") {
+                        PaymentMode = "Paypal";
+                        console.log(PaymentMode);
+                    }
+                    $("#paymentmode").val(PaymentMode);
             });
             
             $("#dieukhoan").on("click", function () {
@@ -160,25 +161,10 @@
             
 
             $("#btn-submit").click(function () {
-                var paymentmode = $("input[name='optradio']:checked").val();
-                console.log(paymentmode);
-                
-
-                if (paymentmode == "paypal") {
-                    PaymentMode = "Paypal";
-                    console.log(PaymentMode);
+                if ($("input[name='optradio']:checked").length == 0) {
+                    alert("Bạn chưa chọn phương thức thanh toán");
+                    return false;
                 }
-                
-                $.ajax({
-                    url: '@Url.Action("Checkout", "ViewMemberShip")',
-                    type: "POST",
-                    data: {
-                        PaymentMode: PaymentMode
-                    },
-                    success: function (data) {
-                        window.location.href = data.redirectUrl;
-                    }
-                });
             });
             
         });

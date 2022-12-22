@@ -21,9 +21,23 @@ namespace App.Areas.Class.Controllers
 
         [TempData] public string StatusMessage { set; get; }
 
-        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize)
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize, string keyword)
         {
-            int totalRooms = await _context.Rooms.CountAsync();
+            ViewBag.Keyword = keyword;
+
+            IQueryable<Room> rooms;
+
+            if (keyword != null)
+            {
+                rooms = _context.Rooms
+                    .Where(c => c.RoomName.Contains(keyword));
+            }
+            else
+            {
+                rooms = _context.Rooms;
+            }
+
+            int totalRooms = await rooms.CountAsync();
             if (pagesize <= 0) pagesize = 5;
             int countPages = (int)Math.Ceiling((double)totalRooms / pagesize);
 
@@ -37,7 +51,8 @@ namespace App.Areas.Class.Controllers
                 generateUrl = (pageNumber) => Url.Action("Index", new
                 {
                     p = pageNumber,
-                    pagesize = pagesize
+                    pagesize = pagesize,
+                    keyword = keyword
                 }) ?? string.Empty
             };
 
@@ -46,7 +61,7 @@ namespace App.Areas.Class.Controllers
 
             ViewBag.roomIndex = (currentPage - 1) * pagesize;
 
-            var roomrsInPage = await _context.Rooms.Skip((currentPage - 1) * pagesize)
+            var roomrsInPage = await rooms.Skip((currentPage - 1) * pagesize)
                 .Take(pagesize)
                 .ToListAsync();
 
@@ -114,7 +129,7 @@ namespace App.Areas.Class.Controllers
 
                 await _context.SaveChangesAsync();
 
-                StatusMessage = "Cập nhật phòng tập thành công";
+                StatusMessage = "Cập nhật phòng tập: " + room.RoomName + " thành công";
                 return RedirectToAction("Index");
             }
 
@@ -142,9 +157,19 @@ namespace App.Areas.Class.Controllers
                 return NotFound();
             }
 
-            _context.Rooms.Remove(room);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+                _context.Rooms.Remove(room);
+                _context.SaveChanges();
+
+                StatusMessage = "Xóa phòng tập: "+ room.RoomName +" thành công";
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                StatusMessage = "Error: Phòng tập này đang được sử dụng, không thể xóa";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpGet]

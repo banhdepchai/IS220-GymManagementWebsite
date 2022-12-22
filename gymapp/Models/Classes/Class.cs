@@ -23,6 +23,7 @@ namespace App.Models.Classes
         public string ClassPeriod { get; set; }
 
         [Display(Name = "Học phí")]
+        [Range(0, double.MaxValue, ErrorMessage = "Học phí không được nhỏ hơn 0")]
         [Required(ErrorMessage = "Học phí không được để trống")]
         public decimal ClassCost { get; set; }
 

@@ -24,10 +24,14 @@ namespace App.Models.Classes
         public string Gender { get; set; }
 
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress)]
+        [RegularExpression(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", ErrorMessage = "Email không hợp lệ")]
         [Required(ErrorMessage = "Email không được để trống")]
         public string Email { get; set; }
 
         [Display(Name = "Số điện thoại")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoại không hợp lệ")]
         [Required(ErrorMessage = "Số điện thoại không được để trống")]
         public string Phone { get; set; }
 
@@ -36,6 +40,7 @@ namespace App.Models.Classes
         public string Expertise { get; set; }
 
         [Display(Name = "Mức lương")]
+        [Range(0, double.MaxValue, ErrorMessage = "Mức lương không được nhỏ hơn 0")]
         [Required(ErrorMessage = "Mức lương không được để trống")]
         public decimal Salary { get; set; }
 

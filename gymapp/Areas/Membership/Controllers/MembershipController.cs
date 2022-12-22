@@ -121,18 +121,14 @@ namespace App.Areas.Memebership.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Fee,Level,Duration,Hours,Bonus")] MembershipModel membership)
+        public async Task<IActionResult> Edit([Bind("MembershipId,Fee,Level,Duration,Hours,Bonus")] MembershipModel membership)
         {
-            if (id != membership.MembershipId)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var membershipUpdate = await _context.Memberships.FindAsync(id);
+                    var membershipUpdate = await _context.Memberships.FindAsync(membership.MembershipId);
                     if (membershipUpdate == null)
                     {
                         return NotFound();
