@@ -221,7 +221,7 @@ namespace App.Menu
                     },
                     new SidebarItem() {
                         Type = SidebarItemType.NavItem,
-                        Controller = "Class",
+                        Controller = "Discount",
                         Action = "Create",
                         Area = "Product",
                         Title = "Tạo mã giảm giá mới"

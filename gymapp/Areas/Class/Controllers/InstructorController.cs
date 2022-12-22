@@ -224,11 +224,25 @@ namespace App.Areas.Class.Controllers
         [HttpPost]
         public IActionResult Delete(Instructor instructor)
         {
-            _context.Instructors.Remove(instructor);
-            _context.SaveChanges();
+            try
+            {
+                var instructorDelete = _context.Instructors.Find(instructor.Id);
+                if (instructorDelete == null)
+                {
+                    return NotFound();
+                }
 
-            StatusMessage = "Vừa xóa huấn luyện viên";
-            return RedirectToAction("Index");
+                _context.Instructors.Remove(instructorDelete);
+                _context.SaveChanges();
+
+                StatusMessage = "Vừa xóa huấn luyện viên";
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                StatusMessage = "Error: Huấn luyện viên này đang có lớp học, không thể xóa";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         [HttpGet]

@@ -125,6 +125,12 @@ namespace App.Areas.Product.Controllers
                 product.Slug = AppUtilities.GenerateSlug(product.ProductName);
             }
 
+            if (_context.Products.Any(p => p.Slug == product.Slug))
+            {
+                ModelState.AddModelError("Slug", "Slug đã tồn tại");
+                return View(product);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = await _userManager.GetUserAsync(this.User);
@@ -133,7 +139,7 @@ namespace App.Areas.Product.Controllers
                 _context.Add(product);
 
                 await _context.SaveChangesAsync();
-                StatusMessage = "Vừa tạo sản phẩm mới";
+                StatusMessage = "Vừa thêm mới sản phẩm: " + product.ProductName;
                 return RedirectToAction(nameof(Index));
             }
 
@@ -219,7 +225,7 @@ namespace App.Areas.Product.Controllers
                         throw;
                     }
                 }
-                StatusMessage = "Vừa cập nhật sản phẩm";
+                StatusMessage = "Vừa cập nhật sản phẩm: " + product.ProductName;
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", product.AuthorId);
@@ -251,19 +257,27 @@ namespace App.Areas.Product.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-
-            if (product == null)
+            try
             {
-                return NotFound();
+                var product = await _context.Products.FindAsync(id);
+
+                if (product == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+
+                StatusMessage = "Bạn vừa xóa sản phẩm: " + product.ProductName;
+
+                return RedirectToAction(nameof(Index));
             }
-
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-
-            StatusMessage = "Bạn vừa xóa sản phẩm: " + product.ProductName;
-
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                StatusMessage = "Error: " + ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ProductExists(int id)

@@ -213,7 +213,10 @@ namespace App.Areas.Class.Controllers
                 return NotFound();
             }
 
-            var classModel = await _context.Classes.FirstOrDefaultAsync(m => m.ClassId == id);
+            var classModel = await _context.Classes
+                .Include(i => i.Instructor)
+                .Include(r => r.Room)
+                .FirstOrDefaultAsync(m => m.ClassId == id);
             if (classModel == null)
             {
                 return NotFound();
@@ -227,19 +230,19 @@ namespace App.Areas.Class.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            var classModel = await _context.Classes.FindAsync(id);
-
-            if (classModel == null)
+            try
             {
-                return NotFound();
+                var classModel = await _context.Classes.FindAsync(id);
+                _context.Classes.Remove(classModel);
+                await _context.SaveChangesAsync();
+                StatusMessage = "Đã xóa khóa tập: " + classModel.ClassTitle;
+                return RedirectToAction(nameof(Index));
             }
-
-            _context.Classes.Remove(classModel);
-            await _context.SaveChangesAsync();
-
-            StatusMessage = "Bạn vừa xóa khóa tập: " + classModel.ClassTitle;
-
-            return RedirectToAction(nameof(Index));
+            catch (Exception ex)
+            {
+                StatusMessage = "Error: Không thể xóa khóa tập này. " + ex.Message;
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         private bool ClassExists(int id)

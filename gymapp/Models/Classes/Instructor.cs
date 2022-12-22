@@ -10,7 +10,7 @@ namespace App.Models.Classes
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "Tên huân luyện viên")]
+        [Display(Name = "Tên huấn luyện viên")]
         [Required(ErrorMessage = "Tên huấn luyện viên không được để trống")]
         public string Name { get; set; }
 
