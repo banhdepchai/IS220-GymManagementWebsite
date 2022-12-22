@@ -65,24 +65,21 @@
                 <div class="col-lg-8">
                     <div class="contact-form">
                         <h4>Để lại bình luận</h4>
-                        <form asp-action="SendContact">
+                        <partial name="_StatusMessage" />
+                        <form asp-action="SendContact" id="form-contact">
                             <div class="row">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="col-lg-6">
-                                    <input asp-for="FullName" placeholder="Họ và tên">
-                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                    <input asp-for="FullName" placeholder="Họ và tên" id="fullname" class="form-control" required>
                                 </div>
                                 <div class="col-lg-6">
-                                    <input asp-for="Email" placeholder="Email">
-                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                    <input asp-for="Email" placeholder="Email" id="email" class="form-control">
                                 </div>
                                 <div class="col-lg-6">
-                                    <input asp-for="Phone" placeholder="Số điện thoại">
-                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                    <input asp-for="Phone" placeholder="Số điện thoại" id="phone" class="form-control" >
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea asp-for="Message" placeholder="Để lại phản hồi của bạn"></textarea>
-                                    <span asp-validation-for="Message" class="text-danger"></span>
+                                    <textarea asp-for="Message" placeholder="Để lại phản hồi của bạn" id="message" class="form-control"></textarea>
                                     <button type="submit">Gửi</button>
                                 </div>
                             </div>
@@ -110,8 +107,115 @@
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script>
         $(document).ready(function () {
-                $('.mainmenu').find('li').removeClass('active');
+            $('.mainmenu').find('li').removeClass('active');
             $('.mainmenu').find('li').eq(4).addClass('active');
         });
+        
+            $("#form-contact").submit(function (e) {
+                e.preventDefault();
+                var fullname = $("#fullname").val();
+                var email = $("#email").val();
+                var phone = $("#phone").val();
+                var message = $("#message").val();
+                
+                var temp = true;
+                if(fullname == "")
+                {
+                    $("#fullname").addClass("is-invalid");
+                    $("#fullname").attr("placeholder", "Vui lòng nhập họ tên");
+                    temp = false;
+                }
+                else
+                {
+                    $("#fullname").removeClass("is-invalid");
+                    $("#fullname").addClass("is-valid");
+                }
+                
+                
+                var regexEmail = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+                if(email == "")
+                {
+                    $("#email").addClass("is-invalid");
+                    $("#email").attr("placeholder", "Vui lòng nhập email");
+                    temp = false;
+                }
+                else if(!regexEmail.test(email))
+                {
+                    $("#email").addClass("is-invalid");
+                    $("#email").val("");
+                    $("#email").attr("placeholder", "Email không hợp lệ");
+                    temp = false;
+                }
+                else
+                {
+                    $("#email").removeClass("is-invalid");
+                    $("#email").addClass("is-valid");
+                }
+                
+                var regexPhone = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+                if(phone == "")
+                {
+                    $("#phone").addClass("is-invalid");
+                    $("#phone").attr("placeholder", "Vui lòng nhập số điện thoại");
+                    temp = false;
+                }
+                else if(!regexPhone.test(phone) || phone.length != 10)
+                {
+                    $("#phone").addClass("is-invalid");
+                    $("#phone").val("");
+                    $("#phone").attr("placeholder", "Số điện thoại không hợp lệ");
+                    
+                    temp = false;
+                }
+                else
+                {
+                    $("#phone").removeClass("is-invalid");
+                    $("#phone").addClass("is-valid");
+                }
+                
+                
+                if(message == "")
+                {
+                    $("#message").addClass("is-invalid");
+                    $("#message").attr("placeholder", "Vui lòng nhập nội dung");
+                    temp = false;
+                }
+                else
+                {
+                    $("#message").removeClass("is-invalid");
+                    $("#message").addClass("is-valid");
+                }
+            
+                
+                if(temp == true)
+                {
+                    $("#form-contact").unbind('submit').submit();
+                }
+            });
+            
+            $("#fullname").focus(function () {
+                $("#fullname").removeClass("is-invalid");
+                $("#fullname").removeClass("is-valid");
+                $("#fullname").attr("placeholder", "Họ và tên");
+            });
+            
+            $("#email").focus(function () {
+                $("#email").removeClass("is-invalid");
+                $("#email").removeClass("is-valid");
+                $("#email").attr("placeholder", "Email");
+            });
+            
+            $("#phone").focus(function () {
+                $("#phone").removeClass("is-invalid");
+                $("#phone").removeClass("is-valid");
+                $("#phone").attr("placeholder", "Số điện thoại");
+            });
+            
+            $("#message").focus(function () {
+                $("#message").removeClass("is-invalid");
+                $("#message").removeClass("is-valid");
+                $("#message").attr("placeholder", "Nội dung");
+            });
+                
     </script>
-}
+    }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace App.Areas.Class.Controllers
 {
@@ -23,9 +24,21 @@ namespace App.Areas.Class.Controllers
 
         [TempData] public string StatusMessage { set; get; }
 
-        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize)
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize, string keyword)
         {
-            var instructors = _context.Instructors;
+            //var instructors = _context.Instructors;
+
+            ViewBag.Keyword = keyword;
+
+            IOrderedQueryable<Instructor> instructors;
+            if (keyword != null)
+            {
+                instructors = _context.Instructors.Where(p => p.Name.Contains(keyword) || p.Email.Contains(keyword) || p.Phone.Contains(keyword)).OrderBy(p => p.Name);
+            }
+            else
+            {
+                instructors = _context.Instructors.OrderBy(p => p.Name);
+            }
 
             int totalInstructors = await instructors.CountAsync();
             if (pagesize <= 0) pagesize = 5;
@@ -50,7 +63,7 @@ namespace App.Areas.Class.Controllers
 
             ViewBag.instructorIndex = (currentPage - 1) * pagesize;
 
-            var instructorsInPage = await _context.Instructors.Skip((currentPage - 1) * pagesize)
+            var instructorsInPage = await instructors.Skip((currentPage - 1) * pagesize)
                 .Take(pagesize)
                 .ToListAsync();
 

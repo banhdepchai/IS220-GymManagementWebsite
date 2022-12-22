@@ -36,7 +36,7 @@ namespace gymapp.Areas.Product.Controllers
         }
 
         [Route("/san-pham/")]
-        public IActionResult Index([FromQuery(Name = "p")] int currentPage, int pagesize, List<string>? listCategory)
+        public IActionResult Index([FromQuery(Name = "p")] int currentPage, int pagesize)
         {
             var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos).AsNoTracking();
             var categories = _context.Categories.ToList();
@@ -66,13 +66,13 @@ namespace gymapp.Areas.Product.Controllers
             ViewBag.pagingModel = pagingModel;
             ViewBag.totalProducts = totalProducts;
 
-            return View(productsInPage.ToList());
+            return View(productsInPage.OrderByDescending(d => d.DateUpdated).ToList());
         }
 
         [Route("/san-pham/{danhmuc}")]
-        public IActionResult Index([FromQuery(Name = "p")] int currentPage, int pagesize, string danhmuc)
+        public IActionResult GetProductsByCategory([FromQuery(Name = "p")] int currentPage, int pagesize, string danhmuc)
         {
-            var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos).Where(s => s.Category.Slug == danhmuc).AsNoTracking();
+            var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos.OrderBy(pt => pt.Id)).Where(s => s.Category.Slug == danhmuc).AsNoTracking();
             var categories = _context.Categories.ToList();
 
             int totalProducts = products.Count();
@@ -96,11 +96,20 @@ namespace gymapp.Areas.Product.Controllers
             var productsInPage = products.Skip((currentPage - 1) * pagesize)
                 .Take(pagesize);
 
+            if (danhmuc != "")
+            {
+                var category = _context.Categories.FirstOrDefault(s => s.Slug == danhmuc);
+
+                if (category != null)
+                {
+                    ViewBag.category = category;
+                }
+            }
             ViewBag.categories = categories;
             ViewBag.pagingModel = pagingModel;
             ViewBag.totalProducts = totalProducts;
 
-            return View(productsInPage.ToList());
+            return View(productsInPage.OrderByDescending(d => d.DateUpdated).ToList());
         }
 
         [Route("/{slug}.html")]
@@ -108,7 +117,7 @@ namespace gymapp.Areas.Product.Controllers
         {
             var product = _context.Products
                 .Include(p => p.Category)
-                .Include(p => p.ProductPhotos)
+                .Include(p => p.ProductPhotos.OrderBy(pt => pt.Id))
                 .FirstOrDefault(p => p.Slug == slug);
             if (product == null) return NotFound();
 
@@ -201,15 +210,27 @@ namespace gymapp.Areas.Product.Controllers
             if (cart.Count == 0)
                 return RedirectToAction(nameof(Cart));
 
-            decimal total = 0;
+            decimal totalOld = 0;
             foreach (var item in cart)
             {
-                total += item.product.Price * item.quantity;
+                totalOld += item.product.Price * item.quantity;
+            }
+
+            decimal total = totalOld;
+            var discountCode = _cartService.GetDiscount();
+            int? dicountId = null;
+
+            if (discountCode != null)
+            {
+                dicountId = discountCode.Id;
+                total -= (total * discountCode.Percent / 100);
             }
 
             var user = _userManager.GetUserAsync(User).Result;
 
+            ViewBag.totalOld = totalOld;
             ViewBag.total = total;
+            ViewBag.discountPrice = totalOld - total;
             ViewBag.user = user;
 
             return View();
@@ -223,12 +244,28 @@ namespace gymapp.Areas.Product.Controllers
             if (cart.Count == 0)
                 return RedirectToAction(nameof(Cart));
 
+            decimal total = 0;
+            foreach (var item in cart)
+            {
+                total += item.product.Price * item.quantity;
+            }
+
+            var discountCode = _cartService.GetDiscount();
+            int? dicountId = null;
+            if (discountCode != null)
+            {
+                dicountId = discountCode.Id;
+                total -= (total * discountCode.Percent / 100);
+            }
+
             var user = await _userManager.GetUserAsync(this.User);
             var payment = new Payment()
             {
                 DateCreated = DateTime.Now,
                 UserID = user.Id,
-                TotalPrice = cart.Sum(p => p.product.Price * p.quantity)
+                DiscountId = dicountId,
+                PaymentMode = "Trả sau",
+                TotalPrice = total
             };
 
             _context.Payments.Add(payment);
@@ -248,7 +285,8 @@ namespace gymapp.Areas.Product.Controllers
             _context.SaveChanges();
 
             _cartService.ClearCart();
-            TempData["SuccessMessage"] = "Đặt hàng thành công";
+            //TempData["SuccessMessage"] = "Đặt hàng thành công";
+            TempData["StatusMessage"] = "Đặt hàng thành công";
             return RedirectToAction(nameof(Cart));
             //return Content("Xác nhận đơn hàng thành công");
         }
@@ -269,7 +307,9 @@ namespace gymapp.Areas.Product.Controllers
 
             _cartService.SaveDiscountSession(discount);
 
-            return Json(new { success = true, message = "Mã giảm giá hợp lệ", discount = discount });
+            int discountPercent = discount.Percent;
+
+            return Json(new { success = true, message = "Mã giảm giá hợp lệ", discount = discountPercent });
         }
 
         [Route("/thanh-toan-paypal", Name = "paypal")]
@@ -330,7 +370,7 @@ namespace gymapp.Areas.Product.Controllers
                 RedirectUrls = new PayPalPayments.RedirectUrls()
                 {
                     CancelUrl = $"{hostname}/GioHang/CheckoutFail",
-                    ReturnUrl = $"{hostname}/xac-nhan-don-hang"
+                    ReturnUrl = $"{hostname}/thanh-toan-paypal/thanh-cong"
                 },
                 Payer = new PayPalPayments.Payer()
                 {
@@ -377,6 +417,7 @@ namespace gymapp.Areas.Product.Controllers
             return View();
         }
 
+        [Route("/thanh-toan-paypal/thanh-cong", Name = "paypalsuccess")]
         public async Task<IActionResult> CheckoutSuccess()
         {
             var cart = _cartService.GetCartItems();
@@ -385,11 +426,24 @@ namespace gymapp.Areas.Product.Controllers
                 return RedirectToAction(nameof(Cart));
 
             var user = await _userManager.GetUserAsync(this.User);
+            decimal total = 0;
+            foreach (var item in cart)
+            {
+                total += item.product.Price * item.quantity;
+            }
+            var discountCode = _cartService.GetDiscount();
+            int? dicountId = null;
+            if (discountCode != null)
+            {
+                dicountId = discountCode.Id;
+                total -= (total * discountCode.Percent / 100);
+            }
             var payment = new Payment()
             {
                 DateCreated = DateTime.Now,
                 UserID = user.Id,
-                TotalPrice = cart.Sum(p => p.product.Price * p.quantity),
+                TotalPrice = total,
+                DiscountId = dicountId,
                 PaymentMode = "Paypal",
             };
 
@@ -410,7 +464,8 @@ namespace gymapp.Areas.Product.Controllers
             _context.SaveChanges();
 
             _cartService.ClearCart();
-            TempData["SuccessMessage"] = "Đặt hàng thành công";
+            //TempData["SuccessMessage"] = "Đặt hàng thành công";
+            TempData["StatusMessage"] = "Đặt hàng thành công";
             return RedirectToAction(nameof(Cart));
         }
     }

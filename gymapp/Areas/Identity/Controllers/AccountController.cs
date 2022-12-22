@@ -133,6 +133,7 @@ namespace App.Areas.Identity.Controllers
                 if (result.Succeeded)
                 {
                     //return LocalRedirect(returnUrl);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home", new { area = "" });
                 }
 

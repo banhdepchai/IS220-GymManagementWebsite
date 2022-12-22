@@ -103,7 +103,7 @@ namespace gymapp.Migrations
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
                             BirthDate = new DateTime(2002, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ConcurrencyStamp = "81f01616-665c-4703-8f59-c96497bd2a55",
+                            ConcurrencyStamp = "61181b81-daca-4589-a48d-fff2ac72fa8c",
                             Email = "admin@vietgym.com",
                             EmailConfirmed = true,
                             FullName = "Nguyễn Bảo Anh",
@@ -111,7 +111,7 @@ namespace gymapp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@vietgym.com",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKvxLCVSiJl6OgdwtvAvP7S1TCaPsCm/WWv3OcFVePvKqSKUPgxXZQSLKfkFAPLsrw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFO+xqSBx6b5A5TtizV2qm+mFrtL9petZQmTY6LvLTiQmX0fxBmtdRnmL5cmzdxQUg==",
                             PhoneNumber = "0866414791",
                             PhoneNumberConfirmed = true,
                             SecurityStamp = "",
@@ -169,6 +169,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Gym cho nam giới",
                             InstructorId = 2,
+                            PhotoUrl = "b9c58f58-94e1-45b8-a505-f708a9ce0366_blog-9.jpg",
                             RoomId = 1
                         },
                         new
@@ -179,6 +180,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Gym cho nữ giới",
                             InstructorId = 5,
+                            PhotoUrl = "42d4ee61-d335-4972-8f4a-e7b6a92ad6a2_blog-4.jpg",
                             RoomId = 1
                         },
                         new
@@ -189,6 +191,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Gym cho người mới",
                             InstructorId = 15,
+                            PhotoUrl = "31ecfa50-03e9-436a-9417-f2eafde632ab_blog-1.jpg",
                             RoomId = 1
                         },
                         new
@@ -199,6 +202,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Giảm mỡ bụng",
                             InstructorId = 3,
+                            PhotoUrl = "dc246325-4167-4c1e-869c-9bd8a6825787_blog-5.jpg",
                             RoomId = 1
                         },
                         new
@@ -209,6 +213,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Giảm cân cấp tốc",
                             InstructorId = 6,
+                            PhotoUrl = "ac083b6e-eaaa-401d-8902-9e12027f0bdd_blog-2.jpg",
                             RoomId = 1
                         },
                         new
@@ -219,6 +224,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Giảm mỡ toàn thân",
                             InstructorId = 8,
+                            PhotoUrl = "9c18a79d-b12b-41ed-ac5a-96f419b962f6_gallery-1.jpg",
                             RoomId = 1
                         },
                         new
@@ -229,6 +235,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Tăng chiều cao",
                             InstructorId = 1,
+                            PhotoUrl = "14783d5f-bfba-493b-8e8a-927f1a20339e_gallery-4.jpg",
                             RoomId = 1
                         },
                         new
@@ -239,6 +246,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Tăng cường cơ bắp",
                             InstructorId = 1,
+                            PhotoUrl = "7e6988ea-f5dd-4ef8-8f68-9e799f7e728b_gallery-7.jpg",
                             RoomId = 1
                         },
                         new
@@ -249,6 +257,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Phục hồi chức năng",
                             InstructorId = 1,
+                            PhotoUrl = "134c6596-20d7-47e0-961c-b38df4868704_classes-5.jpg",
                             RoomId = 1
                         },
                         new
@@ -259,6 +268,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Khôi phuc vóc dáng sau sinh",
                             InstructorId = 1,
+                            PhotoUrl = "041a2478-a9fc-4e3d-aaf6-2b2cd373ef15_classes-2.jpg",
                             RoomId = 1
                         },
                         new
@@ -269,6 +279,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Aerobic",
                             InstructorId = 1,
+                            PhotoUrl = "7ce14930-948c-45d2-ae5d-d4440cb14ccf_classes-2.jpg",
                             RoomId = 1
                         },
                         new
@@ -279,6 +290,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Gym cho nam giới",
                             InstructorId = 20,
+                            PhotoUrl = "dd071c8a-49e6-4ca1-8c15-a4c954f56ab6_classes-8.jpg",
                             RoomId = 1
                         },
                         new
@@ -289,6 +301,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Gym cho nữ giới",
                             InstructorId = 2,
+                            PhotoUrl = "7812b275-1d64-4202-bf82-602dd0a64c4f_classes-1.jpg",
                             RoomId = 1
                         },
                         new
@@ -299,6 +312,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Gym cho người mới",
                             InstructorId = 5,
+                            PhotoUrl = "f825cf9b-6ef5-4db8-b43e-e479f5ffbc49_classes-6.jpg",
                             RoomId = 1
                         },
                         new
@@ -309,6 +323,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Giảm mỡ bụng",
                             InstructorId = 1,
+                            PhotoUrl = "41f85a0f-8962-4383-83f6-ad668d0ce8a8_classes-9.jpg",
                             RoomId = 1
                         },
                         new
@@ -319,6 +334,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Giảm cân cấp tốc",
                             InstructorId = 6,
+                            PhotoUrl = "7b7985a5-9a32-4630-8e2a-783f81b5629d_classes-5.jpg",
                             RoomId = 1
                         },
                         new
@@ -329,6 +345,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Giảm mỡ toàn thân",
                             InstructorId = 8,
+                            PhotoUrl = "db2f51e3-1d30-4ec4-a173-9ba802d44a56_classes-4.jpg",
                             RoomId = 1
                         },
                         new
@@ -339,6 +356,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Tăng chiều cao",
                             InstructorId = 1,
+                            PhotoUrl = "1e4298c8-b920-4c79-9d91-913259651e85_classes-7.jpg",
                             RoomId = 1
                         },
                         new
@@ -349,6 +367,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Tăng cường cơ bắp",
                             InstructorId = 1,
+                            PhotoUrl = "3bda819d-aa32-4783-885b-442e768874e5_classes-5.jpg",
                             RoomId = 1
                         },
                         new
@@ -359,6 +378,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Phục hồi chức năng",
                             InstructorId = 1,
+                            PhotoUrl = "2662208d-fed5-401c-b5fe-89355ece2463_classes-2.jpg",
                             RoomId = 1
                         },
                         new
@@ -369,6 +389,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Khôi phuc vóc dáng sau sinh",
                             InstructorId = 3,
+                            PhotoUrl = "5fe5ed6b-fa14-405f-ace0-3ef162381282_classes-1.jpg",
                             RoomId = 1
                         },
                         new
@@ -379,6 +400,7 @@ namespace gymapp.Migrations
                             ClassPeriod = "10:00 - 11:30",
                             ClassTitle = "Aerobic",
                             InstructorId = 11,
+                            PhotoUrl = "6f4edaf7-2a1d-4bd9-8e53-beca90f2cc58_classes-2.jpg",
                             RoomId = 1
                         });
                 });
@@ -1810,7 +1832,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 2,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7749),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6453),
                             Description = "Đai lưng đeo tạ",
                             Price = 850000m,
                             ProductName = "Đai lưng đeo tạ Harbinger PolyPro Dip Belt With Chain",
@@ -1822,7 +1844,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 2,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7759),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6463),
                             Description = "Đai lưng đeo tạ",
                             Price = 800000m,
                             ProductName = "Đai lưng Gofit Leather Lifting Belt, 6 Inch",
@@ -1834,7 +1856,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 3,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7761),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6465),
                             Description = "Đai lưng đeo tạ",
                             Price = 760000m,
                             ProductName = "Harbinger Lifting Grips",
@@ -1846,7 +1868,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 2,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7764),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6466),
                             Description = "Đai lưng đeo tạ",
                             Price = 750000m,
                             ProductName = "Harbinger 6\" Padded Leather Belt",
@@ -1858,7 +1880,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 2,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7765),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6468),
                             Description = "Đai lưng đeo tạ",
                             Price = 710000m,
                             ProductName = "Harbinger Training Grip Wristwrap Weightlifting Gloves, Black/Grey",
@@ -1870,7 +1892,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 3,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7852),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6469),
                             Description = "Đai lưng đeo tạ",
                             Price = 700000m,
                             ProductName = "Harbinger Flexfit Contour Belt Red, 6 inch",
@@ -1882,7 +1904,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 2,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7854),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6471),
                             Description = "Đai lưng đeo tạ",
                             Price = 700000m,
                             ProductName = "Harbinger 4\" Padded Leather Belt",
@@ -1894,7 +1916,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 2,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7855),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6472),
                             Description = "Đai lưng đeo tạ",
                             Price = 1800000m,
                             ProductName = "Labrada Muscle Mass Gainer 12 Lbs (5443 g)",
@@ -1906,7 +1928,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 2,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7857),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6473),
                             Description = "Đai lưng đeo tạ",
                             Price = 1600000m,
                             ProductName = "Applied Critical Mass Original, 6KG (25 Servings)",
@@ -1918,7 +1940,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 2,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7858),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6475),
                             Description = "Đai lưng đeo tạ",
                             Price = 1850000m,
                             ProductName = "Kevin Levrone GOLD Lean Mass, 6 KG (30 Servings)",
@@ -1930,7 +1952,7 @@ namespace gymapp.Migrations
                             AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             CategoryID = 2,
                             Content = "",
-                            DateCreated = new DateTime(2022, 12, 16, 15, 5, 4, 461, DateTimeKind.Local).AddTicks(7860),
+                            DateCreated = new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6476),
                             Description = "Đai lưng đeo tạ",
                             Price = 600000m,
                             ProductName = "AP Sports Regimen L-Carnitine 3000mg, 31 Servings",
@@ -1958,6 +1980,116 @@ namespace gymapp.Migrations
                     b.HasIndex("ProductID");
 
                     b.ToTable("ProductPhoto");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FileName = "gbcrunmg.webp",
+                            ProductID = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FileName = "ndhktb2h.webp",
+                            ProductID = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FileName = "lvbpl5hk.webp",
+                            ProductID = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            FileName = "mzkvjbag.webp",
+                            ProductID = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            FileName = "t3ts2ibq.webp",
+                            ProductID = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            FileName = "wcan2qsl.webp",
+                            ProductID = 4
+                        },
+                        new
+                        {
+                            Id = 7,
+                            FileName = "0cas3lpe.webp",
+                            ProductID = 5
+                        },
+                        new
+                        {
+                            Id = 8,
+                            FileName = "nba2br4q.webp",
+                            ProductID = 6
+                        },
+                        new
+                        {
+                            Id = 9,
+                            FileName = "3dfphy25.webp",
+                            ProductID = 7
+                        },
+                        new
+                        {
+                            Id = 10,
+                            FileName = "dhlyzh3z.webp",
+                            ProductID = 8
+                        },
+                        new
+                        {
+                            Id = 11,
+                            FileName = "2kvkadjd.webp",
+                            ProductID = 9
+                        },
+                        new
+                        {
+                            Id = 12,
+                            FileName = "vmdgv0yz.webp",
+                            ProductID = 9
+                        },
+                        new
+                        {
+                            Id = 13,
+                            FileName = "odxrwtki.webp",
+                            ProductID = 9
+                        },
+                        new
+                        {
+                            Id = 14,
+                            FileName = "d2fls0jh.webp",
+                            ProductID = 10
+                        },
+                        new
+                        {
+                            Id = 15,
+                            FileName = "zuigad2q.webp",
+                            ProductID = 11
+                        },
+                        new
+                        {
+                            Id = 16,
+                            FileName = "eb3v2agw.webp",
+                            ProductID = 11
+                        },
+                        new
+                        {
+                            Id = 17,
+                            FileName = "p0ftdyxl.webp",
+                            ProductID = 11
+                        },
+                        new
+                        {
+                            Id = 18,
+                            FileName = "yimi12em.webp",
+                            ProductID = 11
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1990,21 +2122,21 @@ namespace gymapp.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "91a0915e-03ce-4c50-9a37-87dafd7184d0",
+                            ConcurrencyStamp = "9cc53335-b1c7-4c0b-8aa1-3811bbb0f6c0",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
                             Id = "6dcabc58-8c5c-4231-9a66-02c038da7429",
-                            ConcurrencyStamp = "7f275e33-afff-4cc8-ba77-aa3850982c07",
+                            ConcurrencyStamp = "3a44dc59-d93e-4c19-ac11-1fa4da7c6db8",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
                             Id = "76251a37-7bb0-4f6a-80bd-c454effb7285",
-                            ConcurrencyStamp = "cddd4020-0a14-4f4e-a6d9-87bb405758a7",
+                            ConcurrencyStamp = "7a9e1575-bf6e-4ee1-87df-442c4aa5bee0",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         });

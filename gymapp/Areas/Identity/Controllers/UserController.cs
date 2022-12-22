@@ -13,6 +13,7 @@ using App.Areas.Identity.Models.UserViewModels;
 using App.Data;
 using App.ExtendMethods;
 using App.Models;
+using App.Models.Classes;
 using App.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -48,12 +49,24 @@ namespace App.Areas.Identity.Controllers
         //
         // GET: /ManageUser/Index
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage)
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, string keyword)
         {
+            ViewBag.Keyword = keyword;
+
+            IOrderedQueryable<AppUser> qr;
+            if (keyword != null)
+            {
+                qr = _userManager.Users.Where(u => u.UserName.Contains(keyword)).OrderBy(u => u.UserName);
+            }
+            else
+            {
+                qr = _userManager.Users.OrderBy(u => u.UserName);
+            }
+
             var model = new UserListModel();
             model.currentPage = currentPage;
 
-            var qr = _userManager.Users.OrderBy(u => u.UserName);
+            //var qr = _userManager.Users.OrderBy(u => u.UserName);
 
             model.totalUsers = await qr.CountAsync();
             model.countPages = (int)Math.Ceiling((double)model.totalUsers / model.ITEMS_PER_PAGE);
@@ -76,7 +89,7 @@ namespace App.Areas.Identity.Controllers
             foreach (var user in model.users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                user.RoleNames = string.Join(",", roles);
+                user.RoleNames = string.Join(", ", roles);
             }
 
             return View(model);

@@ -75,7 +75,7 @@ namespace App.Menu
             {
                 Type = SidebarItemType.NavItem,
                 Title = "Quản lý sản phẩm",
-                AwesomeIcon = "far fa-folder",
+                AwesomeIcon = "fa-solid fa-dumbbell",
                 collapseID = "product",
                 Items = new List<SidebarItem>() {
                         new SidebarItem() {
@@ -113,7 +113,7 @@ namespace App.Menu
             {
                 Type = SidebarItemType.NavItem,
                 Title = "Quản lý huấn luyện viên",
-                AwesomeIcon = "far fa-folder",
+                AwesomeIcon = "fa-solid fa-user",
                 collapseID = "instructor",
                 Items = new List<SidebarItem>() {
                     new SidebarItem() {
@@ -137,7 +137,7 @@ namespace App.Menu
             {
                 Type = SidebarItemType.NavItem,
                 Title = "Quản lý phòng tập",
-                AwesomeIcon = "far fa-folder",
+                AwesomeIcon = "fa-solid fa-house",
                 collapseID = "room",
                 Items = new List<SidebarItem>() {
                     new SidebarItem() {
@@ -185,7 +185,7 @@ namespace App.Menu
             {
                 Type = SidebarItemType.NavItem,
                 Title = "Quản lý mã giảm giá",
-                AwesomeIcon = "far fa-folder",
+                AwesomeIcon = "fa-solid fa-sack-dollar",
                 collapseID = "discount",
                 Items = new List<SidebarItem>() {
                     new SidebarItem() {

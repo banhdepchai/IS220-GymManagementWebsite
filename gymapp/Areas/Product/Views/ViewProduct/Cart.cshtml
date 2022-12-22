@@ -68,14 +68,14 @@
                                                 <p>@item.product.ProductName</p>
                                             </td>
 
-                                            <td class="price">@item.product.Price</td>
+                                            <td class="price">@Math.Round(item.product.Price)Đ</td>
 
                                             <td class="quantity">
                                                 <div class="input-group mb-3">
-                                                    <input asp-for="@item.quantity" name="quantity" class="quantity form-control input-number" data-productid="@item.product.ProductID" id="@($"quantity-{item.product.ProductID}")">
+                                                    <input asp-for="@item.quantity" name="quantity" class="quantity form-control input-number" data-productid="@item.product.ProductID" id="@($"quantity-{item.product.ProductID}")" min="1">
                                                 </div>
                                             </td>
-                                            <td class="total">@subTotal</td>
+                                            <td class="total">@Math.Round(subTotal)Đ</td>
                                         </tr> 
                                 }
                             </tbody>
@@ -105,7 +105,7 @@
                         <h3>Tổng chi phí</h3>
                         <p class="d-flex total__product-price">
                             <span>Phí hàng</span>
-                            <span>@total</span>
+                            <span id="totalsss" value="@Math.Round(total)">@Math.Round(total)đ</span>
                         </p>
                         <p class="d-flex">
                             <span>Phí vận chuyển</span>
@@ -113,21 +113,31 @@
                         </p>
                         <p class="d-flex">
                             <span>Giảm giá</span>
-                            @if (discount != null)
-                            {
+                            <span id="discountPrice">
+                                @if (discount != null)
+                                {
+                                    @Math.Round((discount.Percent * total / 100))
+                                }
+                                else
+                                {
+                                    @Html.Raw("0")
+                                }đ
                                 
-                                <span>@(discount.Percent * total / 100)đ</span>
-                            }
-                            else
-                            {
-                                <span>0đ</span>
-                            }
-                            @*<span>50.000đ</span>*@
+                            </span>
                         </p>
                         <hr>
                         <p class="d-flex total-price">
                             <span>Tổng</span>
-                            <span>@total</span>
+                            <span id="totalPrice">
+                                @if (discount != null)
+                                {
+                                    @Math.Round((total-(discount.Percent * total / 100)))
+                                }
+                                else
+                                {
+                                    @Math.Round(total)
+                                }đ
+                            </span>
                         </p>
                     </div>
                     <p><a asp-controller="ViewProduct" asp-action="Payment" asp-area="Product" class="btn btn-primary btn-cart py-3 px-4">Xác nhận</a></p>
@@ -146,6 +156,7 @@ else
     </div>
     </section>*@
     <div class="container card border-0 py-2 mt-5 mb-5">
+        <partial name="_StatusMessage" />
         <div class="alert">
             <div class="text-center">
                 <img src="https://bizweb.dktcdn.net/100/011/344/themes/857119/assets/cart_empty_background.png?1671441558666" alt="" class="img-fluid">
@@ -166,7 +177,7 @@ else
     
     <script>
         $(document).ready(function () {
-              $(".updatecartitem").(function () {
+              $(".updatecartitem").on("click",function () {
                   var productid = $(this).attr("data-productid");
                   var quantity = $("#quantity-" + productid).val();
                   $.ajax({
@@ -197,12 +208,7 @@ else
                             quantity:quantity
                         },
                         success: function (result) {
-                            $("#quantity-" + productid).val() = quantity;
-                            var price = $("#quantity-" + productid).parent().parent().parent().find(".price").text();
-                            price = parseDouble(price);
-                            
-                            quantity = parseInt(quantity);
-                            $("#quantity-" + productid).parent().parent().parent().find(".total").text(quantity * price);
+                            window.location.href = "@Url.RouteUrl("cart")";
                         }
                     });
                 }
@@ -217,24 +223,12 @@ else
                     url: url,
                     type: 'POST',
                     success: function (data) {
-                        if (data.success) {
-                            if (data.count == 0) {
-                                $('.shopping-item').html("");
-                                $('.shopping-item').html('<div class="dropdown-cart-header"><p>Không có sản phẩm trong giỏ hàng</p></div > ');
-                            } else {
-                                $('#remove-' + productId).parent().parent().remove();
-                            
-                            }
-                        }
-                        else {
-                            openErrorModal(data.message);
-                            return false;
-                        }
+                        window.location.href = "@Url.RouteUrl("cart")";
                     }
                 });
             });
             
-            $("#discountSubmit").on("click", function (e) {
+            $("#discountSubmit").click(function (e) {
                 e.preventDefault();
                 var discountCode = $("#discountCode").val();
                 console.log(discountCode);
@@ -252,13 +246,26 @@ else
                     success: function (data) {
                         if (data.success) {
                             $("#msgDiscount").html('<p class="text-success">Mã giảm giá hợp lệ</p>');
+                            var total = $("#totalsss").attr("value");
+                            var discountPrice = data.discount * total / 100;
+                            var totalPrice = total - discountPrice;
+                            $("#discountPrice").html(discountPrice + "đ");
+                            //$("#discountPrice").html(total * data.percent / 100 + "đ");
+                            $("#totalPrice").html(totalPrice + "đ");
+                                //return false;
                         }
                         else {
                             $("#msgDiscount").html('<p class="text-danger">'+data.message+'</p>');
-                            return false;
+                            $("#discountPrice").html("0đ");
+                            $("#totalPrice").html($("#totalsss").attr("value") + "đ");
+                            //return false;
                         }
                     }
                 });
+            });
+            
+            $("#discountCode").keyup(function () {
+                $("#msgDiscount").html("");
             });
         
         });

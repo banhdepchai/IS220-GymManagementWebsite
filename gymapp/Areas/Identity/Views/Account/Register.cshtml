@@ -159,18 +159,48 @@
                 $("#fullname").attr("placeholder", "Vui lòng nhập họ và tên");
                 check = false;
             }
+            
+            var regexEmail = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
             if(email == ""){
                 $("#email").focus();
                 $("#email").addClass("is-invalid");
                 $("#email").attr("placeholder", "Vui lòng nhập email");
                 check = false;
             }
+            else if(!regexEmail.test(email))
+            {
+                $("#email").addClass("is-invalid");
+                $("#email").val("");
+                $("#email").attr("placeholder", "Email không hợp lệ");
+                temp = false;
+            }
+            else
+            {
+                $("#email").removeClass("is-invalid");
+                //$("#email").addClass("is-valid");
+            }
+            
+            var regexPhone = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
             if(phonenumber == ""){
                 $("#phonenumber").focus();
                 $("#phonenumber").addClass("is-invalid");
                 $("#phonenumber").attr("placeholder", "Vui lòng nhập số điện thoại");
                 check = false;
             }
+            else if(!regexPhone.test(phonenumber) || phonenumber.length != 10)
+            {   
+                $("#phonenumber").addClass("is-invalid");
+                $("#phonenumber").val("");
+                $("#phonenumber").attr("placeholder", "Số điện thoại không hợp lệ");
+                check = false;
+            }
+            else
+            {
+                $("#phonenumber").removeClass("is-invalid");
+                //$("#phonenumber").addClass("is-valid");
+            }
+
+            
             if(address == ""){
                 $("#address").focus();
                 $("#address").addClass("is-invalid");
@@ -187,6 +217,26 @@
             }
             
         });
+        
+        $("#username").focus(function(){
+            $("#username").removeClass("is-invalid");
+        });
+        $("#password").focus(function(){
+            $("#password").removeClass("is-invalid");
+        });
+        $("#fullname").focus(function(){
+            $("#fullname").removeClass("is-invalid");
+        });
+        $("#email").focus(function(){
+            $("#email").removeClass("is-invalid");
+        });
+        $("#phonenumber").focus(function(){
+            $("#phonenumber").removeClass("is-invalid");
+        });
+        $("#address").focus(function(){
+            $("#address").removeClass("is-invalid");
+        });
+        
     })
 </script>
 

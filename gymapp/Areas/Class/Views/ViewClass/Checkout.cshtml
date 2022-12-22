@@ -95,14 +95,14 @@
                                     <div class="form-group">
                                         <div class="col-md-12">
                                             <div class="radio">
-                                                <label><input type="radio" name="optradio" class="mr-2"> Trực tiếp qua momo</label>
+                                                <label><input type="radio" name="optradio" class="mr-2" value="paypal"><i class="fa-brands fa-cc-paypal"></i> Thanh toán bằng Paypal</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
                                             <div class="radio">
-                                                <label><input type="radio" name="optradio" class="mr-2"> Trả sau</label>
+                                                <label><input type="radio" name="optradio" class="mr-2" value="trasau"><i class="fa-solid fa-wallet"></i> Trả sau</label>
                                             </div>
                                         </div>
                                     </div>
@@ -140,9 +140,16 @@
     }
     <script>
         $(document).ready(function () {
+            
+            
             $('input[name="optradio"]').click(function () {
-               var result = $("input[name='optradio']:checked").parent().text();
-               $("#paymentmode").val(result);
+                var result = $("input[name='optradio']:checked").val();
+                var PaymentMode = "Trả sau";
+                if (result == "paypal") {
+                    PaymentMode = "Paypal";
+                    console.log(PaymentMode);
+                }
+                $("#paymentmode").val(PaymentMode);
             });
             
             $("#dieukhoan").click(function () {
@@ -154,6 +161,14 @@
                     $("#btn-submit").attr('disabled', 'disabled');
                 }
             });
+            
+            $("#btn-submit").click(function () {
+                if ($("input[name='optradio']:checked").length == 0) {
+                    alert("Bạn chưa chọn phương thức thanh toán");
+                    return false;
+                }
+            });
+            
         });
     </script>
 }

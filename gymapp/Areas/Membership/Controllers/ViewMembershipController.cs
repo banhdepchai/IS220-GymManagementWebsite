@@ -1,11 +1,18 @@
-﻿using App.Models;
+﻿using App.Areas.Product.Service;
+using App.Models;
 using App.Models.Memberships;
 using App.Models.Payments;
+using BraintreeHttp;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PayPal.Core;
+using PayPal.v1.Orders;
+using PayPal.v1.Payments;
+using Payment = App.Models.Payments.Payment;
+using PayPalPayments = PayPal.v1.Payments;
 
 namespace App.Areas.Membership.Controllers
 {
@@ -15,11 +22,17 @@ namespace App.Areas.Membership.Controllers
     {
         private readonly GymAppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
+        private readonly string _clientId;
+        private readonly string _secretKey;
 
-        public ViewMembershipController(GymAppDbContext context, UserManager<AppUser> userManager)
+        public double TyGiaUSD = 23300;
+
+        public ViewMembershipController(GymAppDbContext context, UserManager<AppUser> userManager, IConfiguration config)
         {
             _context = context;
             _userManager = userManager;
+            _clientId = config["PaypalSettings:ClientId"];
+            _secretKey = config["PaypalSettings:SecretKey"];
         }
 
         [Route("/dich-vu/")]
@@ -58,34 +71,190 @@ namespace App.Areas.Membership.Controllers
             return View();
         }
 
+        private static int memId;
+
         [HttpPost]
         [Route("/dich-vu/{MembershipId}/xac-nhan-don-hang")]
-        public async Task<IActionResult> Checkout(int MembershipId, [Bind("TotalPrice,DateCreated,PaymentMode")] Payment payment)
+        public async Task<IActionResult> Checkout(int MembershipId, [Bind("DateCreated, TotalPrice, PaymentMode")] Payment paymentt)
         {
-            if (ModelState.IsValid)
+            var membership = await _context.Memberships.FirstOrDefaultAsync(m => m.MembershipId == MembershipId);
+            if (membership == null)
             {
-                var membership = await _context.Memberships.FirstOrDefaultAsync(m => m.MembershipId == MembershipId);
-                var user = await _userManager.GetUserAsync(this.User);
-                ViewBag.user = user;
-                payment.UserID = user.Id;
-
-                _context.Payments.Add(payment);
-                await _context.SaveChangesAsync();
-
-                var SignupMembership = new SignupMembership
-                {
-                    MembershipId = membership.MembershipId,
-                    PaymentId = payment.PaymentID,
-                    UserId = user.Id,
-                    SignupDate = payment.DateCreated
-                };
-                _context.SignupMemberships.Add(SignupMembership);
-                await _context.SaveChangesAsync();
-
-                TempData["SuccessMessage"] = "Đăng ký thành công";
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View();
+
+            if (paymentt.PaymentMode == "Paypal")
+            {
+                memId = MembershipId;
+
+                var enviroment = new SandboxEnvironment(_clientId, _secretKey);
+                var client = new PayPalHttpClient(enviroment);
+
+                #region Create Paypal Order
+
+                var itemList = new PayPalPayments.ItemList()
+                {
+                    Items = new List<PayPalPayments.Item>()
+                };
+                var total = Math.Round((double)membership.Fee / TyGiaUSD, 2);
+                itemList.Items.Add(new PayPalPayments.Item()
+                {
+                    Name = "Gói tập: " + membership.Level,
+                    Currency = "USD",
+                    Price = total.ToString(),
+                    Quantity = "1",
+                    Sku = "sku",
+                    Tax = "0"
+                });
+
+                #endregion Create Paypal Order
+
+                var paypalOrderId = DateTime.Now.Ticks;
+                var hostname = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                var paymentPayPal = new PayPal.v1.Payments.Payment()
+                {
+                    Intent = "sale",
+                    Transactions = new List<PayPalPayments.Transaction>()
+                {
+                    new PayPalPayments.Transaction()
+                    {
+                        Amount = new PayPalPayments.Amount()
+                        {
+                            Total = total.ToString(),
+                            Currency = "USD",
+                            Details = new PayPalPayments.AmountDetails
+                            {
+                                Tax = "0",
+                                Shipping = "0",
+                                Subtotal = total.ToString()
+                            }
+                        },
+                        ItemList = itemList,
+                        Description = $"Invoice #{paypalOrderId}",
+                        InvoiceNumber = paypalOrderId.ToString()
+                    }
+                },
+                    RedirectUrls = new PayPalPayments.RedirectUrls()
+                    {
+                        CancelUrl = $"{hostname}/dich-vu/thanh-toan-paypal/that-bai",
+                        ReturnUrl = $"{hostname}/dich-vu/thanh-toan-paypal/thanh-cong"
+                    },
+                    Payer = new PayPalPayments.Payer()
+                    {
+                        PaymentMethod = "paypal"
+                    }
+                };
+
+                PayPalPayments.PaymentCreateRequest request = new PayPalPayments.PaymentCreateRequest();
+                request.RequestBody(paymentPayPal);
+
+                try
+                {
+                    var response = await client.Execute(request);
+                    var statusCode = response.StatusCode;
+                    PayPal.v1.Payments.Payment result = response.Result<PayPal.v1.Payments.Payment>();
+
+                    var links = result.Links.GetEnumerator();
+                    string paypalRedirectUrl = null;
+                    while (links.MoveNext())
+                    {
+                        PayPalPayments.LinkDescriptionObject lnk = links.Current;
+                        if (lnk.Rel.ToLower().Trim().Equals("approval_url"))
+                        {
+                            //saving the payapalredirect URL to which user will be redirected for payment
+                            paypalRedirectUrl = lnk.Href;
+                        }
+                    }
+
+                    return Redirect(paypalRedirectUrl);
+                    //return Json(new { redirectUrl = paypalRedirectUrl });
+                }
+                catch (HttpException httpException)
+                {
+                    var statusCode = httpException.StatusCode;
+                    var debugId = httpException.Headers.GetValues("PayPal-Debug-Id").FirstOrDefault();
+
+                    //Process when Checkout with Paypal fails
+                    return Redirect("/dich-vu/thanh-toan-paypal/that-bai");
+                    //return Json(new { redirectUrl = "/GioHang/CheckoutFail" });
+                }
+            }
+            
+            var user = await _userManager.GetUserAsync(this.User);
+
+            var dateCreated = DateTime.Now;
+
+            var payment = new Payment
+            {
+                DateCreated = dateCreated,
+                PaymentMode = "Trả sau",
+                TotalPrice = membership.Fee,
+                UserID = user.Id
+            };
+
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+
+            var SignupMembership = new SignupMembership
+            {
+                MembershipId = membership.MembershipId,
+                PaymentId = payment.PaymentID,
+                UserId = user.Id,
+                SignupDate = dateCreated
+            };
+            _context.SignupMemberships.Add(SignupMembership);
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Đăng ký thành công";
+            return RedirectToAction("Index");
+            //return Json(new { redirectUrl = "/dich-vu/" });
         }
+
+        [Route("/dich-vu/thanh-toan-paypal/thanh-cong", Name = "dichvupaypal")]
+        public async Task<IActionResult> CheckoutSuccess()
+        {
+            if (memId == 0)
+            {
+                return NotFound();
+            }
+            var membership = await _context.Memberships.FirstOrDefaultAsync(m => m.MembershipId == memId);
+            var user = await _userManager.GetUserAsync(this.User);
+            
+            var payment = new Payment()
+            {
+                DateCreated = DateTime.Now,
+                UserID = user.Id,
+                TotalPrice = membership.Fee,
+                PaymentMode = "Paypal",
+            };
+
+            _context.Payments.Add(payment);
+            _context.SaveChanges();
+
+            var signupMembership = new SignupMembership()
+            {
+                PaymentId = payment.PaymentID,
+                MembershipId = memId,
+                UserId = user.Id,
+                SignupDate = DateTime.Now
+            };
+            _context.SignupMemberships.Add(signupMembership);
+
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Đặt hàng thành công";
+            //TempData["StatusMessage"] = "Đặt hàng thành công";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Route("/dich-vu/thanh-toan-paypal/that-bai", Name = "paypalfaill")]
+        public IActionResult CheckoutFail()
+        {
+            TempData["ErrorMessage"] = "Đặt hàng thất bại";
+            //TempData["StatusMessage"] = "Đặt hàng thất bại";
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

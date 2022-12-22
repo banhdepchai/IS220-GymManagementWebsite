@@ -38,8 +38,6 @@ namespace App.Areas.Product.Controllers
         {
             ViewBag.Keyword = keyword;
 
-            var SelectCategory = ViewBag.SelectCategory;
-
             IOrderedQueryable<ProductModel> products;
             if (keyword != null)
             {

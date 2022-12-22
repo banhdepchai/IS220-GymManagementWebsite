@@ -26,14 +26,18 @@
         </div>
     </section>
     <!-- Breadcrumb Section End -->
+    
+    
 
-    <!-- Register Section Begin -->
+<!-- Register Section Begin -->
     <section class="register-section classes-page spad">
         <div class="container pt-5">
+            @*<partial name="_StatusMessage"/>*@
             <div class="classes-page-text">
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="register-text">
+
                             <div class="section-title">
                                 <h2>ĐĂNG KÍ</h2>
                             </div>
@@ -65,11 +69,11 @@
                                     </div>
 
                                 </div>
-                                <button class="register-btn" >Đăng ký</button>
+                                <button class="register-btn">Đăng ký</button>
                             </form>
                         </div>
                     </div>
-                    <div class="col-lg-4 d-flex justify-content-center align-items-center set-bg" data-setbg="/img/hero/sever-pic.jpg"> 
+                    <div class="col-lg-4 d-flex justify-content-center align-items-center set-bg" data-setbg="/img/hero/sever-pic.jpg">
 
                         <div class="membership-item in-singup">
                             <div class="mi-title">
@@ -112,26 +116,34 @@
             $('.mainmenu').find('li').eq(1).addClass('active');
             
             $("#dichvu").val($("#dichvu option:first").val());
-
-            $("#dichvu").change(function () {
-            $.ajax({
-                type: "Get",
-                    url: "/membership/" + $(this).val(),  //remember change the controller to your owns.  
-                success: function (data) {
-                    $(".membership-item").html("");
-                    $(".membership-item").html(data);
-                },
-                error: function (response) {
-                    console.log(response.responseText);
-                }
+            
+            $(".register-btn").click(function (e) {
+                    e.preventDefault();
+                    var service = $("#dichvu").val();
+                    console.log(service);
+                    window.location.href = '/dich-vu/' + service + '/xac-nhan-don-hang';
+                    return false;
             });
 
-            $(".register-btn").click(function (e) {
-                e.preventDefault();
-                var service = $("#dichvu").val();
-                
-                window.location.href = '/dich-vu/' + service + '/xac-nhan-don-hang';
-                return false;
+            $("#dichvu").change(function () {
+                $.ajax({
+                    type: "Get",
+                        url: "/membership/" + $(this).val(),  //remember change the controller to your owns.  
+                    success: function (data) {
+                        $(".membership-item").html("");
+                        $(".membership-item").html(data);
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+                });
+
+                $(".register-btn").click(function (e) {
+                    e.preventDefault();
+                    var service = $("#dichvu").val();
+                    console.log(service);
+                    window.location.href = '/dich-vu/' + service + '/xac-nhan-don-hang';
+                    return false;
                 });
             });
         });

@@ -109,6 +109,27 @@ namespace App.Extensions
                 new Product { ProductID = 11, ProductName = "AP Sports Regimen L-Carnitine 3000mg, 31 Servings", Description = "Đai lưng đeo tạ", Content = "", DateCreated = DateTime.Now, Price = 600000, CategoryID = 2, AuthorId = "8e445865-a24d-4543-a6c6-9443d048cdb9", Slug = "ap-sports-regimen-l-carnitine-3000mg-31-servings" }
             );
 
+            modelBuilder.Entity<ProductPhoto>().HasData(
+                new ProductPhoto { Id = 1, ProductID = 1, FileName = "gbcrunmg.webp" },
+                new ProductPhoto { Id = 2, ProductID = 2, FileName = "ndhktb2h.webp" },
+                new ProductPhoto { Id = 3, ProductID = 2, FileName = "lvbpl5hk.webp" },
+                new ProductPhoto { Id = 4, ProductID = 2, FileName = "mzkvjbag.webp" },
+                new ProductPhoto { Id = 5, ProductID = 3, FileName = "t3ts2ibq.webp" },
+                new ProductPhoto { Id = 6, ProductID = 4, FileName = "wcan2qsl.webp" },
+                new ProductPhoto { Id = 7, ProductID = 5, FileName = "0cas3lpe.webp" },
+                new ProductPhoto { Id = 8, ProductID = 6, FileName = "nba2br4q.webp" },
+                new ProductPhoto { Id = 9, ProductID = 7, FileName = "3dfphy25.webp" },
+                new ProductPhoto { Id = 10, ProductID = 8, FileName = "dhlyzh3z.webp" },
+                new ProductPhoto { Id = 11, ProductID = 9, FileName = "2kvkadjd.webp" },
+                new ProductPhoto { Id = 12, ProductID = 9, FileName = "vmdgv0yz.webp" },
+                new ProductPhoto { Id = 13, ProductID = 9, FileName = "odxrwtki.webp" },
+                new ProductPhoto { Id = 14, ProductID = 10, FileName = "d2fls0jh.webp" },
+                new ProductPhoto { Id = 15, ProductID = 11, FileName = "zuigad2q.webp" },
+                new ProductPhoto { Id = 16, ProductID = 11, FileName = "eb3v2agw.webp" },
+                new ProductPhoto { Id = 17, ProductID = 11, FileName = "p0ftdyxl.webp" },
+                new ProductPhoto { Id = 18, ProductID = 11, FileName = "yimi12em.webp" }
+            );
+
             modelBuilder.Entity<Membership>().HasData(
                 new Membership()
                 {
@@ -195,28 +216,28 @@ namespace App.Extensions
             );
 
             modelBuilder.Entity<Class>().HasData(
-                new Class { ClassId = 1, ClassTitle = "Gym cho nam giới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 2 },
-                new Class { ClassId = 2, ClassTitle = "Gym cho nữ giới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 5 },
-                new Class { ClassId = 3, ClassTitle = "Gym cho người mới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 15 },
-                new Class { ClassId = 4, ClassTitle = "Giảm mỡ bụng", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 3 },
-                new Class { ClassId = 5, ClassTitle = "Giảm cân cấp tốc", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 6 },
-                new Class { ClassId = 6, ClassTitle = "Giảm mỡ toàn thân", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 8 },
-                new Class { ClassId = 7, ClassTitle = "Tăng chiều cao", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1 },
-                new Class { ClassId = 8, ClassTitle = "Tăng cường cơ bắp", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1 },
-                new Class { ClassId = 9, ClassTitle = "Phục hồi chức năng", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1 },
-                new Class { ClassId = 10, ClassTitle = "Khôi phuc vóc dáng sau sinh", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1 },
-                new Class { ClassId = 11, ClassTitle = "Aerobic", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1 },
-                new Class { ClassId = 12, ClassTitle = "Gym cho nam giới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 20 },
-                new Class { ClassId = 13, ClassTitle = "Gym cho nữ giới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 2 },
-                new Class { ClassId = 14, ClassTitle = "Gym cho người mới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 5 },
-                new Class { ClassId = 15, ClassTitle = "Giảm mỡ bụng", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1 },
-                new Class { ClassId = 16, ClassTitle = "Giảm cân cấp tốc", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 6 },
-                new Class { ClassId = 17, ClassTitle = "Giảm mỡ toàn thân", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 8 },
-                new Class { ClassId = 18, ClassTitle = "Tăng chiều cao", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1 },
-                new Class { ClassId = 19, ClassTitle = "Tăng cường cơ bắp", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1 },
-                new Class { ClassId = 20, ClassTitle = "Phục hồi chức năng", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1 },
-                new Class { ClassId = 21, ClassTitle = "Khôi phuc vóc dáng sau sinh", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 3 },
-                new Class { ClassId = 22, ClassTitle = "Aerobic", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 11 }
+                new Class { ClassId = 1, ClassTitle = "Gym cho nam giới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 2, PhotoUrl = "b9c58f58-94e1-45b8-a505-f708a9ce0366_blog-9.jpg" },
+                new Class { ClassId = 2, ClassTitle = "Gym cho nữ giới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 5, PhotoUrl = "42d4ee61-d335-4972-8f4a-e7b6a92ad6a2_blog-4.jpg" },
+                new Class { ClassId = 3, ClassTitle = "Gym cho người mới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 15, PhotoUrl = "31ecfa50-03e9-436a-9417-f2eafde632ab_blog-1.jpg" },
+                new Class { ClassId = 4, ClassTitle = "Giảm mỡ bụng", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 3, PhotoUrl = "dc246325-4167-4c1e-869c-9bd8a6825787_blog-5.jpg" },
+                new Class { ClassId = 5, ClassTitle = "Giảm cân cấp tốc", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 6, PhotoUrl = "ac083b6e-eaaa-401d-8902-9e12027f0bdd_blog-2.jpg" },
+                new Class { ClassId = 6, ClassTitle = "Giảm mỡ toàn thân", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 8, PhotoUrl = "9c18a79d-b12b-41ed-ac5a-96f419b962f6_gallery-1.jpg" },
+                new Class { ClassId = 7, ClassTitle = "Tăng chiều cao", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1, PhotoUrl = "14783d5f-bfba-493b-8e8a-927f1a20339e_gallery-4.jpg" },
+                new Class { ClassId = 8, ClassTitle = "Tăng cường cơ bắp", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1, PhotoUrl = "7e6988ea-f5dd-4ef8-8f68-9e799f7e728b_gallery-7.jpg" },
+                new Class { ClassId = 9, ClassTitle = "Phục hồi chức năng", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1, PhotoUrl = "134c6596-20d7-47e0-961c-b38df4868704_classes-5.jpg" },
+                new Class { ClassId = 10, ClassTitle = "Khôi phuc vóc dáng sau sinh", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1, PhotoUrl = "041a2478-a9fc-4e3d-aaf6-2b2cd373ef15_classes-2.jpg" },
+                new Class { ClassId = 11, ClassTitle = "Aerobic", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1, PhotoUrl = "7ce14930-948c-45d2-ae5d-d4440cb14ccf_classes-2.jpg" },
+                new Class { ClassId = 12, ClassTitle = "Gym cho nam giới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 20, PhotoUrl = "dd071c8a-49e6-4ca1-8c15-a4c954f56ab6_classes-8.jpg" },
+                new Class { ClassId = 13, ClassTitle = "Gym cho nữ giới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 2, PhotoUrl = "7812b275-1d64-4202-bf82-602dd0a64c4f_classes-1.jpg" },
+                new Class { ClassId = 14, ClassTitle = "Gym cho người mới", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 5, PhotoUrl = "f825cf9b-6ef5-4db8-b43e-e479f5ffbc49_classes-6.jpg" },
+                new Class { ClassId = 15, ClassTitle = "Giảm mỡ bụng", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1, PhotoUrl = "41f85a0f-8962-4383-83f6-ad668d0ce8a8_classes-9.jpg" },
+                new Class { ClassId = 16, ClassTitle = "Giảm cân cấp tốc", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 6, PhotoUrl = "7b7985a5-9a32-4630-8e2a-783f81b5629d_classes-5.jpg" },
+                new Class { ClassId = 17, ClassTitle = "Giảm mỡ toàn thân", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 8, PhotoUrl = "db2f51e3-1d30-4ec4-a173-9ba802d44a56_classes-4.jpg" },
+                new Class { ClassId = 18, ClassTitle = "Tăng chiều cao", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1, PhotoUrl = "1e4298c8-b920-4c79-9d91-913259651e85_classes-7.jpg" },
+                new Class { ClassId = 19, ClassTitle = "Tăng cường cơ bắp", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1, PhotoUrl = "3bda819d-aa32-4783-885b-442e768874e5_classes-5.jpg" },
+                new Class { ClassId = 20, ClassTitle = "Phục hồi chức năng", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 1, PhotoUrl = "2662208d-fed5-401c-b5fe-89355ece2463_classes-2.jpg" },
+                new Class { ClassId = 21, ClassTitle = "Khôi phuc vóc dáng sau sinh", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 3, PhotoUrl = "5fe5ed6b-fa14-405f-ace0-3ef162381282_classes-1.jpg" },
+                new Class { ClassId = 22, ClassTitle = "Aerobic", ClassDate = "20/12 - 27/12", ClassPeriod = "10:00 - 11:30", ClassCost = 500000, RoomId = 1, InstructorId = 11, PhotoUrl = "6f4edaf7-2a1d-4bd9-8e53-beca90f2cc58_classes-2.jpg" }
             );
 
             modelBuilder.Entity<Discount>().HasData(

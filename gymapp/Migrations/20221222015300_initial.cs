@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace gymapp.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -179,7 +179,8 @@ namespace gymapp.Migrations
                     ClassPeriod = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ClassCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     RoomId = table.Column<int>(type: "int", nullable: true),
-                    InstructorId = table.Column<int>(type: "int", nullable: true)
+                    InstructorId = table.Column<int>(type: "int", nullable: true),
+                    PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -638,9 +639,9 @@ namespace gymapp.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "92189c12-096b-4d64-be8d-0802100ece20", "Administrator", "ADMINISTRATOR" },
-                    { "6dcabc58-8c5c-4231-9a66-02c038da7429", "9343f001-7ac2-4845-8499-333b1e931dfe", "Editor", "EDITOR" },
-                    { "76251a37-7bb0-4f6a-80bd-c454effb7285", "e2e31082-05d9-40cf-9240-790faa9d864b", "Member", "MEMBER" }
+                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "9cc53335-b1c7-4c0b-8aa1-3811bbb0f6c0", "Administrator", "ADMINISTRATOR" },
+                    { "6dcabc58-8c5c-4231-9a66-02c038da7429", "3a44dc59-d93e-4c19-ac11-1fa4da7c6db8", "Editor", "EDITOR" },
+                    { "76251a37-7bb0-4f6a-80bd-c454effb7285", "7a9e1575-bf6e-4ee1-87df-442c4aa5bee0", "Member", "MEMBER" }
                 });
 
             migrationBuilder.InsertData(
@@ -673,35 +674,35 @@ namespace gymapp.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "HomeAdress", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, new DateTime(2002, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), "f48f563e-d9e4-48f6-918f-87609200f60b", "admin@vietgym.com", true, "Nguyễn Bảo Anh", "Hồ Chí Minh", false, null, "admin@vietgym.com", "ADMIN", "AQAAAAEAACcQAAAAENT5MMAuoODUGcRPid6luYg+a523LhgiEcx19GS2s86ULro5LBphl5HAcmOuy6jADQ==", "0866414791", true, "", false, "admin" });
+                values: new object[] { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, new DateTime(2002, 9, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), "61181b81-daca-4589-a48d-fff2ac72fa8c", "admin@vietgym.com", true, "Nguyễn Bảo Anh", "Hồ Chí Minh", false, null, "admin@vietgym.com", "ADMIN", "AQAAAAEAACcQAAAAEFO+xqSBx6b5A5TtizV2qm+mFrtL9petZQmTY6LvLTiQmX0fxBmtdRnmL5cmzdxQUg==", "0866414791", true, "", false, "admin" });
 
             migrationBuilder.InsertData(
                 table: "Classes",
-                columns: new[] { "ClassId", "ClassCost", "ClassDate", "ClassPeriod", "ClassTitle", "InstructorId", "RoomId" },
+                columns: new[] { "ClassId", "ClassCost", "ClassDate", "ClassPeriod", "ClassTitle", "InstructorId", "PhotoUrl", "RoomId" },
                 values: new object[,]
                 {
-                    { 1, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho nam giới", 2, 1 },
-                    { 2, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho nữ giới", 5, 1 },
-                    { 3, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho người mới", 15, 1 },
-                    { 4, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm mỡ bụng", 3, 1 },
-                    { 5, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm cân cấp tốc", 6, 1 },
-                    { 6, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm mỡ toàn thân", 8, 1 },
-                    { 7, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Tăng chiều cao", 1, 1 },
-                    { 8, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Tăng cường cơ bắp", 1, 1 },
-                    { 9, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Phục hồi chức năng", 1, 1 },
-                    { 10, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Khôi phuc vóc dáng sau sinh", 1, 1 },
-                    { 11, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Aerobic", 1, 1 },
-                    { 12, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho nam giới", 20, 1 },
-                    { 13, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho nữ giới", 2, 1 },
-                    { 14, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho người mới", 5, 1 },
-                    { 15, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm mỡ bụng", 1, 1 },
-                    { 16, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm cân cấp tốc", 6, 1 },
-                    { 17, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm mỡ toàn thân", 8, 1 },
-                    { 18, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Tăng chiều cao", 1, 1 },
-                    { 19, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Tăng cường cơ bắp", 1, 1 },
-                    { 20, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Phục hồi chức năng", 1, 1 },
-                    { 21, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Khôi phuc vóc dáng sau sinh", 3, 1 },
-                    { 22, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Aerobic", 11, 1 }
+                    { 1, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho nam giới", 2, "b9c58f58-94e1-45b8-a505-f708a9ce0366_blog-9.jpg", 1 },
+                    { 2, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho nữ giới", 5, "42d4ee61-d335-4972-8f4a-e7b6a92ad6a2_blog-4.jpg", 1 },
+                    { 3, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho người mới", 15, "31ecfa50-03e9-436a-9417-f2eafde632ab_blog-1.jpg", 1 },
+                    { 4, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm mỡ bụng", 3, "dc246325-4167-4c1e-869c-9bd8a6825787_blog-5.jpg", 1 },
+                    { 5, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm cân cấp tốc", 6, "ac083b6e-eaaa-401d-8902-9e12027f0bdd_blog-2.jpg", 1 },
+                    { 6, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm mỡ toàn thân", 8, "9c18a79d-b12b-41ed-ac5a-96f419b962f6_gallery-1.jpg", 1 },
+                    { 7, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Tăng chiều cao", 1, "14783d5f-bfba-493b-8e8a-927f1a20339e_gallery-4.jpg", 1 },
+                    { 8, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Tăng cường cơ bắp", 1, "7e6988ea-f5dd-4ef8-8f68-9e799f7e728b_gallery-7.jpg", 1 },
+                    { 9, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Phục hồi chức năng", 1, "134c6596-20d7-47e0-961c-b38df4868704_classes-5.jpg", 1 },
+                    { 10, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Khôi phuc vóc dáng sau sinh", 1, "041a2478-a9fc-4e3d-aaf6-2b2cd373ef15_classes-2.jpg", 1 },
+                    { 11, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Aerobic", 1, "7ce14930-948c-45d2-ae5d-d4440cb14ccf_classes-2.jpg", 1 },
+                    { 12, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho nam giới", 20, "dd071c8a-49e6-4ca1-8c15-a4c954f56ab6_classes-8.jpg", 1 },
+                    { 13, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho nữ giới", 2, "7812b275-1d64-4202-bf82-602dd0a64c4f_classes-1.jpg", 1 },
+                    { 14, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Gym cho người mới", 5, "f825cf9b-6ef5-4db8-b43e-e479f5ffbc49_classes-6.jpg", 1 },
+                    { 15, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm mỡ bụng", 1, "41f85a0f-8962-4383-83f6-ad668d0ce8a8_classes-9.jpg", 1 },
+                    { 16, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm cân cấp tốc", 6, "7b7985a5-9a32-4630-8e2a-783f81b5629d_classes-5.jpg", 1 },
+                    { 17, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Giảm mỡ toàn thân", 8, "db2f51e3-1d30-4ec4-a173-9ba802d44a56_classes-4.jpg", 1 },
+                    { 18, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Tăng chiều cao", 1, "1e4298c8-b920-4c79-9d91-913259651e85_classes-7.jpg", 1 },
+                    { 19, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Tăng cường cơ bắp", 1, "3bda819d-aa32-4783-885b-442e768874e5_classes-5.jpg", 1 },
+                    { 20, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Phục hồi chức năng", 1, "2662208d-fed5-401c-b5fe-89355ece2463_classes-2.jpg", 1 },
+                    { 21, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Khôi phuc vóc dáng sau sinh", 3, "5fe5ed6b-fa14-405f-ace0-3ef162381282_classes-1.jpg", 1 },
+                    { 22, 500000m, "20/12 - 27/12", "10:00 - 11:30", "Aerobic", 11, "6f4edaf7-2a1d-4bd9-8e53-beca90f2cc58_classes-2.jpg", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -709,23 +710,48 @@ namespace gymapp.Migrations
                 columns: new[] { "ProductID", "AuthorId", "CategoryID", "Content", "DateCreated", "DateUpdated", "Description", "Price", "ProductName", "Slug" },
                 values: new object[,]
                 {
-                    { 1, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7506), null, "Đai lưng đeo tạ", 850000m, "Đai lưng đeo tạ Harbinger PolyPro Dip Belt With Chain", "dai-lung-deo-ta-harbinger-polypro-dip-belt-with-chain" },
-                    { 2, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7518), null, "Đai lưng đeo tạ", 800000m, "Đai lưng Gofit Leather Lifting Belt, 6 Inch", "dai-lung-gofit-leather-lifting-belt-6-inch" },
-                    { 3, "8e445865-a24d-4543-a6c6-9443d048cdb9", 3, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7520), null, "Đai lưng đeo tạ", 760000m, "Harbinger Lifting Grips", "harbinger-lifting-grips" },
-                    { 4, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7521), null, "Đai lưng đeo tạ", 750000m, "Harbinger 6\" Padded Leather Belt", "harbinger-6-padded-leather-belt" },
-                    { 5, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7523), null, "Đai lưng đeo tạ", 710000m, "Harbinger Training Grip Wristwrap Weightlifting Gloves, Black/Grey", "harbinger-training-grip-wristwrap-weightlifting-gloves-blackgrey" },
-                    { 6, "8e445865-a24d-4543-a6c6-9443d048cdb9", 3, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7524), null, "Đai lưng đeo tạ", 700000m, "Harbinger Flexfit Contour Belt Red, 6 inch", "harbinger-flexfit-contour-belt-red-6-inch" },
-                    { 7, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7525), null, "Đai lưng đeo tạ", 700000m, "Harbinger 4\" Padded Leather Belt", "harbinger-4-padded-leather-belt" },
-                    { 8, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7527), null, "Đai lưng đeo tạ", 1800000m, "Labrada Muscle Mass Gainer 12 Lbs (5443 g)", "labrada-muscle-mass-gainer-12-lbs-5443-g" },
-                    { 9, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7528), null, "Đai lưng đeo tạ", 1600000m, "Applied Critical Mass Original, 6KG (25 Servings)", "applied-critical-mass-original-6kg-25-servings" },
-                    { 10, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7530), null, "Đai lưng đeo tạ", 1850000m, "Kevin Levrone GOLD Lean Mass, 6 KG (30 Servings)", "kevin-levrone-gold-lean-mass-6-kg-30-servings" },
-                    { 11, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 6, 20, 47, 47, 118, DateTimeKind.Local).AddTicks(7531), null, "Đai lưng đeo tạ", 600000m, "AP Sports Regimen L-Carnitine 3000mg, 31 Servings", "ap-sports-regimen-l-carnitine-3000mg-31-servings" }
+                    { 1, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6453), null, "Đai lưng đeo tạ", 850000m, "Đai lưng đeo tạ Harbinger PolyPro Dip Belt With Chain", "dai-lung-deo-ta-harbinger-polypro-dip-belt-with-chain" },
+                    { 2, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6463), null, "Đai lưng đeo tạ", 800000m, "Đai lưng Gofit Leather Lifting Belt, 6 Inch", "dai-lung-gofit-leather-lifting-belt-6-inch" },
+                    { 3, "8e445865-a24d-4543-a6c6-9443d048cdb9", 3, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6465), null, "Đai lưng đeo tạ", 760000m, "Harbinger Lifting Grips", "harbinger-lifting-grips" },
+                    { 4, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6466), null, "Đai lưng đeo tạ", 750000m, "Harbinger 6\" Padded Leather Belt", "harbinger-6-padded-leather-belt" },
+                    { 5, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6468), null, "Đai lưng đeo tạ", 710000m, "Harbinger Training Grip Wristwrap Weightlifting Gloves, Black/Grey", "harbinger-training-grip-wristwrap-weightlifting-gloves-blackgrey" },
+                    { 6, "8e445865-a24d-4543-a6c6-9443d048cdb9", 3, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6469), null, "Đai lưng đeo tạ", 700000m, "Harbinger Flexfit Contour Belt Red, 6 inch", "harbinger-flexfit-contour-belt-red-6-inch" },
+                    { 7, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6471), null, "Đai lưng đeo tạ", 700000m, "Harbinger 4\" Padded Leather Belt", "harbinger-4-padded-leather-belt" },
+                    { 8, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6472), null, "Đai lưng đeo tạ", 1800000m, "Labrada Muscle Mass Gainer 12 Lbs (5443 g)", "labrada-muscle-mass-gainer-12-lbs-5443-g" },
+                    { 9, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6473), null, "Đai lưng đeo tạ", 1600000m, "Applied Critical Mass Original, 6KG (25 Servings)", "applied-critical-mass-original-6kg-25-servings" },
+                    { 10, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6475), null, "Đai lưng đeo tạ", 1850000m, "Kevin Levrone GOLD Lean Mass, 6 KG (30 Servings)", "kevin-levrone-gold-lean-mass-6-kg-30-servings" },
+                    { 11, "8e445865-a24d-4543-a6c6-9443d048cdb9", 2, "", new DateTime(2022, 12, 22, 8, 53, 0, 408, DateTimeKind.Local).AddTicks(6476), null, "Đai lưng đeo tạ", 600000m, "AP Sports Regimen L-Carnitine 3000mg, 31 Servings", "ap-sports-regimen-l-carnitine-3000mg-31-servings" }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[] { "2c5e174e-3b0e-446f-86af-483d56fd7210", "8e445865-a24d-4543-a6c6-9443d048cdb9" });
+
+            migrationBuilder.InsertData(
+                table: "ProductPhoto",
+                columns: new[] { "Id", "FileName", "ProductID" },
+                values: new object[,]
+                {
+                    { 1, "gbcrunmg.webp", 1 },
+                    { 2, "ndhktb2h.webp", 2 },
+                    { 3, "lvbpl5hk.webp", 2 },
+                    { 4, "mzkvjbag.webp", 2 },
+                    { 5, "t3ts2ibq.webp", 3 },
+                    { 6, "wcan2qsl.webp", 4 },
+                    { 7, "0cas3lpe.webp", 5 },
+                    { 8, "nba2br4q.webp", 6 },
+                    { 9, "3dfphy25.webp", 7 },
+                    { 10, "dhlyzh3z.webp", 8 },
+                    { 11, "2kvkadjd.webp", 9 },
+                    { 12, "vmdgv0yz.webp", 9 },
+                    { 13, "odxrwtki.webp", 9 },
+                    { 14, "d2fls0jh.webp", 10 },
+                    { 15, "zuigad2q.webp", 11 },
+                    { 16, "eb3v2agw.webp", 11 },
+                    { 17, "p0ftdyxl.webp", 11 },
+                    { 18, "yimi12em.webp", 11 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Category_Slug",

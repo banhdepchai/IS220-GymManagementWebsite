@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using App.Models;
 using Microsoft.EntityFrameworkCore;
 using ContactModel = App.Models.Contacts.Contact;
+using App.Models.Classes;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using System.Drawing.Printing;
 
 namespace App.Areas.Contact.Controllers
 {
@@ -19,10 +22,50 @@ namespace App.Areas.Contact.Controllers
         }
 
         [HttpGet("/admin/contact")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize, string keyword)
         {
-            var contacts = await _context.Contacts.ToListAsync();
-            return View(contacts);
+            ViewBag.Keyword = keyword;
+
+            IOrderedQueryable<ContactModel> contacts;
+            if (keyword != null)
+            {
+                contacts = _context.Contacts.Where(p => p.FullName.Contains(keyword) || p.Email.Contains(keyword) || p.Phone.Contains(keyword)).OrderBy(p => p.FullName);
+            }
+            else
+            {
+                contacts = _context.Contacts.OrderBy(p => p.FullName);
+            }
+
+            int totalContacts = await contacts.CountAsync();
+            if (pagesize <= 0) pagesize = 5;
+            int countPages = (int)Math.Ceiling((double)totalContacts / pagesize);
+
+            if (currentPage > countPages) currentPage = countPages;
+            if (currentPage < 1) currentPage = 1;
+
+            var pagingModel = new PagingModel()
+            {
+                countpages = countPages,
+                currentpage = currentPage,
+                generateUrl = (pageNumber) => Url.Action("Index", new
+                {
+                    p = pageNumber,
+                    pagesize = pagesize
+                }) ?? string.Empty
+            };
+
+            ViewBag.pagingModel = pagingModel;
+            ViewBag.totalContacts = totalContacts;
+
+            ViewBag.contactIndex = (currentPage - 1) * pagesize;
+
+            var contactsInPage = await contacts.Skip((currentPage - 1) * pagesize)
+                .Take(pagesize)
+                .ToListAsync();
+
+            return View(contactsInPage);
+            //var contacts = await _context.Contacts.ToListAsync();
+            //return View(contacts);
         }
 
         [HttpGet("/admin/contact/detail/{id}")]
@@ -64,7 +107,8 @@ namespace App.Areas.Contact.Controllers
                 _context.Add(contact);
                 await _context.SaveChangesAsync();
 
-                TempData["SuccessMessage"] = "Gửi liên hệ thành công.";
+                //TempData["SuccessMessage"] = "Gửi liên hệ thành công.";
+                StatusMessage = "Gửi liên hệ thành công.";
 
                 return RedirectToAction("SendContact");
                 //return RedirectToAction("Index", "Contact");
@@ -96,8 +140,17 @@ namespace App.Areas.Contact.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var contact = await _context.Contacts.FindAsync(id);
+
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
             _context.Contacts.Remove(contact);
             await _context.SaveChangesAsync();
+
+            StatusMessage = "Xóa liên hệ thành công.";
+
             return RedirectToAction(nameof(Index));
         }
     }

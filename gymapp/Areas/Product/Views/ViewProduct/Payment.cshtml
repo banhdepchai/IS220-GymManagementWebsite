@@ -70,7 +70,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="data-setbg" asp-for="DateCreated">Ngày đặt hàng</label>
-                                <input class="form-control"asp-for="DateCreated" value="@DateTime.Now" >
+                                <input type="datetime" class="form-control"asp-for="DateCreated" value="@DateTime.Today.ToString("yyyy-MM-dd")" >
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                             <h3 class="billing-heading mb-4">Tổng đơn hàng</h3>
                             <p class="d-flex">
                                 <span>Chi phí</span>
-                                <span>@ViewBag.total</span>
+                                <span>@Math.Round(ViewBag.totalOld)đ</span>
                             </p>
                             <p class="d-flex">
                                 <span>Phí vận chuyển</span>
@@ -91,12 +91,12 @@
                             </p>
                             <p class="d-flex">
                                 <span>Giảm giá</span>
-                                <span>50.00đ</span>
+                                <span>@Math.Round(ViewBag.discountPrice)đ</span>
                             </p>
                             <hr>
                             <p class="d-flex total-price">
                                 <span>Tổng</span>
-                                <span>150.00đ</span>
+                                <span>@Math.Round(ViewBag.total)đ</span>
                             </p>
                         </div>
                     </div>
@@ -120,11 +120,11 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="checkbox">
-                                        <label><input type="checkbox" value="" class="mr-2"> Tôi chấp nhận với mọi điều khoản</label>
+                                        <label><input type="checkbox" id="dieukhoan" value="" class="mr-2"> Tôi chấp nhận với mọi điều khoản</label>
                                     </div>
                                 </div>
                             </div>
-                            <p><a @*asp-action="Checkout"*@ id="btn-tt" class="btn btn-primary btn-cart py-3 px-4">Đặt hàng</a></p>
+                            <p><button id="btn-tt" class="btn btn-primary btn-cart py-3 px-4" disabled="disabled">Đặt hàng</button></p>
                         </div>
                     </div>
                 </div>
@@ -140,6 +140,21 @@
     
     <script>
         $(document).ready(function () {
+            $('input[name="optradio"]').click(function () {
+               var result = $("input[name='optradio']:checked").parent().text();
+               $("#paymentmode").val(result);
+            });
+
+            $("#dieukhoan").click(function () {
+                if ($("#dieukhoan").is(":checked")) {
+                    $("#btn-tt").removeAttr('disabled');
+                }
+                else {
+                    //alert("Bạn chưa chấp nhận điều khoản");
+                    $("#btn-tt").attr('disabled', 'disabled');
+                }
+                });
+
             $("#btn-tt").on("click", function () {
                 var optradio = $("input[name='optradio']:checked").val();
                 if (optradio == "paypal") {

@@ -11,6 +11,7 @@
         <li class="breadcrumb-item"><a asp-action="Index" asp-controller="AdminCP" asp-area="AdminCP">Trang chủ</a></li>
         <li class="breadcrumb-item active">Danh sách liên hệ</li>
     </ol>
+    <partial name="_AlertMessage" />
     <div class="card mb-12">
         <div class="card-header">
             <div class="row">
@@ -23,7 +24,7 @@
                             </div>
                             <div class="cold-md-3">
                                 <button type="submit" class="btn btn-primary">Tìm</button>
-                                <button type="button" onclick="window.location.href='/User/Index'" class="btn btn-dark">Reset</button>
+                                <button type="button" onclick="window.location.href='/admin/contact'" class="btn btn-dark">Reset</button>
                             </div>
                         </div>
                     </form>
@@ -32,14 +33,6 @@
         </div>
 
         <div class="card-body">
-            <div class="row">
-                @*@if (ViewBag.SuccessMsg != null)
-                {
-                        <div id="msgAlert" class="alert alert-success" role="alert">
-                        @ViewBag.SuccessMsg
-                        </div>
-                }*@
-            </div>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
@@ -75,7 +68,7 @@
                     </tbody>
                 </table>
             </div>
-            @*@await Component.InvokeAsync("Pager", Model)*@
+            <partial name="_PagingXTL" model="@ViewBag.pagingModel" />
         </div>
     </div>
 </div>

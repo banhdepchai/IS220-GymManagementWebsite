@@ -195,23 +195,13 @@
 
     <script>
         $(document).ready(function() {
-                $('.mainmenu').find('li').removeClass('active');
-                $('.mainmenu').find('li').eq(3).addClass('active');
+            $('.mainmenu').find('li').removeClass('active');
+            $('.mainmenu').find('li').eq(3).addClass('active');
             
             $(".detail").click(function () {
                 $link = $(this).attr("id");
                 window.location.href = "/" + $link + ".html";
                 
-            });
-            
-            function btnphanloai () {
-                console.log("click");
-                var listCategory = ["a","b","c"];
-                $.get('/san-pham', $.param({ data: listCategory }, true), function(data) {});
-            }
-            
-            $("#btn-phanloai").click(function () {
-                btnphanloai();
             });
         });
     </script>
