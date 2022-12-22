@@ -36,9 +36,23 @@ namespace gymapp.Areas.Product.Controllers
         }
 
         [Route("/san-pham/")]
-        public IActionResult Index([FromQuery(Name = "p")] int currentPage, int pagesize)
+        public IActionResult Index([FromQuery(Name = "p")] int currentPage, int pagesize, string sort)
         {
-            var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos).AsNoTracking();
+            var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos).AsQueryable();
+            ViewBag.sort = sort;
+            if (sort == "price-asc")
+            {
+                products = products.OrderBy(p => (p.Price));
+            }
+            else if (sort == "price-desc")
+            {
+                products = products.OrderByDescending(p => p.Price);
+            }
+            else if (sort == "new")
+            {
+                products = products.OrderByDescending(p => p.DateUpdated);
+            }
+
             var categories = _context.Categories.ToList();
 
             int totalProducts = products.Count();
@@ -66,13 +80,27 @@ namespace gymapp.Areas.Product.Controllers
             ViewBag.pagingModel = pagingModel;
             ViewBag.totalProducts = totalProducts;
 
-            return View(productsInPage.OrderByDescending(d => d.DateUpdated).ToList());
+            return View(productsInPage.ToList());
         }
 
         [Route("/san-pham/{danhmuc}")]
-        public IActionResult GetProductsByCategory([FromQuery(Name = "p")] int currentPage, int pagesize, string danhmuc)
+        public IActionResult GetProductsByCategory([FromQuery(Name = "p")] int currentPage, int pagesize, string danhmuc, string sort)
         {
-            var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos.OrderBy(pt => pt.Id)).Where(s => s.Category.Slug == danhmuc).AsNoTracking();
+            var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos.OrderBy(pt => pt.Id)).Where(s => s.Category.Slug == danhmuc).AsQueryable();
+            ViewBag.sort = sort;
+            if (sort == "price-asc")
+            {
+                products = products.OrderBy(p => (p.Price));
+            }
+            else if (sort == "price-desc")
+            {
+                products = products.OrderByDescending(p => p.Price);
+            }
+            else if (sort == "new")
+            {
+                products = products.OrderByDescending(p => p.DateUpdated);
+            }
+
             var categories = _context.Categories.ToList();
 
             int totalProducts = products.Count();
@@ -109,7 +137,7 @@ namespace gymapp.Areas.Product.Controllers
             ViewBag.pagingModel = pagingModel;
             ViewBag.totalProducts = totalProducts;
 
-            return View(productsInPage.OrderByDescending(d => d.DateUpdated).ToList());
+            return View(productsInPage.ToList());
         }
 
         [Route("/{slug}.html")]

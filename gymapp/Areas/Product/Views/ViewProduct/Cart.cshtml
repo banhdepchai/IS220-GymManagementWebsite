@@ -174,44 +174,51 @@ else
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    
+
     <script>
         $(document).ready(function () {
-              $(".updatecartitem").on("click",function () {
-                  var productid = $(this).attr("data-productid");
-                  var quantity = $("#quantity-" + productid).val();
-                  $.ajax({
-                      type: "POST",
-                    url:"/updatecart",
-                      data: {
-                          productid: productid,
-                          quantity:quantity
-                      },
-                      success: function (result) {
-                          window.location.href = "";
-                      }
-                  });
-              });
+              //$(".updatecartitem").on("click",function () {
+              //    var productid = $(this).attr("data-productid");
+              //    var quantity = $("#quantity-" + productid).val();
+              //    $.ajax({
+              //        type: "POST",
+              //      url:"/updatecart",
+              //        data: {
+              //            productid: productid,
+              //            quantity:quantity
+              //        },
+              //        success: function (result) {
+              //            window.location.href = "";
+              //        }
+              //    });
+              //});
               
-            $(".input-number").bind('keyup change click', function (e) {
-                if (!$(this).data("previousValue") || $(this).data("previousValue") != $(this).val())
-                {
-                    $(this).data("previousValue", $(this).val());
-                    var value = $(this).val();
-                    var productid = $(this).attr("data-productid");
-                    var quantity = $("#quantity-" + productid).val();
-                    $.ajax({
-                        type: "POST",
-                        url:"@Url.RouteUrl("updatecart")",
-                        data: {
-                            productid: productid,
-                            quantity:quantity
-                        },
-                        success: function (result) {
-                            window.location.href = "@Url.RouteUrl("cart")";
-                        }
-                    });
+            $(".input-number").bind('keyup change', function (e) {
+                if(this.value < 1){
+                    //this.value = 1;
+                    return false
                 }
+                else {
+                        if (!$(this).data("previousValue") || $(this).data("previousValue") != $(this).val())
+                    {
+                        $(this).data("previousValue", $(this).val());
+                        var value = $(this).val();
+                        var productid = $(this).attr("data-productid");
+                        var quantity = $("#quantity-" + productid).val();
+                        $.ajax({
+                            type: "POST",
+                            url:"@Url.RouteUrl("updatecart")",
+                            data: {
+                                productid: productid,
+                                quantity:quantity
+                            },
+                            success: function (result) {
+                                window.location.href = "@Url.RouteUrl("cart")";
+                            }
+                        });
+                    }
+                }
+                
         
             });
             
