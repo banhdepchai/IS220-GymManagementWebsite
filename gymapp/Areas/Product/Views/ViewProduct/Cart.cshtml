@@ -26,12 +26,15 @@
     </section>
     <!-- Breadcrumb Section End -->
     
+
 @if (Model.Count > 0)
 {
-        <section class="ftco-section ftco-cart spad">
+    
+    <section class="ftco-section ftco-cart spad">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 ftco-animate">
+                    <partial name="_StatusMessage"/>
                     <div class="cart-list">
                         <table class="table" d="cart-gym">
                             <thead class="thead-primary">
@@ -45,39 +48,39 @@
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    decimal subTotal = item.quantity * item.product.Price;
-                                    total += subTotal;
-                                        <tr class="text-center">
-                                            <td class="product-remove"><a href="/removecart/@item.product.ProductID" data-productid="@item.product.ProductID" id="@($"remove-{item.product.ProductID}")" class="removeItem"><i class="trash-icon fa-solid fa-x"></i></a></td>
+                            @foreach (var item in Model)
+                            {
+                                decimal subTotal = item.quantity * item.product.Price;
+                                total += subTotal;
+                                <tr class="text-center">
+                                    <td class="product-remove"><a href="/removecart/@item.product.ProductID" data-productid="@item.product.ProductID" id="@($"remove-{item.product.ProductID}")" class="removeItem"><i class="trash-icon fa-solid fa-x"></i></a></td>
 
-                                        @{
-                                            string imgSrc = "/contents/nophoto.png";
-                                            List<App.Models.Products.ProductPhoto> productPhotos = _context.ProductPhotos.Where(p => p.ProductID == item.product.ProductID).ToList();
-                                            if (productPhotos.Any())
-                                            {
-                                                imgSrc = $"/contents/products/{productPhotos.FirstOrDefault().FileName}";
-                                            }
-                                                    <td class="image-prod set-bg" data-setbg="@imgSrc"></td>
-                                            //<td class="image-prod set-bg" data-setbg="/img/blog/product_1.jpg"></td>
+                                    @{
+                                        string imgSrc = "/contents/nophoto.png";
+                                        List<App.Models.Products.ProductPhoto> productPhotos = _context.ProductPhotos.Where(p => p.ProductID == item.product.ProductID).ToList();
+                                        if (productPhotos.Any())
+                                        {
+                                            imgSrc = $"/contents/products/{productPhotos.FirstOrDefault().FileName}";
                                         }
+                                        <td class="image-prod set-bg" data-setbg="@imgSrc"></td>
+                                        //<td class="image-prod set-bg" data-setbg="/img/blog/product_1.jpg"></td>
+                                    }
 
-                                            <td class="product-name">
-                                                <h3>@item.product.Category.Title</h3>
-                                                <p>@item.product.ProductName</p>
-                                            </td>
+                                    <td class="product-name">
+                                        <h3>@item.product.Category.Title</h3>
+                                        <p>@item.product.ProductName</p>
+                                    </td>
 
-                                            <td class="price">@Math.Round(item.product.Price)Đ</td>
+                                    <td class="price">@Math.Round(item.product.Price)Đ</td>
 
-                                            <td class="quantity">
-                                                <div class="input-group mb-3">
-                                                    <input asp-for="@item.quantity" name="quantity" class="quantity form-control input-number" data-productid="@item.product.ProductID" id="@($"quantity-{item.product.ProductID}")" min="1">
-                                                </div>
-                                            </td>
-                                            <td class="total">@Math.Round(subTotal)Đ</td>
-                                        </tr> 
-                                }
+                                    <td class="quantity">
+                                        <div class="input-group mb-3">
+                                            <input asp-for="@item.quantity" name="quantity" class="quantity form-control input-number" data-productid="@item.product.ProductID" id="@($"quantity-{item.product.ProductID}")" min="1">
+                                        </div>
+                                    </td>
+                                    <td class="total">@Math.Round(subTotal)Đ</td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>

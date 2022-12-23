@@ -1,6 +1,6 @@
 ﻿@using App.Areas.Product.Service
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model App.Models.Payments.Payment
+@model App.Models.Payments.Payment;
 @{
     Layout = "_LayoutUser";
     ViewData["Title"] = "Chi tiết đơn hàng";
@@ -34,22 +34,22 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="firstname">Họ và tên</label>
-                                <input type="text" class="form-control" value="@user.FullName">
+                                <input type="text" class="form-control" placeholder="Nhập họ và tên..." id="hoten">
                             </div>
                         </div>
-                       @* <div class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="lastname">Tên</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <label for="lastname">Email</label>
+                                <input type="email" id="email" class="form-control" placeholder="Nhập email...">
                             </div>
-                        </div>*@
+                        </div>
                         <div class="w-100"></div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="country">Địa chỉ</label>
                                 <div class="select-wrap">
                                     <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                    <select name="" id="" class="form-control">
+                                    <select name="" id="diachi" class="form-control">
                                         <option value="">Hồ chí minh</option>
                                         <option value="">Gia lai</option>
                                         <option value="">Dắk lắk</option>
@@ -64,13 +64,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label> Số điện thoại</label>
-                                <input type="text" value="@user.PhoneNumber" class="form-control" placeholder="">
+                                <input type="text" id="sdt" class="form-control" placeholder="Nhập số điện thoại...">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="data-setbg" asp-for="DateCreated">Ngày đặt hàng</label>
-                                <input type="datetime" class="form-control"asp-for="DateCreated" value="@DateTime.Today.ToString("yyyy-MM-dd")" >
+                                <label for="data-setbg" asp-for="DateCreated" >Ngày đặt hàng</label>
+                                <input type="datetime" id="ngdat" class="form-control"asp-for="DateCreated" value="@DateTime.Today.ToString("yyyy-MM-dd")" >
                             </div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
+
     <script>
         $(document).ready(function () {
             $('input[name="optradio"]').click(function () {
@@ -157,6 +157,53 @@
 
             $("#btn-tt").on("click", function () {
                 var optradio = $("input[name='optradio']:checked").val();
+                var hoten = $("#hoten").val();
+                var diachi = $("#diachi option:selected").text();
+                var sdt = $("#sdt").val();
+                var ngdat = $("#ngdat").val();
+                var email = $("#email").val();
+                
+                var temp = true;
+                var regexPhone = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+                var regexEmail = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+                if (hoten == "" || diachi == "" || sdt == "" || ngdat == "" || email == "") {
+                    alert("Vui lòng nhập đầy đủ thông tin");
+                    temp = false;
+                    } 
+                else if(!regexPhone.test(sdt) || sdt.length != 10)
+                {
+                    alert("Số điện thoại không hợp lệ");
+                    temp = false;
+                }
+                else if(!regexEmail.test(email))
+                {
+                    alert("Email không hợp lệ");
+                    temp = false;
+                }
+
+                
+                
+                
+                if(temp == false) {
+                    return false;
+                } 
+                                    
+                
+                
+                $.ajax({
+                    url: "/luu-thong-tin-dat-hang",
+                    type: "POST",
+                    data: {
+                        diachi: diachi,
+                        hoten: hoten,
+                        sodienthoai: sdt,
+                        email: email,
+                        ngaydathang: ngdat
+                    },
+                    success: function () {
+                    }
+                });
+                        
                 if (optradio == "paypal") {
                     $(location).prop('href', '/thanh-toan-paypal')
                 }

@@ -1,5 +1,6 @@
 ﻿using App.Areas.Product.Models;
 using App.Models.Payments;
+using gymapp.Areas.Product.Models;
 using Newtonsoft.Json;
 
 namespace App.Areas.Product.Service
@@ -36,6 +37,7 @@ namespace App.Areas.Product.Service
             var session = HttpContext.Session;
             session.Remove(CARTKEY);
             session.Remove("discount");
+            session.Remove("ttdathang");
         }
 
         // Lưu Cart (Danh sách CartItem) vào session
@@ -64,6 +66,23 @@ namespace App.Areas.Product.Service
                 return JsonConvert.DeserializeObject<Discount>(jsondiscount);
             }
             return null;
+        }
+
+        public PaymentViewModel GetTTDatHang()
+        {
+            var session = HttpContext.Session;
+            string ttdathang = session.GetString("ttdathang");
+            if (ttdathang != null)
+            {
+                return JsonConvert.DeserializeObject<PaymentViewModel>(ttdathang);
+            }
+            return null;
+        }
+
+        public void RemoveTTDatHang()
+        {
+            var session = HttpContext.Session;
+            session.Remove("ttdathang");
         }
     }
 }

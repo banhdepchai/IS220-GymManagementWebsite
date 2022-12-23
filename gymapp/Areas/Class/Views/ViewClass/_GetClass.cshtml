@@ -4,16 +4,16 @@
 }
 <div class="row">
     <div class="col-lg-6">
-        <label for="name">Họ và tên</label>
-        <input type="text" id="name" value="@user.FullName">
+        <label for="name">Tên khóa tập</label>
+        <input type="text" id="name" value="@Model.ClassTitle">
     </div>
     <div class="col-lg-6">
-        <label for="last-name">Địa chỉ</label>
-        <input type="text" id="address" value="@user.HomeAdress">
+        <label for="last-name">Ngày tập</label>
+        <input type="text" id="address" value="@Model.ClassDate">
     </div>
     <div class="col-lg-6">
-        <label for="mobile">Số điện thoại</label>
-        <input type="text" id="mobile" value="@user.PhoneNumber">
+        <label for="mobile">Phòng tập</label>
+        <input type="text" id="mobile" value="@Model.Room.RoomName">
     </div>
     <div class="col-lg-6">
         <label for="hlv">Huấn luyện viên:</label>

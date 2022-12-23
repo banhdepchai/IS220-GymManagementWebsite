@@ -23,6 +23,6 @@ namespace App.Models.Products
         [StringLength(100, MinimumLength = 3, ErrorMessage = "{0} dài {1} đến {2}")]
         [RegularExpression(@"^[a-z0-9-]*$", ErrorMessage = "Chỉ dùng các ký tự [a-z0-9-]")]
         [Display(Name = "Url hiển thị")]
-        public string Slug { set; get; }
+        public string? Slug { set; get; }
     }
 }

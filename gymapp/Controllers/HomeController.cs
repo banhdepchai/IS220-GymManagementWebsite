@@ -16,6 +16,7 @@ namespace App.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly GymAppDbContext _context;
 
+        
         public HomeController(ILogger<HomeController> logger, GymAppDbContext context, UserManager<AppUser> userManager)
         {
             _logger = logger;
@@ -23,6 +24,7 @@ namespace App.Controllers
             _userManager = userManager;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var memberships = _context.Memberships.ToList();
@@ -32,10 +34,13 @@ namespace App.Controllers
             ViewBag.memberships = memberships;
             ViewBag.classes = classes;
             ViewBag.instructors = instructors;
+
+
             return View();
         }
 
         [Route("/ve-chung-toi")]
+        [AllowAnonymous]
         public async Task<IActionResult> About()
         {
             var classes = await _context.Classes.CountAsync();

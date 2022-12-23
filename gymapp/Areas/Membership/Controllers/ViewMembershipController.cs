@@ -4,6 +4,7 @@ using App.Models.Memberships;
 using App.Models.Payments;
 using BraintreeHttp;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using PayPal.Core;
 using PayPal.v1.Orders;
 using PayPal.v1.Payments;
+using System.Net.Mail;
+using System.Net;
 using Payment = App.Models.Payments.Payment;
 using PayPalPayments = PayPal.v1.Payments;
 
@@ -24,13 +27,17 @@ namespace App.Areas.Membership.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly string _clientId;
         private readonly string _secretKey;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly CartService _cartService;
 
         public double TyGiaUSD = 23300;
 
-        public ViewMembershipController(GymAppDbContext context, UserManager<AppUser> userManager, IConfiguration config)
+        public ViewMembershipController(GymAppDbContext context, UserManager<AppUser> userManager, IConfiguration config, IWebHostEnvironment webHostEnvironment, CartService cartService)
         {
             _context = context;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
+            _cartService = cartService;
             _clientId = config["PaypalSettings:ClientId"];
             _secretKey = config["PaypalSettings:SecretKey"];
         }
@@ -205,7 +212,59 @@ namespace App.Areas.Membership.Controllers
             _context.SignupMemberships.Add(SignupMembership);
             await _context.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Đăng ký gói tập " + membership.Level + " thành công";
+            // Gửi mail thông báo đơn hàng
+            var paymentviewmodel = _cartService.GetTTDatHang();
+            var from = new MailAddress("20521068@gm.uit.edu.vn", "GymApp");
+            var to = new MailAddress(paymentviewmodel.Email);
+            var subject = "Đơn hàng #" + payment.PaymentID;
+            var body = "Email body";
+
+            var username = "20521068@gm.uit.edu.vn"; // get from Mailtrap
+            var password = "ndomjhbiofjdwegc"; // get from Mailtrap
+
+            var host = "smtp.gmail.com";
+            var port = 587;
+
+            var client1 = new SmtpClient(host, port);
+            client1.UseDefaultCredentials = false;
+            client1.Credentials = new NetworkCredential(username, password);
+            client1.EnableSsl = true;
+
+            var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+
+            var strSanPham = "";
+            strSanPham += $"<tr>" +
+                          $"<td>Gói tập: {membership.Level}</td>" +
+                          $"<td>{1}</td>" +
+                          $"<td>{String.Format(info, "{0:c}", (membership.Fee))}</td>" +
+                          $"</tr>";
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string contentRootPath = _webHostEnvironment.ContentRootPath;
+            string contentCustomer = "";
+            contentCustomer = System.IO.File.ReadAllText(Path.Combine("Content", "templates", "send2.html"));
+            contentCustomer = contentCustomer.Replace("{{TenKhachHang}}", paymentviewmodel.HoTen);
+            contentCustomer = contentCustomer.Replace("{{MaDonHang}}", payment.PaymentID.ToString());
+            contentCustomer = contentCustomer.Replace("{{SanPham}}", strSanPham);
+            contentCustomer = contentCustomer.Replace("{{NguyenGia}}", String.Format(info, "{0:c}", membership.Fee));
+            contentCustomer = contentCustomer.Replace("{{GiamGia}}", String.Format(info, "{0:c}", 0));
+            contentCustomer = contentCustomer.Replace("{{ThanhToan}}", payment.PaymentMode);
+            contentCustomer = contentCustomer.Replace("{{TongTien}}", String.Format(info, "{0:c}", membership.Fee));
+            contentCustomer = contentCustomer.Replace("{{DiaChi}}", paymentviewmodel.DiaChi);
+            contentCustomer = contentCustomer.Replace("{{Email}}", paymentviewmodel.Email);
+            contentCustomer = contentCustomer.Replace("{{SoDienThoai}}", paymentviewmodel.SoDienThoai);
+            var mail = new MailMessage();
+            mail.Subject = subject;
+            mail.From = from;
+            mail.To.Add(to);
+            mail.IsBodyHtml = true;
+            mail.Body = contentCustomer;
+
+            client1.Send(mail);
+
+            _cartService.RemoveTTDatHang();
+
+            TempData["SuccessMessage"] = "Đăng ký gói tập: " + membership.Level + " thành công";
             return RedirectToAction("Index");
             //return Json(new { redirectUrl = "/dich-vu/" });
         }
@@ -242,7 +301,59 @@ namespace App.Areas.Membership.Controllers
 
             _context.SaveChanges();
 
-            TempData["SuccessMessage"] = "Đăng ký gói tập "+ membership.Level + " thành công";
+            // Gửi mail thông báo đơn hàng
+            var paymentviewmodel = _cartService.GetTTDatHang();
+            var from = new MailAddress("20521068@gm.uit.edu.vn", "GymApp");
+            var to = new MailAddress(paymentviewmodel.Email);
+            var subject = "Đơn hàng #" + payment.PaymentID;
+            var body = "Email body";
+
+            var username = "20521068@gm.uit.edu.vn"; // get from Mailtrap
+            var password = "ndomjhbiofjdwegc"; // get from Mailtrap
+
+            var host = "smtp.gmail.com";
+            var port = 587;
+
+            var client1 = new SmtpClient(host, port);
+            client1.UseDefaultCredentials = false;
+            client1.Credentials = new NetworkCredential(username, password);
+            client1.EnableSsl = true;
+
+            var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+
+            var strSanPham = "";
+            strSanPham += $"<tr>" +
+                          $"<td>Gói tập: {membership.Level}</td>" +
+                          $"<td>{1}</td>" +
+                          $"<td>{String.Format(info, "{0:c}", (membership.Fee))}</td>" +
+                          $"</tr>";
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string contentRootPath = _webHostEnvironment.ContentRootPath;
+            string contentCustomer = "";
+            contentCustomer = System.IO.File.ReadAllText(Path.Combine("Content", "templates", "send2.html"));
+            contentCustomer = contentCustomer.Replace("{{TenKhachHang}}", paymentviewmodel.HoTen);
+            contentCustomer = contentCustomer.Replace("{{MaDonHang}}", payment.PaymentID.ToString());
+            contentCustomer = contentCustomer.Replace("{{SanPham}}", strSanPham);
+            contentCustomer = contentCustomer.Replace("{{NguyenGia}}", String.Format(info, "{0:c}", membership.Fee));
+            contentCustomer = contentCustomer.Replace("{{GiamGia}}", String.Format(info, "{0:c}", 0));
+            contentCustomer = contentCustomer.Replace("{{ThanhToan}}", payment.PaymentMode);
+            contentCustomer = contentCustomer.Replace("{{TongTien}}", String.Format(info, "{0:c}", membership.Fee));
+            contentCustomer = contentCustomer.Replace("{{DiaChi}}", paymentviewmodel.DiaChi);
+            contentCustomer = contentCustomer.Replace("{{Email}}", paymentviewmodel.Email);
+            contentCustomer = contentCustomer.Replace("{{SoDienThoai}}", paymentviewmodel.SoDienThoai);
+            var mail = new MailMessage();
+            mail.Subject = subject;
+            mail.From = from;
+            mail.To.Add(to);
+            mail.IsBodyHtml = true;
+            mail.Body = contentCustomer;
+
+            client1.Send(mail);
+            
+            _cartService.RemoveTTDatHang();
+
+            TempData["SuccessMessage"] = "Đăng ký gói tập: "+ membership.Level + " thành công";
             //TempData["StatusMessage"] = "Đặt hàng thành công";
 
             return RedirectToAction(nameof(Index));
@@ -258,7 +369,7 @@ namespace App.Areas.Membership.Controllers
                 return NotFound();
             }
 
-            TempData["ErrorMessage"] = "Đăng ký gói tập " + membership.Level + " thất bại";
+            TempData["ErrorMessage"] = "Đăng ký gói tập: " + membership.Level + " thất bại";
             //TempData["StatusMessage"] = "Đặt hàng thất bại";
             return RedirectToAction(nameof(Index));
         }

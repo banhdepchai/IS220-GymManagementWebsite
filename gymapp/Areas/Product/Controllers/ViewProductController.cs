@@ -10,7 +10,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PayPal.Core;
 using PayPal.v1.Orders;
+using System.Net.Mail;
+using System.Net;
 using PayPalPayments = PayPal.v1.Payments;
+using System.Web;
+using Microsoft.AspNetCore.Hosting;
+using elFinder.NetCore;
+using gymapp.Areas.Product.Models;
+using PayPal.v1.Payments;
+using Newtonsoft.Json;
+using System.Globalization;
 
 namespace gymapp.Areas.Product.Controllers
 {
@@ -21,21 +30,29 @@ namespace gymapp.Areas.Product.Controllers
         private readonly GymAppDbContext _context;
         private readonly CartService _cartService;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _httpcontext;
+
+        private readonly HttpContext HttpContext;
         private readonly string _clientId;
         private readonly string _secretKey;
 
         public double TyGiaUSD = 23300;
 
-        public ViewProductController(GymAppDbContext context, CartService cartService, UserManager<AppUser> userManager, IConfiguration config)
+        public ViewProductController(GymAppDbContext context, CartService cartService, UserManager<AppUser> userManager, IConfiguration config, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpcontext)
         {
             _context = context;
             _cartService = cartService;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
             _clientId = config["PaypalSettings:ClientId"];
             _secretKey = config["PaypalSettings:SecretKey"];
+            _httpcontext = httpcontext;
+            HttpContext = httpcontext.HttpContext;
         }
 
         [Route("/san-pham/")]
+        [AllowAnonymous]
         public IActionResult Index([FromQuery(Name = "p")] int currentPage, int pagesize, string sort)
         {
             var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos).AsQueryable();
@@ -83,7 +100,10 @@ namespace gymapp.Areas.Product.Controllers
             return View(productsInPage.ToList());
         }
 
+        private static PaymentViewModel paymentViewModel = new PaymentViewModel();
+
         [Route("/san-pham/{danhmuc}")]
+        [AllowAnonymous]
         public IActionResult GetProductsByCategory([FromQuery(Name = "p")] int currentPage, int pagesize, string danhmuc, string sort)
         {
             var products = _context.Products.Include(p => p.Category).Include(p => p.ProductPhotos.OrderBy(pt => pt.Id)).Where(s => s.Category.Slug == danhmuc).AsQueryable();
@@ -114,7 +134,7 @@ namespace gymapp.Areas.Product.Controllers
             {
                 countpages = countPages,
                 currentpage = currentPage,
-                generateUrl = (pageNumber) => Url.Action("Index", new
+                generateUrl = (pageNumber) => Url.Action("GetProductsByCategory", new
                 {
                     p = pageNumber,
                     pagesize = pagesize
@@ -141,6 +161,7 @@ namespace gymapp.Areas.Product.Controllers
         }
 
         [Route("/{slug}.html")]
+        [AllowAnonymous]
         public IActionResult Detail(string slug)
         {
             var product = _context.Products
@@ -154,6 +175,7 @@ namespace gymapp.Areas.Product.Controllers
 
         /// Thêm sản phẩm vào cart
         [Route("addcart/{productid:int}", Name = "addcart")]
+        [AllowAnonymous]
         public IActionResult AddToCart([FromRoute] int productid)
         {
             var product = _context.Products
@@ -181,11 +203,14 @@ namespace gymapp.Areas.Product.Controllers
             // Lưu cart vào Session
             _cartService.SaveCartSession(cart);
             // Chuyển đến trang hiện thị Cart
+
+            TempData["StatusMessage"] = "Thêm sản phẩm vào giỏ hàng thành công";
             return RedirectToAction(nameof(Cart));
         }
 
         [Route("/updatecart", Name = "updatecart")]
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult UpdateCart([FromForm] int productid, [FromForm] int quantity)
         {
             // Cập nhật Cart thay đổi số lượng quantity ...
@@ -204,6 +229,7 @@ namespace gymapp.Areas.Product.Controllers
 
         /// xóa item trong cart
         [Route("/removecart/{productid:int}", Name = "removecart")]
+        [AllowAnonymous]
         public IActionResult RemoveCart([FromRoute] int productid)
         {
             var cart = _cartService.GetCartItems();
@@ -223,6 +249,7 @@ namespace gymapp.Areas.Product.Controllers
         }
 
         [Route("/gio-hang", Name = "cart")]
+        [AllowAnonymous]
         public IActionResult Cart()
         {
             ViewBag.discount = _cartService.GetDiscount();
@@ -278,16 +305,22 @@ namespace gymapp.Areas.Product.Controllers
                 total += item.product.Price * item.quantity;
             }
 
+            decimal nguyengia = total;
+
             var discountCode = _cartService.GetDiscount();
             int? dicountId = null;
+            decimal giamgia = decimal.Zero;
             if (discountCode != null)
             {
                 dicountId = discountCode.Id;
                 total -= (total * discountCode.Percent / 100);
+                giamgia = nguyengia * discountCode.Percent / 100;
             }
 
+            decimal tonggia = nguyengia - giamgia;
+
             var user = await _userManager.GetUserAsync(this.User);
-            var payment = new Payment()
+            var payment = new App.Models.Payments.Payment()
             {
                 DateCreated = DateTime.Now,
                 UserID = user.Id,
@@ -312,9 +345,66 @@ namespace gymapp.Areas.Product.Controllers
 
             _context.SaveChanges();
 
+
+
+            // Gửi mail thông báo đơn hàng
+            var paymentviewmodel = _cartService.GetTTDatHang();
+            var from = new MailAddress("20521068@gm.uit.edu.vn", "GymApp");
+            var to = new MailAddress(paymentviewmodel.Email);
+            var subject = "Đơn hàng #" + payment.PaymentID;
+            var body = "Email body";
+
+            var username = "20521068@gm.uit.edu.vn"; // get from Mailtrap
+            var password = "ndomjhbiofjdwegc"; // get from Mailtrap
+
+            var host = "smtp.gmail.com";
+            var port = 587;
+
+            var client = new SmtpClient(host, port);
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential(username, password);
+            client.EnableSsl = true;
+
+            var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+
+            var strSanPham = "";
+            foreach (var item in cart)
+            {
+                strSanPham += $"<tr>" +
+                              $"<td>{item.product.ProductName}</td>" +
+                              $"<td>{item.quantity}</td>" +
+                              $"<td>{String.Format(info, "{0:c}", (item.quantity * item.product.Price))}</td>" +
+                              $"</tr>";
+            }
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string contentRootPath = _webHostEnvironment.ContentRootPath;
+            string contentCustomer = "";
+            contentCustomer = System.IO.File.ReadAllText(Path.Combine("Content", "templates", "send2.html"));
+            contentCustomer = contentCustomer.Replace("{{TenKhachHang}}", paymentviewmodel.HoTen);
+            contentCustomer = contentCustomer.Replace("{{MaDonHang}}", payment.PaymentID.ToString());
+            contentCustomer = contentCustomer.Replace("{{SanPham}}", strSanPham);
+            contentCustomer = contentCustomer.Replace("{{NguyenGia}}", String.Format(info, "{0:c}", nguyengia));
+            contentCustomer = contentCustomer.Replace("{{GiamGia}}", String.Format(info, "{0:c}", giamgia));
+            contentCustomer = contentCustomer.Replace("{{ThanhToan}}", payment.PaymentMode);
+            contentCustomer = contentCustomer.Replace("{{TongTien}}", String.Format(info, "{0:c}", tonggia));
+            contentCustomer = contentCustomer.Replace("{{DiaChi}}", paymentviewmodel.DiaChi);
+            contentCustomer = contentCustomer.Replace("{{Email}}", paymentviewmodel.Email);
+            contentCustomer = contentCustomer.Replace("{{SoDienThoai}}", user.PhoneNumber);
+            var mail = new MailMessage();
+            mail.Subject = subject;
+            mail.From = from;
+            mail.To.Add(to);
+            mail.IsBodyHtml = true;
+            mail.Body = contentCustomer;
+
+            client.Send(mail);
+
+
             _cartService.ClearCart();
             //TempData["SuccessMessage"] = "Đặt hàng thành công";
             TempData["StatusMessage"] = "Đặt hàng thành công";
+
             return RedirectToAction(nameof(Cart));
             //return Content("Xác nhận đơn hàng thành công");
         }
@@ -459,14 +549,20 @@ namespace gymapp.Areas.Product.Controllers
             {
                 total += item.product.Price * item.quantity;
             }
+
+            decimal nguyengia = total;
             var discountCode = _cartService.GetDiscount();
             int? dicountId = null;
+            decimal giamgia = Decimal.Zero;
             if (discountCode != null)
             {
                 dicountId = discountCode.Id;
                 total -= (total * discountCode.Percent / 100);
+                giamgia = nguyengia * discountCode.Percent / 100;
             }
-            var payment = new Payment()
+
+            decimal tonggia = nguyengia - giamgia;
+            var payment = new App.Models.Payments.Payment()
             {
                 DateCreated = DateTime.Now,
                 UserID = user.Id,
@@ -491,10 +587,71 @@ namespace gymapp.Areas.Product.Controllers
 
             _context.SaveChanges();
 
+
+            var paymentviewmodel = _cartService.GetTTDatHang();
+            var from = new MailAddress("20521068@gm.uit.edu.vn", "GymApp");
+            var to = new MailAddress(paymentviewmodel.Email);
+            var subject = "Đơn hàng #" + payment.PaymentID;
+            var body = "Email body";
+
+            var username = "20521068@gm.uit.edu.vn"; // get from Mailtrap
+            var password = "ndomjhbiofjdwegc"; // get from Mailtrap
+
+            var host = "smtp.gmail.com";
+            var port = 587;
+
+            var client = new SmtpClient(host, port);
+            client.UseDefaultCredentials = false;
+            client.Credentials = new NetworkCredential(username, password);
+            client.EnableSsl = true;
+
+            var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+
+            var strSanPham = "";
+            foreach (var item in cart)
+            {
+                strSanPham += $"<tr>" +
+                              $"<td>{item.product.ProductName}</td>" +
+                              $"<td>{item.quantity}</td>" +
+                              $"<td>{String.Format(info, "{0:c}", (item.quantity * item.product.Price))}</td>" +
+                              $"</tr>";
+            }
+
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string contentRootPath = _webHostEnvironment.ContentRootPath;
+            string contentCustomer = "";
+            contentCustomer = System.IO.File.ReadAllText(Path.Combine("Content", "templates", "send2.html"));
+            contentCustomer = contentCustomer.Replace("{{TenKhachHang}}", paymentviewmodel.HoTen);
+            contentCustomer = contentCustomer.Replace("{{MaDonHang}}", payment.PaymentID.ToString());
+            contentCustomer = contentCustomer.Replace("{{SanPham}}", strSanPham);
+            contentCustomer = contentCustomer.Replace("{{NguyenGia}}", String.Format(info, "{0:c}", nguyengia));
+            contentCustomer = contentCustomer.Replace("{{GiamGia}}", String.Format(info, "{0:c}", giamgia));
+            contentCustomer = contentCustomer.Replace("{{ThanhToan}}", payment.PaymentMode);
+            contentCustomer = contentCustomer.Replace("{{TongTien}}", String.Format(info, "{0:c}", tonggia));
+            contentCustomer = contentCustomer.Replace("{{DiaChi}}", paymentviewmodel.DiaChi);
+            contentCustomer = contentCustomer.Replace("{{Email}}", paymentviewmodel.Email);
+            contentCustomer = contentCustomer.Replace("{{SoDienThoai}}", user.PhoneNumber);
+            var mail = new MailMessage();
+            mail.Subject = subject;
+            mail.From = from;
+            mail.To.Add(to);
+            mail.IsBodyHtml = true;
+            mail.Body = contentCustomer;
+
+            client.Send(mail);
+
             _cartService.ClearCart();
             //TempData["SuccessMessage"] = "Đặt hàng thành công";
             TempData["StatusMessage"] = "Đặt hàng thành công";
             return RedirectToAction(nameof(Cart));
+        }
+
+        [Route("/luu-thong-tin-dat-hang", Name = "luutt")]
+        public void SaveCartSession(PaymentViewModel ViewModel)
+        {
+            var session = HttpContext.Session;
+            string tt = JsonConvert.SerializeObject(ViewModel);
+            session.SetString("ttdathang", tt);
         }
     }
 }

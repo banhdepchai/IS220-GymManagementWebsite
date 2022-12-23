@@ -55,6 +55,17 @@ namespace App.Areas.Product.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Title,Description,Slug")] Category category)
         {
+            if (category.Slug == null)
+            {
+                category.Slug = AppUtilities.GenerateSlug(category.Title);
+            }
+
+            if (_context.Products.Any(p => p.Slug == category.Slug))
+            {
+                ModelState.AddModelError("Slug", "Slug đã tồn tại");
+                return View(category);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(category);

@@ -24,9 +24,14 @@ namespace App.Areas.Product.Controllers
         [TempData] public string? StatusMessage { get; set; }
 
         // GET: Product/Product
-        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize)
+        public async Task<IActionResult> Index([FromQuery(Name = "p")] int currentPage, int pagesize, string keyword)
         {
-            var discounts = _context.Discounts;
+            var discounts = _context.Discounts.AsQueryable();
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                discounts = discounts.Where(x => x.Code.Contains(keyword));
+            }
 
             int totalDícounts = await discounts.CountAsync();
             if (pagesize <= 0) pagesize = 5;

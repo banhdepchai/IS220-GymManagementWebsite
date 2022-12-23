@@ -154,11 +154,13 @@ namespace App.Areas.Product.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products.Include(c => c.Category).FirstOrDefaultAsync(p => p.ProductID == id);
             if (product == null)
             {
                 return NotFound();
             }
+
+            ViewData["categories"] = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 
             var productEdit = new ProductModel()
             {
@@ -168,10 +170,8 @@ namespace App.Areas.Product.Controllers
                 Description = product.Description,
                 Price = product.Price,
                 Slug = product.Slug,
-                CategoryID = product.ProductID
+                CategoryID = product.CategoryID
             };
-
-            ViewData["categories"] = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 
             return View(productEdit);
         }

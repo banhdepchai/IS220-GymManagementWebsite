@@ -13,7 +13,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <h2>VỀ CHÚNG TÔI</h2>
+                        <h2>Xác nhận đơn hàng</h2>
                         <div class="breadcrumb-option">
                             <a asp-action="Index" asp-controller="Home"><i class="fa fa-home"></i> Trang chủ</a>
                             <a>Giỏ hàng</a><span>Xác nhận đơn hàng</span>
@@ -36,33 +36,33 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="firstname">Họ và tên</label>
-                                    <input class="form-control" value="@user?.FullName">
+                                    <input class="form-control" id="hoten" placeholder="Vui lòng nhập họ tên...">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="lastname">Email</label>
-                                    <input class="form-control" value="@user?.Email">
+                                    <input class="form-control" id="email" placeholder="Vui lòng nhập email...">
                                 </div>
                             </div>
                             <div class="w-100"></div>
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="country">Địa chỉ</label>
-                                    <input class="form-control" value="@user.HomeAdress">
+                                    <input class="form-control" id="diachi" placeholder="Vui lòng nhập địa chỉ...">
                                 </div>
                             </div>
                             <div class="w-100"></div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="phone">Số điện thoại</label>
-                                    <input class="form-control" value="@user.PhoneNumber">
+                                    <input class="form-control" id="sdt" placeholder="Vui lòng nhập số điện thoại...">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="data-setbg">Ngày đặt hàng</label>
-                                    <input type="datetime" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")">
+                                    <input type="datetime" class="form-control" id="ngdat" value="@DateTime.Today.ToString("yyyy-MM-dd")">
                                 </div>
                             </div>
                         </div>
@@ -163,6 +163,50 @@
             });
             
             $("#btn-submit").click(function () {
+                    var hoten = $("#hoten").val();
+                    var diachi = $("#diachi").val();
+                    var sdt = $("#sdt").val();
+                    var ngdat = $("#ngdat").val();
+                    var email = $("#email").val();
+
+                    var temp = true;
+                    var regexPhone = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+                    var regexEmail = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+                    if (hoten == "" || diachi == "" || sdt == "" || ngdat == "" || email == "") {
+                        alert("Vui lòng nhập đầy đủ thông tin");
+                        temp = false;
+                        } 
+                    else if(!regexPhone.test(sdt) || sdt.length != 10)
+                    {
+                        alert("Số điện thoại không hợp lệ");
+                        temp = false;
+                    }
+                    else if(!regexEmail.test(email))
+                    {
+                        alert("Email không hợp lệ");
+                        temp = false;
+                    }
+
+                    if(temp == false) {
+                        return false;
+                    } 
+
+
+
+                    $.ajax({
+                        url: "/luu-thong-tin-dat-hang",
+                        type: "POST",
+                        data: {
+                            diachi: diachi,
+                            hoten: hoten,
+                            sodienthoai: sdt,
+                            email: email,
+                            ngaydathang: ngdat
+                        },
+                        success: function () {
+                        }
+                    });
+                
                 if ($("input[name='optradio']:checked").length == 0) {
                     alert("Bạn chưa chọn phương thức thanh toán");
                     return false;
