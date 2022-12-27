@@ -19,6 +19,7 @@ namespace App.Models.Contacts
         [Display(Name = "Địa chỉ email")]
         public string Email { get; set; }
 
+        [Display(Name = "Ngày gửi liên hệ")]
         public DateTime DateSent { get; set; }
 
         [Display(Name = "Nội dung")] public string Message { get; set; }

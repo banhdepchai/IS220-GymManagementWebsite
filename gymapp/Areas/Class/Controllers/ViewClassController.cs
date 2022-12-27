@@ -55,6 +55,7 @@ namespace App.Areas.Class.Controllers
         }
 
         [Route("/khoa-tap/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetClass(int id)
         {
             var classModel = await _context.Classes.Include(r => r.Room).Include(i => i.Instructor).FirstOrDefaultAsync(i => i.ClassId == id);
@@ -263,7 +264,7 @@ namespace App.Areas.Class.Controllers
 
             _cartService.RemoveTTDatHang();
 
-            TempData["SuccessMessage"] = "Đăng ký khóa tập " + classModel.ClassTitle +" thành công";
+            TempData["SuccessMessage"] = "Đăng ký khóa tập: " + classModel.ClassTitle +" thành công";
             return RedirectToAction(nameof(Index));
         }
 
@@ -352,7 +353,7 @@ namespace App.Areas.Class.Controllers
 
             _cartService.RemoveTTDatHang();
 
-            TempData["SuccessMessage"] = "Đăng ký khóa tập " + classModel.ClassTitle +" thành công";
+            TempData["SuccessMessage"] = "Đăng ký khóa tập: " + classModel.ClassTitle +" thành công";
             //TempData["StatusMessage"] = "Đặt hàng thành công";
 
             return RedirectToAction(nameof(Index));
@@ -366,7 +367,7 @@ namespace App.Areas.Class.Controllers
                 return NotFound();
             }
             var classModel = _context.Classes.FirstOrDefault(m => m.ClassId == classIdTemp);
-            TempData["ErrorMessage"] = "Đăng ký khóa tập " + classModel.ClassTitle +" thất bại";
+            TempData["ErrorMessage"] = "Đăng ký khóa tập: " + classModel.ClassTitle +" thất bại";
             //TempData["StatusMessage"] = "Đặt hàng thất bại";
             return RedirectToAction(nameof(Index));
         }

@@ -73,7 +73,7 @@
                                     @Html.DisplayFor(modelItem => item.ClassPeriod)
                                 </td>
                                 <th>
-                                    @Math.Round(item.ClassCost, 0) VNĐ
+                                    @String.Format(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"), "{0:c}", item.ClassCost)
                                 </th>
                                 <td>
                                     <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ClassId">Chi tiết</a>

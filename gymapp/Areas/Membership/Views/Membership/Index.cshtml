@@ -57,7 +57,7 @@
 
                                 </td>
                                 <td>
-                                @Math.Round(item.Fee) VNĐ
+                                    @String.Format(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"), "{0:c}", item.Fee)
                                 </td>
                                 <th>
                                     @Html.DisplayFor(modelItem => item.Hours) giờ/ngày

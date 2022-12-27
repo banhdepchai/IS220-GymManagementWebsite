@@ -75,7 +75,7 @@
                                     @Html.DisplayFor(modelItem => item.Author.UserName)
                                 </td>
                                 <th>
-                                    @Math.Round(item.Price, 0) VNĐ
+                                    @String.Format(System.Globalization.CultureInfo.GetCultureInfo("vi-VN"), "{0:c}", item.Price)
                                 </th>
                                 <td>
                                     <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@item.ProductID">Chi tiết</a>
