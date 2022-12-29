@@ -29,9 +29,10 @@ namespace App.Areas.Class.Controllers
         private readonly string _secretKey;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly CartService _cartService;
+        private readonly IConfiguration _configuration;
         public double TyGiaUSD = 23300;
 
-        public ViewClassController(GymAppDbContext context, UserManager<AppUser> userManager, IConfiguration config, IWebHostEnvironment webHostEnvironment, CartService cartService)
+        public ViewClassController(GymAppDbContext context, UserManager<AppUser> userManager, IConfiguration config, IWebHostEnvironment webHostEnvironment, CartService cartService, IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
@@ -39,6 +40,7 @@ namespace App.Areas.Class.Controllers
             _cartService = cartService;
             _clientId = config["PaypalSettings:ClientId"];
             _secretKey = config["PaypalSettings:SecretKey"];
+            _configuration = configuration;
         }
 
         [Route("/khoa-tap/")]
@@ -213,14 +215,15 @@ namespace App.Areas.Class.Controllers
             await _context.SaveChangesAsync();
 
             // Gửi mail thông báo đơn hàng
+
             var paymentviewmodel = _cartService.GetTTDatHang();
-            var from = new MailAddress("20521068@gm.uit.edu.vn", "GymApp");
+            var from = new MailAddress("giaosusanh3@gmail.com", "GymApp");
             var to = new MailAddress(paymentviewmodel.Email);
             var subject = "Đơn hàng #" + payment.PaymentID;
             var body = "Email body";
 
-            var username = "20521068@gm.uit.edu.vn"; // get from Mailtrap
-            var password = "ndomjhbiofjdwegc"; // get from Mailtrap
+            var username = "giaosusanh3@gmail.com"; // get from Mailtrap
+            var password = "eeamrzwgrymyaslz"; // get from Mailtrap
 
             var host = "smtp.gmail.com";
             var port = 587;
@@ -303,13 +306,13 @@ namespace App.Areas.Class.Controllers
 
             // Gửi mail thông báo đơn hàng
             var paymentviewmodel = _cartService.GetTTDatHang();
-            var from = new MailAddress("20521068@gm.uit.edu.vn", "GymApp");
+            var from = new MailAddress("giaosusanh3@gmail.com", "GymApp");
             var to = new MailAddress(paymentviewmodel.Email);
             var subject = "Đơn hàng #" + payment.PaymentID;
             var body = "Email body";
 
-            var username = "20521068@gm.uit.edu.vn"; // get from Mailtrap
-            var password = "ndomjhbiofjdwegc"; // get from Mailtrap
+            var username = "giaosusanh3@gmail.com"; // get from Mailtrap
+            var password = "eeamrzwgrymyaslz"; // get from Mailtrap
 
             var host = "smtp.gmail.com";
             var port = 587;

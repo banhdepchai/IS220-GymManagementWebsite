@@ -349,13 +349,13 @@ namespace gymapp.Areas.Product.Controllers
 
             // Gửi mail thông báo đơn hàng
             var paymentviewmodel = _cartService.GetTTDatHang();
-            var from = new MailAddress("20521068@gm.uit.edu.vn", "GymApp");
+            var from = new MailAddress("giaosusanh3@gmail.com", "GymApp");
             var to = new MailAddress(paymentviewmodel.Email);
             var subject = "Đơn hàng #" + payment.PaymentID;
             var body = "Email body";
 
-            var username = "20521068@gm.uit.edu.vn"; // get from Mailtrap
-            var password = "ndomjhbiofjdwegc"; // get from Mailtrap
+            var username = "giaosusanh3@gmail.com"; // get from Mailtrap
+            var password = "eeamrzwgrymyaslz"; // get from Mailtrap
 
             var host = "smtp.gmail.com";
             var port = 587;
@@ -587,15 +587,16 @@ namespace gymapp.Areas.Product.Controllers
 
             _context.SaveChanges();
 
+            
 
             var paymentviewmodel = _cartService.GetTTDatHang();
-            var from = new MailAddress("20521068@gm.uit.edu.vn", "GymApp");
+            var from = new MailAddress("giaosusanh3@gmail.com", "GymApp");
             var to = new MailAddress(paymentviewmodel.Email);
             var subject = "Đơn hàng #" + payment.PaymentID;
             var body = "Email body";
 
-            var username = "20521068@gm.uit.edu.vn"; // get from Mailtrap
-            var password = "ndomjhbiofjdwegc"; // get from Mailtrap
+            var username = "giaosusanh3@gmail.com"; // get from Mailtrap
+            var password = "eeamrzwgrymyaslz"; // get from Mailtrap
 
             var host = "smtp.gmail.com";
             var port = 587;
