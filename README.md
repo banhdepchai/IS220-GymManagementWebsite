@@ -10,7 +10,7 @@
 ## COURSE INTRODUCTION
 
 - **Name:** Xây dựng HTTT trên các framework - .Net Technology
-- **Course ID:** IS220.N12
+- **Course ID:** IS220
 - **Class ID:** IS220.N12
 - **Year:** First Semester (2022 - 2023)
 - **Lecturer**: MSc. Tạ Việt Phương
