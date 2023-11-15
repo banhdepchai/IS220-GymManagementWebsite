@@ -23,11 +23,11 @@ Target: Building a Gym Management Website - Chilling.
 ### Members
 | ID   | Full Name                        | Student ID     | Performance  | Rate |
 | --- |----------------------------|----------|-----------|----------|
-| 1 | Nguyễn Hiền Đức | 20520450 | Leader, Phát biểu bài toán, Xác định yêu cầu, Thiết kế mô hình, Vẽ Use Case, Vẽ Activity Diagram, Mô hình dữ liệu quan hệ, Làm slide & thuyết trình, Viết báo cáo | 100% |
-| 2 | Nguyễn Bảo Anh | 20521068 | Phát biểu bài toán, Thiết kế xử lý, Viết báo cáo | 100% |
-| 3 | Trần Nhật Sinh  | 20521748 | Phát biểu bài toán, Thiết kế mô hình, Thiết kế giao diện, Thiết kế xử lý, Viết báo cáo  | 100% |
-| 4 | Nguyễn Hoàng Trung  | 20521837 | Phát biểu bài toán, Thiết kế mô hình, Thiết kế giao diện, Thiết kế xử lý, Viết báo cáo  | 100% |
-| 5 | Trần Gia Phong  | 20522071 | Phát biểu bài toán, Xác định yêu cầu, Thiết kế xử lý, Viết báo cáo  | 100% |
+| 1 | Nguyễn Hiền Đức (https://www.facebook.com/hinduck.0611) | 20520450 | Leader, Phát biểu bài toán, Xác định yêu cầu, Thiết kế mô hình, Vẽ Use Case, Vẽ Activity Diagram, Mô hình dữ liệu quan hệ, Làm slide & thuyết trình, Viết báo cáo | 100% |
+| 2 | Nguyễn Bảo Anh (https://www.facebook.com/banh.2992) | 20521068 | Phát biểu bài toán, Thiết kế xử lý, Viết báo cáo | 100% |
+| 3 | Trần Nhật Sinh (https://www.facebook.com/sinh.trannhat.37) | 20521837 | Phát biểu bài toán, Thiết kế mô hình, Thiết kế giao diện, Thiết kế xử lý, Viết báo cáo  | 100% |
+| 4 | Nguyễn Hoàng Trung (https://www.facebook.com/nguyenhoangtrunghhh) | 20522071 | Phát biểu bài toán, Thiết kế mô hình, Thiết kế giao diện, Thiết kế xử lý, Viết báo cáo  | 100% |
+| 5 | Trần Gia Phong (https://www.facebook.com/Nomalized) | 20521748 | Phát biểu bài toán, Xác định yêu cầu, Thiết kế xử lý, Viết báo cáo  | 100% |
 
 # Instruction set up Project
 This is the guideline about setting up The Chilling - Gym Management Website at localhost - A Project of .Net Technology Subject - IS220.N12 at The University of Information Technology.
